@@ -1,89 +1,98 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Aj. Kring Labroom — KU_KPS</title>
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+.login-wrap{display:grid;grid-template-columns:1fr 340px;min-height:calc(100vh - 57px);}
+.login-left{padding:2.5rem 2rem;border-right:0.5px solid var(--color-border-tertiary);}
+.login-right{padding:2rem 1.5rem;}
+.ann{padding:10px 12px;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);margin-bottom:8px;}
+.ann-tag{font-size:10px;padding:1px 7px;border-radius:20px;font-family:'DM Mono',monospace;margin-bottom:4px;display:inline-block;}
+.ucard{padding:8px 10px;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);cursor:pointer;display:flex;align-items:center;gap:8px;margin-bottom:5px;transition:all .12s;}
+.ucard:hover,.ucard.sel{border-color:var(--color-border-primary);background:var(--color-background-secondary);}
+.chk{margin-left:auto;width:14px;height:14px;border-radius:50%;border:0.5px solid var(--color-border-tertiary);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ucard.sel .chk{background:var(--color-text-primary);border-color:var(--color-text-primary);}
+.register-box{margin-top:auto;padding:14px;background:var(--color-background-secondary);border-radius:var(--border-radius-lg);border:0.5px solid var(--color-border-tertiary);}
+@media(max-width:680px){.login-wrap{grid-template-columns:1fr;}.login-left{border-right:none;border-bottom:0.5px solid var(--color-border-tertiary);padding:1.5rem 1rem;}.login-right{padding:1.5rem 1rem;}}
+</style>
 </head>
 <body>
-
+<script src="shared.js"></script>
 <nav class="nav">
-  <a href="index.html" class="nav-logo">
-    <svg width="32" height="32" viewBox="0 0 48 48"><rect width="48" height="48" rx="10" fill="#F1EFE8"/><rect x="19" y="14" width="10" height="10" rx="3" fill="#F5C4B3"/><rect x="19" y="13" width="10" height="4" rx="2" fill="#444441"/><rect x="18" y="14" width="3" height="5" rx="1" fill="#444441"/><rect x="21" y="18" width="2" height="2" rx="1" fill="#2C2C2A"/><rect x="25" y="18" width="2" height="2" rx="1" fill="#2C2C2A"/><rect x="22" y="21" width="4" height="1" rx="0.5" fill="#993C1D"/><rect x="16" y="24" width="16" height="12" rx="2" fill="#1D9E75"/><rect x="15" y="24" width="4" height="10" rx="1" fill="#fff"/><rect x="29" y="24" width="4" height="10" rx="1" fill="#fff"/><rect x="18" y="35" width="4" height="5" rx="1" fill="#185FA5"/><rect x="26" y="35" width="4" height="5" rx="1" fill="#185FA5"/><rect x="17" y="38" width="5" height="3" rx="1" fill="#2C2C2A"/><rect x="25" y="38" width="5" height="3" rx="1" fill="#2C2C2A"/></svg>
-    <div><div class="nav-ln">Aj. Kring Labroom</div><div class="nav-ls">KU_KPS · Kasetsart University</div></div>
+  <a class="nav-logo" href="index.html">
+    <svg width="28" height="28" viewBox="0 0 48 48"><rect width="48" height="48" rx="10" fill="#F1EFE8"/><rect x="19" y="14" width="10" height="10" rx="3" fill="#F5C4B3"/><rect x="19" y="13" width="10" height="4" rx="2" fill="#444441"/><rect x="18" y="14" width="3" height="5" rx="1" fill="#444441"/><rect x="21" y="18" width="2" height="2" rx="1" fill="#2C2C2A"/><rect x="25" y="18" width="2" height="2" rx="1" fill="#2C2C2A"/><rect x="22" y="21" width="4" height="1" rx=".5" fill="#993C1D"/><rect x="16" y="24" width="16" height="12" rx="2" fill="#1D9E75"/><rect x="15" y="24" width="4" height="10" rx="1" fill="#fff"/><rect x="29" y="24" width="4" height="10" rx="1" fill="#fff"/><rect x="18" y="35" width="4" height="5" rx="1" fill="#185FA5"/><rect x="26" y="35" width="4" height="5" rx="1" fill="#185FA5"/><rect x="17" y="38" width="5" height="3" rx="1" fill="#2C2C2A"/><rect x="25" y="38" width="5" height="3" rx="1" fill="#2C2C2A"/></svg>
+    <div><div class="nav-logo-name">Aj. Kring Labroom</div><div class="nav-logo-sub">KU_KPS · Plant Pathology</div></div>
   </a>
-  <span style="font-size:11px;font-family:'DM Mono',monospace;background:var(--bg2);color:var(--text2);padding:4px 10px;border-radius:20px;border:0.5px solid var(--border)">v2025 · ระบบสมาชิก</span>
 </nav>
 
-<div style="display:grid;grid-template-columns:1fr 360px;min-height:calc(100vh - 53px);">
-
-  <!-- LEFT: Announcements -->
-  <div style="padding:2.5rem 2rem;border-right:0.5px solid var(--border);display:flex;flex-direction:column;gap:1rem;background:var(--bg);">
-    <div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--text2);letter-spacing:.08em;text-transform:uppercase;display:flex;align-items:center;gap:6px;"><span style="display:inline-block;width:14px;height:1px;background:var(--text2)"></span>ประกาศห้องแล็บ</div>
-    <div id="announcements"></div>
-    <!-- Register box -->
-    <div style="margin-top:auto;padding:14px;background:var(--bg2);border-radius:var(--rl);border:0.5px solid var(--border);">
-      <div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:4px">นิสิตใหม่?</div>
-      <div style="font-size:12px;color:var(--text2);margin-bottom:10px;line-height:1.5">สมัครสมาชิกเพื่อเข้าใช้ระบบ อาจารย์จะตรวจสอบและอนุมัติภายใน 1-2 วัน</div>
-      <a href="register.html" class="btn btn-pri" style="width:100%;justify-content:center"><i class="ti ti-user-plus" style="font-size:13px"></i> สมัครสมาชิก</a>
+<div class="login-wrap">
+  <div class="login-left" style="display:flex;flex-direction:column;gap:10px;">
+    <div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--color-text-secondary);letter-spacing:.08em;text-transform:uppercase;display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+      <span style="width:14px;height:1px;background:var(--color-text-secondary);display:inline-block"></span>ประกาศห้องแล็บ
+    </div>
+    <div class="ann"><div class="ann-tag" style="background:#e1f5ee;color:#085041">ใหม่</div><div style="font-size:13px;font-weight:500">รับสมัครนิสิต ป.เอก ปีการศึกษา 2568</div><div style="font-size:11px;color:var(--color-text-tertiary);font-family:'DM Mono',monospace;margin-top:2px">15 พ.ค. 2568</div></div>
+    <div class="ann"><div class="ann-tag" style="background:#e6f1fb;color:#0c447c">ประชุม</div><div style="font-size:13px;font-weight:500">Lab meeting ทุกวันพุธ 10.00 น. ห้อง 302</div></div>
+    <div class="ann"><div class="ann-tag" style="background:#faeeda;color:#633806">แจ้งเตือน</div><div style="font-size:13px;font-weight:500">ส่งรายงาน RD-2024-01 ภายใน 31 พ.ค.</div></div>
+    <div class="ann"><div class="ann-tag" style="background:#eeedfe;color:#3c3489">ผลงาน</div><div style="font-size:13px;font-weight:500">บทความตีพิมพ์ใน Plant Disease (IF 4.8) มี.ค. 2568</div></div>
+    <div class="register-box">
+      <div style="font-size:13px;font-weight:500;margin-bottom:4px">นิสิตใหม่?</div>
+      <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:10px;line-height:1.5">สมัครสมาชิกเพื่อเข้าใช้ระบบ อาจารย์จะตรวจสอบและอนุมัติภายใน 1–2 วัน</div>
+      <a href="register.html" class="btn btn-primary" style="width:100%;justify-content:center;text-decoration:none;display:flex;">
+        <i class="ti ti-user-plus"></i> สมัครสมาชิก
+      </a>
     </div>
   </div>
 
-  <!-- RIGHT: Login -->
-  <div style="padding:2rem 1.5rem;background:var(--bg);">
-    <div style="font-size:15px;font-weight:500;color:var(--text);margin-bottom:3px">เข้าสู่ระบบ</div>
-    <div style="font-size:13px;color:var(--text2);margin-bottom:1rem">เลือกบัญชีของคุณ</div>
-    <div id="loginErr" class="err-box"><i class="ti ti-alert-circle"></i><span id="errTxt"></span></div>
-    <label class="f-lbl" style="margin-bottom:6px">เลือกบัญชี</label>
+  <div class="login-right">
+    <div style="font-size:15px;font-weight:500;margin-bottom:3px">เข้าสู่ระบบ</div>
+    <div style="font-size:13px;color:var(--color-text-secondary);margin-bottom:1rem">เลือกบัญชีของคุณ</div>
+    <div id="loginErr" class="f-error"><i class="ti ti-alert-circle"></i><span id="errTxt"></span></div>
+    <label class="f-label" style="margin-bottom:6px">เลือกบัญชี</label>
     <div id="ucards" style="margin-bottom:12px"></div>
-    <div class="f-group"><label class="f-lbl">รหัสผ่าน</label><input type="password" id="passIn" class="f-inp" placeholder="••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
-    <button class="btn btn-pri" style="width:100%;justify-content:center" onclick="doLogin()"><i class="ti ti-arrow-right"></i> เข้าสู่ระบบ</button>
-    <div style="font-size:11px;font-family:'DM Mono',monospace;color:var(--text3);text-align:center;margin-top:8px">demo · รหัสผ่านทุกบัญชีคือ 1234</div>
+    <div class="f-group"><label class="f-label">รหัสผ่าน</label><input type="password" id="passIn" class="f-input" placeholder="••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
+    <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="doLogin()"><i class="ti ti-arrow-right"></i> เข้าสู่ระบบ</button>
+    <div style="font-size:11px;font-family:'DM Mono',monospace;color:var(--color-text-tertiary);text-align:center;margin-top:8px">demo · รหัสผ่านนิสิตคือ 1234</div>
   </div>
 </div>
+<div class="toast" id="toast"></div>
 
-<script src="shared.js"></script>
 <script>
-// Check already logged in
-const s = getSession();
-if (s) {
-  if (USERS[s.uid]?.level === 'admin') location.href = 'admin.html';
-  else location.href = 'dashboard.html';
+let selectedUID = null;
+function buildUserCards() {
+  const approved = KU.getApproved();
+  const container = document.getElementById('ucards');
+  container.innerHTML = approved.map(u => `
+    <div class="ucard" onclick="selUser(this,'${u.uid}')">
+      <div class="av av-md" style="background:${u.avbg};color:${u.avc}">${u.av}</div>
+      <div>
+        <div style="font-size:13px;font-weight:500">${u.name}</div>
+        <div style="font-size:11px;color:var(--color-text-secondary)">${u.level==='admin'?'หัวหน้าแล็บ · Admin':u.level==='ra'?'ผู้ช่วยวิจัย':u.level==='master'?'นิสิต ป.โท':u.level==='phd'?'นิสิต ป.เอก':'นิสิต ป.ตรี'}</div>
+      </div>
+      <div class="chk"><svg width="7" height="7" viewBox="0 0 8 8"><polyline points="1.5,4 3.5,6 6.5,2" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </div>`).join('');
 }
-
-// Announcements
-const anns = [
-  { tag:'ใหม่', tagStyle:'background:#e1f5ee;color:#085041', txt:'รับสมัครนิสิต ป.เอก สาขา Plant Pathology ปีการศึกษา 2568', date:'15 พ.ค. 2568' },
-  { tag:'ประชุม', tagStyle:'background:#e6f1fb;color:#0c447c', txt:'Lab meeting ทุกวันพุธ 10.00 น. ห้อง 302', date:'20 พ.ค. 2568' },
-  { tag:'แจ้งเตือน', tagStyle:'background:#faeeda;color:#633806', txt:'ส่งรายงานความคืบหน้า RD-2024-01 ภายใน 31 พ.ค. นี้', date:'18 พ.ค. 2568' },
-  { tag:'ผลงาน', tagStyle:'background:#eeedfe;color:#3c3489', txt:'Paper ของทีมได้รับการตอบรับจาก Phytopathology — ยินดีด้วย!', date:'10 พ.ค. 2568' },
-];
-document.getElementById('announcements').innerHTML = anns.map(a =>
-  `<div class="ann-item"><div class="atag" style="${a.tagStyle}">${a.tag}</div><div style="font-size:13px;font-weight:500;color:var(--text)">${a.txt}</div><div style="font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;margin-top:2px">${a.date}</div></div>`
-).join('');
-
-// User cards
-let uid = null;
-const SHOW = ['advisor','ra1','ra2','ra3'];
-document.getElementById('ucards').innerHTML = SHOW.map(id => {
-  const u = USERS[id];
-  return `<div class="ucard" onclick="sel(this,'${id}')">
-    <div class="av" style="background:${u.avbg};color:${u.avc};width:26px;height:26px;font-size:10px">${u.av}</div>
-    <div><div style="font-size:13px;font-weight:500;color:var(--text)">${u.name}</div><div style="font-size:11px;color:var(--text2)">${u.role}</div></div>
-    <div class="chk"><svg width="7" height="7" viewBox="0 0 8 8"><polyline points="1.5,4 3.5,6 6.5,2" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div>
-  </div>`;
-}).join('');
-
-function sel(el,id){ document.querySelectorAll('.ucard').forEach(u=>u.classList.remove('sel')); el.classList.add('sel'); uid=id; document.getElementById('loginErr').classList.remove('on'); }
-
-function doLogin(){
-  if(!uid){ showErr('กรุณาเลือกบัญชีก่อน'); return; }
-  if(document.getElementById('passIn').value !== '1234'){ showErr('รหัสผ่านไม่ถูกต้อง'); return; }
-  setSession(uid);
-  location.href = USERS[uid].level === 'admin' ? 'admin.html' : 'dashboard.html';
+function selUser(el, uid) {
+  document.querySelectorAll('.ucard').forEach(u => u.classList.remove('sel'));
+  el.classList.add('sel'); selectedUID = uid;
+  document.getElementById('loginErr').classList.remove('show');
 }
-function showErr(m){ const e=document.getElementById('loginErr'); document.getElementById('errTxt').textContent=m; e.classList.add('on'); }
+function doLogin() {
+  if (!selectedUID) { showErr('กรุณาเลือกบัญชีก่อน'); return; }
+  const pass = document.getElementById('passIn').value;
+  const approved = KU.getApproved();
+  const user = approved.find(u => u.uid === selectedUID);
+  if (!user || user.pass !== pass) { showErr('รหัสผ่านไม่ถูกต้อง'); return; }
+  KU.setSession({ uid: user.uid, name: user.name, level: user.level, avbg: user.avbg, avc: user.avc, av: user.av });
+  if (user.level === 'admin') window.location.href = 'admin.html';
+  else window.location.href = 'dashboard.html';
+}
+function showErr(msg) { document.getElementById('errTxt').textContent = msg; document.getElementById('loginErr').classList.add('show'); }
+buildUserCards();
+// redirect if already logged in
+const s = KU.getSession(); if (s) { if (s.level==='admin') window.location.href='admin.html'; else window.location.href='dashboard.html'; }
 </script>
 </body>
 </html>

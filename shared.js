@@ -1,12 +1,12 @@
 // Aj. Kring Labroom — KU_KPS — Shared Data & Utilities
 
-const LAB = { name:'Aj. Kring Labroom', sub:'KU_KPS · Kasetsart University' };
+const LAB = { name: 'Aj. Kring Labroom', sub: 'KU_KPS · Kasetsart University' };
 
 const USERS = {
-  advisor:{ name:'อ.ดร. สมศรี วิจัยดี', role:'หัวหน้าแล็บ', level:'admin', av:'สว', avbg:'#e6f1fb', avc:'#0c447c' },
-  ra1:    { name:'มินตรา ช่วยดี',      role:'ผู้ช่วยวิจัย',  level:'ra',      av:'มช', avbg:'#e1f5ee', avc:'#0f6e56' },
-  ra2:    { name:'ธนกฤต ขยันมาก',     role:'นิสิต ป.โท',   level:'master',  av:'ธข', avbg:'#eeedfe', avc:'#534ab7' },
-  ra3:    { name:'ปาริชาติ ใฝ่รู้',    role:'นิสิต ป.เอก',  level:'phd',     av:'ปร', avbg:'#faeeda', avc:'#854f0b' }
+  advisor: { name:'อ.ฉัตรสุดา จีระพันธุ', role:'หัวหน้าแล็บ', level:'admin', av:'ฉจ', avbg:'#e6f1fb', avc:'#0c447c', pass:'854545' },
+  ra1:     { name:'มินตรา ช่วยดี',        role:'ผู้ช่วยวิจัย',  level:'ra',    av:'มช', avbg:'#e1f5ee', avc:'#0f6e56', pass:'1234' },
+  ra2:     { name:'ธนกฤต ขยันมาก',       role:'นิสิต ป.โท',   level:'master', av:'ธข', avbg:'#eeedfe', avc:'#534ab7', pass:'1234' },
+  ra3:     { name:'ปาริชาติ ใฝ่รู้',      role:'นิสิต ป.เอก',  level:'phd',   av:'ปร', avbg:'#faeeda', avc:'#854f0b', pass:'1234' }
 };
 
 const KEYS = {
