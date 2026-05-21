@@ -204,16 +204,27 @@ function doLogin() {
   if (!username) { showLoginErr('กรุณาใส่ Username'); return; }
   if (!pass) { showLoginErr('กรุณาใส่รหัสผ่าน'); return; }
 
-  // Match by uid key or by email pattern
+  // 1. เช็คจาก USERS object (admin + demo accounts)
   let matchUID = null;
+  let matchPass = null;
   for (const [uid, u] of Object.entries(USERS)) {
-    if (uid === username || uid.toLowerCase() === username) { matchUID = uid; break; }
-    // Also match by first name (lowercase, no space)
+    if (uid === username || uid.toLowerCase() === username) { matchUID = uid; matchPass = u.pass; break; }
     const shortName = u.name.split(' ')[0].toLowerCase();
-    if (shortName === username) { matchUID = uid; break; }
+    if (shortName === username) { matchUID = uid; matchPass = u.pass; break; }
   }
 
-  if (!matchUID || USERS[matchUID].pass !== pass) {
+  // 2. เช็คจาก approved members ใน localStorage
+  if (!matchUID) {
+    const members = load(KEYS.members, []);
+    const found = members.find(m =>
+      (m.email && m.email.toLowerCase() === username) ||
+      (m.sid && m.sid === username) ||
+      (m.uid && m.uid === username)
+    );
+    if (found) { matchUID = found.uid; matchPass = found.pass; }
+  }
+
+  if (!matchUID || matchPass !== pass) {
     showLoginErr('Username หรือรหัสผ่านไม่ถูกต้อง');
     return;
   }
