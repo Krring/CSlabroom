@@ -2,15 +2,183 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>notebook — Aj. Kring Labroom</title>
+<title>Lab Notebook — Aj. Kring Labroom</title>
 <link rel="stylesheet" href="style.css">
+<style>
+.nb-card{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--rl);padding:1rem 1.25rem;margin-bottom:8px;}
+.tag-btn{padding:3px 9px;font-size:11px;font-family:'DM Mono',monospace;border:0.5px solid var(--border2);border-radius:20px;cursor:pointer;background:var(--bg);color:var(--text2);}
+.tag-btn.on{border-color:transparent;font-weight:500;}
+.nb-section{margin-top:6px;padding:7px 10px;background:var(--bg2);border-radius:var(--r);font-size:12px;line-height:1.6;border-left:2px solid var(--border2);}
+.nb-section-lbl{font-size:10px;font-family:'DM Mono',monospace;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px;}
+.type-seg{display:flex;gap:4px;margin-bottom:1rem;}
+.type-btn{padding:5px 14px;font-size:12px;font-family:'DM Mono',monospace;border:0.5px solid var(--border2);border-radius:20px;cursor:pointer;background:var(--bg);color:var(--text2);}
+.type-btn.on{background:var(--text);color:var(--bg);border-color:transparent;}
+</style>
 </head>
 <body>
 <nav class="nav">
-  <a href="dashboard.html" class="nav-logo"><svg width="28" height="28" viewBox="0 0 48 48"><rect width="48" height="48" rx="10" fill="#F1EFE8"/><rect x="19" y="14" width="10" height="10" rx="3" fill="#F5C4B3"/><rect x="16" y="24" width="16" height="12" rx="2" fill="#1D9E75"/></svg><div><div class="nav-ln">Aj. Kring Labroom</div><div class="nav-ls">KU_KPS</div></div></a>
-  <a href="dashboard.html" class="btn btn-sm"><i class="ti ti-arrow-left"></i> กลับ</a>
+  <a href="dashboard.html" class="nav-logo">
+    <svg width="28" height="28" viewBox="0 0 48 48"><rect width="48" height="48" rx="10" fill="#F1EFE8"/><rect x="16" y="24" width="16" height="12" rx="2" fill="#1D9E75"/><rect x="19" y="14" width="10" height="10" rx="3" fill="#F5C4B3"/></svg>
+    <div><div class="nav-ln">Aj. Kring Labroom</div><div class="nav-ls">Lab Notebook</div></div>
+  </a>
+  <div style="display:flex;align-items:center;gap:8px">
+    <div class="nav-user"><div class="av" id="navAv" style="width:22px;height:22px;font-size:10px"></div><span style="font-size:13px;font-weight:500" id="navName"></span></div>
+    <a href="dashboard.html" class="btn btn-sm"><i class="ti ti-arrow-left"></i> กลับ</a>
+  </div>
 </nav>
-<div class="shell"><div class="card" style="text-align:center;padding:3rem"><div style="font-size:32px;margin-bottom:12px">🔧</div><div style="font-size:16px;font-weight:500;margin-bottom:6px">หน้า notebook</div><div style="font-size:13px;color:var(--text2)">อยู่ระหว่างการพัฒนา — ติดต่อผู้พัฒนาเพื่อเพิ่มเนื้อหา</div></div></div>
-<script src="shared.js"></script><script>requireLogin();</script>
+
+<div class="shell">
+  <!-- Type selector -->
+  <div class="type-seg">
+    <button class="type-btn on" onclick="setType('quick',this)"><i class="ti ti-bolt"></i> Quick Note</button>
+    <button class="type-btn" onclick="setType('lab',this)"><i class="ti ti-flask"></i> Lab Record</button>
+  </div>
+
+  <!-- QUICK NOTE FORM -->
+  <div id="formQuick" class="card" style="margin-bottom:1rem">
+    <div class="sec-hdr"><span class="ct">Quick Note</span></div>
+    <div class="f-group"><label class="f-lbl">หัวข้อ</label><input id="qTitle" class="f-inp" placeholder="เช่น Lab meeting วันนี้"></div>
+    <div class="f-group">
+      <label class="f-lbl">Tag</label>
+      <div style="display:flex;gap:5px;flex-wrap:wrap" id="tagBtns"></div>
+    </div>
+    <div class="f-group"><label class="f-lbl">บันทึก</label><textarea id="qNote" class="f-inp" style="min-height:80px" placeholder="จดบันทึกสั้นๆ..."></textarea></div>
+    <div style="display:flex;justify-content:flex-end"><button class="btn btn-pri" onclick="saveQuick()"><i class="ti ti-check"></i> บันทึก</button></div>
+  </div>
+
+  <!-- LAB RECORD FORM -->
+  <div id="formLab" class="card hidden" style="margin-bottom:1rem">
+    <div class="sec-hdr"><span class="ct">Lab Record</span></div>
+    <div class="f-group"><label class="f-lbl">ชื่อการทดลอง</label><input id="lTitle" class="f-inp" placeholder="เช่น PCR amplification ITS1/ITS4"></div>
+    <div class="f-group">
+      <label class="f-lbl">Tag</label>
+      <div style="display:flex;gap:5px;flex-wrap:wrap" id="tagBtns2"></div>
+    </div>
+    <div class="f-group"><label class="f-lbl">วัตถุประสงค์</label><textarea id="lObj" class="f-inp" style="min-height:52px"></textarea></div>
+    <div class="f-group"><label class="f-lbl">วัสดุและวิธีการ</label><textarea id="lMethod" class="f-inp" style="min-height:60px"></textarea></div>
+    <div class="f-group"><label class="f-lbl">ผลการทดลอง</label><textarea id="lResult" class="f-inp" style="min-height:60px"></textarea></div>
+    <div class="f-group"><label class="f-lbl">ปัญหาที่พบ</label><textarea id="lProblem" class="f-inp" style="min-height:52px"></textarea></div>
+    <div class="f-group"><label class="f-lbl">สรุป / ขั้นตอนต่อไป</label><textarea id="lSummary" class="f-inp" style="min-height:52px"></textarea></div>
+    <div style="display:flex;justify-content:flex-end"><button class="btn btn-pri" onclick="saveLab()"><i class="ti ti-check"></i> บันทึก</button></div>
+  </div>
+
+  <!-- LIST -->
+  <div class="sec-hdr" style="margin-bottom:8px">
+    <span class="ct">บันทึกทั้งหมด</span>
+    <div style="display:flex;gap:5px;align-items:center">
+      <select id="filterTag" onchange="renderList()" style="font-size:11px;padding:3px 8px;border:0.5px solid var(--border2);border-radius:20px;background:var(--bg);font-family:'DM Mono',monospace;outline:none">
+        <option value="">ทุก tag</option>
+      </select>
+      <span id="nbCount" style="font-size:11px;font-family:'DM Mono',monospace;color:var(--text3)"></span>
+    </div>
+  </div>
+  <div id="nbList"></div>
+</div>
+
+<div id="_toast" style="position:fixed;bottom:20px;right:20px;background:#1a1a18;color:#fff;padding:9px 16px;border-radius:8px;font-size:13px;display:none;align-items:center;gap:8px;z-index:9999"></div>
+<script src="shared.js"></script>
+<script>
+const uid = requireLogin();
+if(!uid) throw '';
+const u = USERS[uid];
+document.getElementById('navAv').textContent=u.av; document.getElementById('navAv').style.background=u.avbg; document.getElementById('navAv').style.color=u.avc;
+document.getElementById('navName').textContent=u.name.split(' ')[0];
+
+const TAGS = ['ทดลอง','วิเคราะห์','ประชุม','อ่านเอกสาร','เขียนเล่ม','Lab Record','อื่นๆ'];
+const TAG_COLORS = {ทดลอง:['#e1f5ee','#085041','#1D9E75'],วิเคราะห์:['#faeeda','#633806','#EF9F27'],ประชุม:['#e6f1fb','#0c447c','#378ADD'],อ่านเอกสาร:['#f1efe8','#444441','#888780'],'Lab Record':['#f1efe8','#444441','#888780'],เขียนเล่ม:['#eeedfe','#3c3489','#7F77DD'],อื่นๆ:['#f1efe8','#5f5e5a','#B4B2A9']};
+let selTag = 'ทดลอง';
+let nbType = 'quick';
+
+function initTagBtns(id) {
+  document.getElementById(id).innerHTML = TAGS.map(t => {
+    const c=TAG_COLORS[t]||TAG_COLORS['อื่นๆ'];
+    const on=t===selTag;
+    return `<button class="tag-btn${on?' on':''}" style="${on?'background:'+c[2]+';color:#fff;':''}" onclick="selTagFn('${t}',this,'${id}')">${t}</button>`;
+  }).join('');
+}
+function selTagFn(t,btn,id) {
+  selTag=t;
+  document.querySelectorAll('#'+id+' .tag-btn').forEach(b=>{b.classList.remove('on');b.style.background='';b.style.color='';});
+  btn.classList.add('on'); const c=TAG_COLORS[t]||TAG_COLORS['อื่นๆ']; btn.style.background=c[2]; btn.style.color='#fff';
+}
+function setType(t,btn) {
+  nbType=t;
+  document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('on')); btn.classList.add('on');
+  document.getElementById('formQuick').classList.toggle('hidden',t!=='quick');
+  document.getElementById('formLab').classList.toggle('hidden',t!=='lab');
+}
+
+function saveQuick() {
+  const title=document.getElementById('qTitle').value.trim();
+  const note=document.getElementById('qNote').value.trim();
+  if(!title){toast('กรุณาใส่หัวข้อ');return;}
+  const nb=load(KEYS.notebook(uid),[]);
+  nb.unshift({id:'n'+Date.now(),type:'quick',title,tag:selTag,note,date:todayISO(),ts:Date.now()});
+  save(KEYS.notebook(uid),nb);
+  document.getElementById('qTitle').value=''; document.getElementById('qNote').value='';
+  renderList(); toast('บันทึกแล้ว');
+}
+
+function saveLab() {
+  const title=document.getElementById('lTitle').value.trim();
+  if(!title){toast('กรุณาใส่ชื่อการทดลอง');return;}
+  const nb=load(KEYS.notebook(uid),[]);
+  nb.unshift({id:'n'+Date.now(),type:'lab',title,tag:selTag,
+    objective:document.getElementById('lObj').value.trim(),
+    method:document.getElementById('lMethod').value.trim(),
+    result:document.getElementById('lResult').value.trim(),
+    problem:document.getElementById('lProblem').value.trim(),
+    summary:document.getElementById('lSummary').value.trim(),
+    date:todayISO(),ts:Date.now()});
+  save(KEYS.notebook(uid),nb);
+  ['lTitle','lObj','lMethod','lResult','lProblem','lSummary'].forEach(id=>document.getElementById(id).value='');
+  renderList(); toast('บันทึกแล้ว');
+}
+
+function renderList() {
+  const nb=load(KEYS.notebook(uid),[]);
+  const ftag=document.getElementById('filterTag').value;
+  const filtered=ftag?nb.filter(e=>e.tag===ftag):nb;
+  document.getElementById('nbCount').textContent=filtered.length+' รายการ';
+
+  // Populate filter
+  const tags=[...new Set(nb.map(e=>e.tag))];
+  document.getElementById('filterTag').innerHTML='<option value="">ทุก tag</option>'+tags.map(t=>`<option value="${t}"${t===ftag?' selected':''}>${t}</option>`).join('');
+
+  document.getElementById('nbList').innerHTML = filtered.length ? filtered.map((e,i)=>{
+    const c=TAG_COLORS[e.tag]||TAG_COLORS['อื่นๆ'];
+    const thDate=new Date(e.date).toLocaleDateString('th-TH',{day:'numeric',month:'short',year:'numeric'});
+    return `<div class="nb-card">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+        <span style="font-size:13px;font-weight:500;flex:1">${e.title}</span>
+        <span style="font-size:10px;padding:1px 7px;border-radius:20px;background:${c[0]};color:${c[1]};font-family:'DM Mono',monospace">${e.tag}</span>
+        <span style="font-size:11px;color:var(--text3);font-family:'DM Mono',monospace">${thDate}</span>
+        <button class="btn btn-sm btn-danger" onclick="delEntry(${i})" style="padding:2px 6px"><i class="ti ti-trash"></i></button>
+      </div>
+      ${e.type==='quick'
+        ? `<div style="font-size:13px;color:var(--text2);line-height:1.6">${e.note||''}</div>`
+        : `${e.objective?`<div class="nb-section"><div class="nb-section-lbl">วัตถุประสงค์</div>${e.objective}</div>`:''}
+           ${e.result?`<div class="nb-section" style="border-left-color:#1D9E75;margin-top:4px"><div class="nb-section-lbl">ผลการทดลอง</div>${e.result}</div>`:''}
+           ${e.problem?`<div class="nb-section" style="border-left-color:#E24B4A;margin-top:4px"><div class="nb-section-lbl">ปัญหา</div>${e.problem}</div>`:''}
+           ${e.summary?`<div class="nb-section" style="border-left-color:#378ADD;margin-top:4px"><div class="nb-section-lbl">สรุป</div>${e.summary}</div>`:''}`
+      }
+    </div>`;
+  }).join('') : '<div style="font-size:13px;color:var(--text3);padding:1rem;text-align:center">ยังไม่มีบันทึก</div>';
+}
+
+function delEntry(i) {
+  const nb=load(KEYS.notebook(uid),[]);
+  const ftag=document.getElementById('filterTag').value;
+  const filtered=ftag?nb.filter(e=>e.tag===ftag):nb;
+  const target=filtered[i];
+  const idx=nb.findIndex(e=>e.id===target.id);
+  if(idx>=0){nb.splice(idx,1);save(KEYS.notebook(uid),nb);}
+  renderList();
+}
+
+function toast(msg){const t=document.getElementById('_toast');t.innerHTML='<i class="ti ti-check"></i> '+msg;t.style.display='flex';setTimeout(()=>t.style.display='none',2500);}
+
+initTagBtns('tagBtns'); initTagBtns('tagBtns2'); renderList();
+</script>
 </body>
 </html>
