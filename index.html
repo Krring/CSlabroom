@@ -113,6 +113,10 @@
 <script src="shared.js"></script>
 <script>
 // Check already logged in
+if (new URLSearchParams(location.search).get('clear') !== null) {
+  localStorage.clear();
+  location.href = 'index.html';
+}
 const s = getSession();
 if (s) {
   if (USERS[s.uid]?.level === 'admin') location.href = 'admin.html';
