@@ -1,21 +1,30 @@
 # Aj. Kring Labroom — KU_KPS
 
-เว็บไซต์ห้องแล็บ Plant Pathology, Kasetsart University (KPS Campus)
+ระบบจัดการห้องปฏิบัติการวิจัย สาขา Plant Pathology  
+Kasetsart University · Kamphaeng Saen Campus
 
-## ไฟล์ในโปรเจกต์
+## ไฟล์ทั้งหมด
 
 | ไฟล์ | หน้าที่ |
-|------|---------|
-| `index.html` | หน้า Login + ประกาศ + สมัครสมาชิก |
-| `register.html` | สมัครสมาชิก 2 ขั้นตอน |
-| `dashboard.html` | หน้านิสิต (สมุดแล็บ, แผนงาน, งาน, เล่ม, แจ้งเตือน) |
-| `admin.html` | หน้าอาจารย์ Admin |
+|------|--------|
+| `index.html` | หน้าแรก — Login + สมัครสมาชิก |
+| `register.html` | สมัครสมาชิกใหม่ |
+| `dashboard.html` | Dashboard นิสิต |
+| `student.html` | หน้านิสิต — วิจัย, thesis tracker |
+| `notebook.html` | Lab Notebook — Quick Note + Lab Record |
+| `plan.html` | Monthly Plan — ปฏิทินแผนงาน |
+| `admin.html` | Admin Panel — อาจารย์ |
+| `regulations.html` | ระเบียบ มก. บัณฑิตวิทยาลัย 2566 |
 | `style.css` | Shared CSS |
-| `shared.js` | Shared data layer (localStorage) |
+| `shared.js` | Shared utilities + localStorage |
 
-## Demo Accounts
-- **Admin:** อ.ดร. สมศรี — รหัส `1234`
-- **นิสิต:** ธนกฤต / ปาริชาติ / มินตรา — รหัส `1234`
+## Demo Login
 
-## Deploy บน GitHub Pages
-ดู DEPLOY_GUIDE.md
+รหัสผ่านทุกบัญชีคือ **1234**
+
+- **อ.ดร. สมศรี** → Admin Panel
+- **ธนกฤต / ปาริชาติ / มินตรา** → Student Dashboard
+
+## วิธี Deploy บน GitHub Pages
+
+ดูขั้นตอนด้านล่างใน DEPLOY_GUIDE.md
