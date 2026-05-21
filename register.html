@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>สมัครสมาชิก — Aj. Kring Labroom</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.step-bar{display:flex;align-items:center;gap:0;margin-bottom:2rem;}
+.step{display:flex;align-items:center;gap:6px;font-size:12px;font-family:'DM Mono',monospace;}
+.step-num{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0;}
+.step.done .step-num{background:#1D9E75;color:#fff;}
+.step.active .step-num{background:var(--text);color:var(--bg);}
+.step.pending .step-num{background:var(--bg2);color:var(--text2);}
+.step.active .step-txt{color:var(--text);font-weight:500;}
+.step.pending .step-txt,.step.done .step-txt{color:var(--text2);}
+.step-line{flex:1;height:1px;background:var(--border);margin:0 8px;}
+.reg-wrap{max-width:480px;margin:0 auto;padding:2rem 1.5rem;}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="index.html" class="nav-logo">
+    <svg width="28" height="28" viewBox="0 0 48 48"><rect width="48" height="48" rx="10" fill="#F1EFE8"/><rect x="19" y="14" width="10" height="10" rx="3" fill="#F5C4B3"/><rect x="19" y="13" width="10" height="4" rx="2" fill="#444441"/><rect x="18" y="14" width="3" height="5" rx="1" fill="#444441"/><rect x="21" y="18" width="2" height="2" rx="1" fill="#2C2C2A"/><rect x="25" y="18" width="2" height="2" rx="1" fill="#2C2C2A"/><rect x="22" y="21" width="4" height="1" rx="0.5" fill="#993C1D"/><rect x="16" y="24" width="16" height="12" rx="2" fill="#1D9E75"/><rect x="15" y="24" width="4" height="10" rx="1" fill="#fff"/><rect x="29" y="24" width="4" height="10" rx="1" fill="#fff"/><rect x="18" y="35" width="4" height="5" rx="1" fill="#185FA5"/><rect x="26" y="35" width="4" height="5" rx="1" fill="#185FA5"/><rect x="17" y="38" width="5" height="3" rx="1" fill="#2C2C2A"/><rect x="25" y="38" width="5" height="3" rx="1" fill="#2C2C2A"/></svg>
+    <div><div class="nav-ln">Aj. Kring Labroom</div><div class="nav-ls">KU_KPS</div></div>
+  </a>
+  <a href="index.html" class="btn btn-sm"><i class="ti ti-arrow-left"></i> กลับ</a>
+</nav>
+
+<div class="reg-wrap">
+  <div class="step-bar">
+    <div class="step active" id="s1"><div class="step-num">1</div><div class="step-txt">ข้อมูลส่วนตัว</div></div>
+    <div class="step-line"></div>
+    <div class="step pending" id="s2"><div class="step-num">2</div><div class="step-txt">ข้อมูลการศึกษา</div></div>
+    <div class="step-line"></div>
+    <div class="step pending" id="s3"><div class="step-num">3</div><div class="step-txt">รอการอนุมัติ</div></div>
+  </div>
+
+  <!-- Step 1 -->
+  <div id="st1" class="card">
+    <div style="font-size:14px;font-weight:500;margin-bottom:1rem">ข้อมูลส่วนตัว</div>
+    <div id="e1" class="err-box"><i class="ti ti-alert-circle"></i><span id="et1"></span></div>
+    <div class="f-row f-group">
+      <div><label class="f-lbl">ชื่อ</label><input id="r1" class="f-inp" placeholder="ชื่อ"></div>
+      <div><label class="f-lbl">นามสกุล</label><input id="r2" class="f-inp" placeholder="นามสกุล"></div>
+    </div>
+    <div class="f-group"><label class="f-lbl">อีเมล (KU)</label><input id="r3" type="email" class="f-inp" placeholder="xxxxx@ku.th"></div>
+    <div class="f-row f-group">
+      <div><label class="f-lbl">รหัสผ่าน</label><input id="r4" type="password" class="f-inp" placeholder="อย่างน้อย 6 ตัว"></div>
+      <div><label class="f-lbl">ยืนยัน</label><input id="r5" type="password" class="f-inp" placeholder="ยืนยัน"></div>
+    </div>
+    <div style="display:flex;justify-content:flex-end"><button class="btn btn-pri" onclick="next1()">ถัดไป <i class="ti ti-arrow-right"></i></button></div>
+  </div>
+
+  <!-- Step 2 -->
+  <div id="st2" class="card hidden">
+    <div style="font-size:14px;font-weight:500;margin-bottom:1rem">ข้อมูลการศึกษา</div>
+    <div id="e2" class="err-box"><i class="ti ti-alert-circle"></i><span id="et2"></span></div>
+    <div class="f-group"><label class="f-lbl">ระดับการศึกษา</label>
+      <select id="r6" class="f-inp"><option value="">-- เลือก --</option><option value="bachelor">ปริญญาตรี (ปัญหาพิเศษ)</option><option value="master">ปริญญาโท</option><option value="phd">ปริญญาเอก</option></select>
+    </div>
+    <div class="f-row f-group">
+      <div><label class="f-lbl">รหัสนิสิต</label><input id="r7" class="f-inp" placeholder="เช่น 6510450001"></div>
+      <div><label class="f-lbl">ปีที่เข้าศึกษา (พ.ศ.)</label><input id="r8" class="f-inp" placeholder="เช่น 2566"></div>
+    </div>
+    <div class="f-group"><label class="f-lbl">หัวข้อวิจัย (ถ้ามี)</label><input id="r9" class="f-inp" placeholder="เช่น การศึกษาโรคใบไหม้ในข้าว"></div>
+    <div class="f-group"><label class="f-lbl">หมายเหตุถึงอาจารย์ (ถ้ามี)</label><textarea id="r10" class="f-inp" style="min-height:52px"></textarea></div>
+    <div style="display:flex;justify-content:space-between">
+      <button class="btn" onclick="back1()"><i class="ti ti-arrow-left"></i> ย้อนกลับ</button>
+      <button class="btn btn-pri" onclick="submit()"><i class="ti ti-send"></i> ส่งคำขอสมัคร</button>
+    </div>
+  </div>
+
+  <!-- Step 3 -->
+  <div id="st3" class="card hidden" style="text-align:center;padding:2rem">
+    <div style="font-size:32px;margin-bottom:12px">⏳</div>
+    <div style="font-size:16px;font-weight:500;margin-bottom:6px">รอการอนุมัติจากอาจารย์</div>
+    <div style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:1rem">ส่งคำขอแล้ว! อาจารย์จะตรวจสอบและอนุมัติภายใน 1–2 วัน<br>หากได้รับอนุมัติจะสามารถ login เข้าระบบได้ทันที</div>
+    <div id="pendInfo" style="font-size:12px;font-family:'DM Mono',monospace;color:var(--text2);background:var(--bg2);padding:8px 12px;border-radius:var(--r);margin-bottom:1.5rem"></div>
+    <a href="index.html" class="btn"><i class="ti ti-home"></i> กลับหน้าแรก</a>
+  </div>
+</div>
+
+<script src="shared.js"></script>
+<script>
+let rd={};
+function setStep(n){[1,2,3].forEach(i=>{document.getElementById('s'+i).className='step '+(i<n?'done':i===n?'active':'pending');});}
+function showErr(id,m){const e=document.getElementById('e'+id);document.getElementById('et'+id).textContent=m;e.classList.add('on');}
+
+function next1(){
+  document.getElementById('e1').classList.remove('on');
+  const [f,l,em,p,p2]=[r1,r2,r3,r4,r5].map(id=>document.getElementById(id).value.trim());
+  if(!f||!l){showErr(1,'กรุณากรอกชื่อ-นามสกุล');return;}
+  if(!em.includes('@')){showErr(1,'กรุณาใช้อีเมล KU (@ku.th)');return;}
+  if(p.length<6){showErr(1,'รหัสผ่านต้องมีอย่างน้อย 6 ตัว');return;}
+  if(p!==p2){showErr(1,'รหัสผ่านไม่ตรงกัน');return;}
+  rd={fname:f,lname:l,email:em,pass:p};
+  document.getElementById('st1').classList.add('hidden');
+  document.getElementById('st2').classList.remove('hidden');
+  setStep(2);
+}
+
+function back1(){
+  document.getElementById('st2').classList.add('hidden');
+  document.getElementById('st1').classList.remove('hidden');
+  setStep(1);
+}
+
+function submit(){
+  document.getElementById('e2').classList.remove('on');
+  const lv=document.getElementById('r6').value;
+  const sid=document.getElementById('r7').value.trim();
+  if(!lv){showErr(2,'กรุณาเลือกระดับการศึกษา');return;}
+  if(!sid){showErr(2,'กรุณากรอกรหัสนิสิต');return;}
+  rd.level=lv; rd.sid=sid; rd.year=document.getElementById('r8').value.trim();
+  rd.topic=document.getElementById('r9').value.trim(); rd.note=document.getElementById('r10').value.trim();
+  const pending=load(KEYS.pending,[]);
+  const avColors=[['#e1f5ee','#0f6e56'],['#eeedfe','#534ab7'],['#faeeda','#854f0b'],['#e6f1fb','#0c447c']];
+  const ac=avColors[pending.length%4];
+  pending.push({id:'p'+Date.now(),...rd,av:(rd.fname[0]||'')+(rd.lname[0]||''),avbg:ac[0],avc:ac[1],time:nowTH()});
+  save(KEYS.pending,pending);
+  const lvMap={bachelor:'ป.ตรี',master:'ป.โท',phd:'ป.เอก'};
+  document.getElementById('pendInfo').textContent='ชื่อ: '+rd.fname+' '+rd.lname+' · '+lvMap[lv]+' · รหัส: '+sid;
+  document.getElementById('st2').classList.add('hidden');
+  document.getElementById('st3').classList.remove('hidden');
+  setStep(3);
+}
+</script>
+</body>
+</html>

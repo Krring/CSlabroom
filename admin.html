@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Admin — Aj. Kring Labroom</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav class="nav">
+  <a href="admin.html" class="nav-logo">
+    <svg width="28" height="28" viewBox="0 0 48 48"><rect width="48" height="48" rx="10" fill="#F1EFE8"/><rect x="19" y="14" width="10" height="10" rx="3" fill="#F5C4B3"/><rect x="19" y="13" width="10" height="4" rx="2" fill="#444441"/><rect x="18" y="14" width="3" height="5" rx="1" fill="#444441"/><rect x="21" y="18" width="2" height="2" rx="1" fill="#2C2C2A"/><rect x="25" y="18" width="2" height="2" rx="1" fill="#2C2C2A"/><rect x="22" y="21" width="4" height="1" rx="0.5" fill="#993C1D"/><rect x="16" y="24" width="16" height="12" rx="2" fill="#1D9E75"/><rect x="15" y="24" width="4" height="10" rx="1" fill="#fff"/><rect x="29" y="24" width="4" height="10" rx="1" fill="#fff"/><rect x="18" y="35" width="4" height="5" rx="1" fill="#185FA5"/><rect x="26" y="35" width="4" height="5" rx="1" fill="#185FA5"/><rect x="17" y="38" width="5" height="3" rx="1" fill="#2C2C2A"/><rect x="25" y="38" width="5" height="3" rx="1" fill="#2C2C2A"/></svg>
+    <div><div class="nav-ln">Aj. Kring Labroom</div><div class="nav-ls">Admin Panel</div></div>
+  </a>
+  <div style="display:flex;align-items:center;gap:8px">
+    <span style="font-size:11px;padding:3px 10px;border-radius:20px;background:#fcebeb;color:#a32d2d;font-family:'DM Mono',monospace">Admin · อ.ดร. สมศรี</span>
+    <button class="btn btn-sm" onclick="logout()"><i class="ti ti-logout"></i> ออก</button>
+  </div>
+</nav>
+
+<div style="border-bottom:0.5px solid var(--border);background:var(--bg)">
+  <div class="tabs" style="max-width:900px;margin:0 auto;padding:0 1.5rem;">
+    <button class="tab on" onclick="sw('overview',this)"><i class="ti ti-layout-dashboard"></i> ภาพรวม</button>
+    <button class="tab" onclick="sw('approve',this)"><i class="ti ti-user-check"></i> อนุมัติสมาชิก <span id="pendBadge" style="font-size:10px;padding:1px 6px;border-radius:20px;background:#faeeda;color:#633806;font-family:'DM Mono',monospace;display:none;margin-left:4px"></span></button>
+    <button class="tab" onclick="sw('notify',this)"><i class="ti ti-bell"></i> แจ้งเตือน</button>
+    <button class="tab" onclick="sw('tasks',this)"><i class="ti ti-checkbox"></i> มอบหมายงาน</button>
+    <button class="tab" onclick="sw('finance',this)"><i class="ti ti-receipt"></i> การเงิน</button>
+    <button class="tab" onclick="sw('chem',this)"><i class="ti ti-flask-2"></i> สารเคมี</button>
+    <button class="tab" onclick="sw('monitor',this)"><i class="ti ti-eye"></i> ติดตามนิสิต</button>
+  </div>
+</div>
+
+<div class="shell">
+  <div id="v-overview" class="view on">
+    <div class="metrics">
+      <div class="metric"><div class="m-lbl">สมาชิก</div><div class="m-val" id="ov-members">—</div></div>
+      <div class="metric"><div class="m-lbl">รอ approve</div><div class="m-val" id="ov-pending" style="color:#854f0b">—</div></div>
+      <div class="metric"><div class="m-lbl">งบคงเหลือ</div><div class="m-val" style="color:#27500a">฿1.52M</div></div>
+      <div class="metric"><div class="m-lbl">ค้างชำระ</div><div class="m-val" style="color:#a32d2d">฿73,200</div></div>
+    </div>
+    <div class="card">
+      <div class="sec-hdr"><span class="ct">สมาชิกทั้งหมด</span></div>
+      <div id="ov-list"></div>
+    </div>
+  </div>
+
+  <div id="v-approve" class="view">
+    <div class="card">
+      <div class="sec-hdr"><span class="ct">รอการอนุมัติ</span><span id="pCount" style="font-size:11px;font-family:'DM Mono',monospace;color:var(--text2)"></span></div>
+      <div id="pendList"></div>
+    </div>
+    <div class="card">
+      <div class="sec-hdr"><span class="ct">สมาชิกที่อนุมัติแล้ว</span></div>
+      <div id="memList"></div>
+    </div>
+  </div>
+
+  <div id="v-notify" class="view">
+    <div class="card" style="margin-bottom:1rem">
+      <div class="sec-hdr"><span class="ct">ส่งการแจ้งเตือน</span></div>
+      <div class="f-group"><label class="f-lbl">ประเภท</label>
+        <div style="display:flex;gap:5px;flex-wrap:wrap">
+          <button class="ntype on" data-type="deadline" onclick="setNT(this)" style="padding:5px 12px;font-size:12px;font-family:'DM Mono',monospace;border:0.5px solid var(--border2);border-radius:20px;cursor:pointer;background:#fcebeb;color:#a32d2d">⚠️ Deadline</button>
+          <button class="ntype" data-type="task" onclick="setNT(this)" style="padding:5px 12px;font-size:12px;font-family:'DM Mono',monospace;border:0.5px solid var(--border2);border-radius:20px;cursor:pointer;background:var(--bg);color:var(--text2)">📋 มอบหมาย</button>
+          <button class="ntype" data-type="warn" onclick="setNT(this)" style="padding:5px 12px;font-size:12px;font-family:'DM Mono',monospace;border:0.5px solid var(--border2);border-radius:20px;cursor:pointer;background:var(--bg);color:var(--text2)">📢 ประกาศ</button>
+          <button class="ntype" data-type="general" onclick="setNT(this)" style="padding:5px 12px;font-size:12px;font-family:'DM Mono',monospace;border:0.5px solid var(--border2);border-radius:20px;cursor:pointer;background:var(--bg);color:var(--text2)">💬 ทั่วไป</button>
+        </div>
+      </div>
+      <div class="f-group"><label class="f-lbl">ส่งถึง</label>
+        <div id="targetBtns" style="display:flex;gap:5px;flex-wrap:wrap"></div>
+      </div>
+      <div class="f-group"><label class="f-lbl">ข้อความ</label><textarea id="nMsg" class="f-inp"></textarea></div>
+      <div style="display:flex;justify-content:flex-end"><button class="btn btn-pri" onclick="sendNotif()"><i class="ti ti-send"></i> ส่ง</button></div>
+    </div>
+    <div class="card"><div class="sec-hdr"><span class="ct">ประวัติ</span></div><div id="nHistory"></div></div>
+  </div>
+
+  <div id="v-tasks" class="view">
+    <div class="card">
+      <div class="sec-hdr"><span class="ct">มอบหมายงาน</span><button class="btn btn-sm btn-pri" onclick="toggleTF()"><i class="ti ti-plus"></i> เพิ่มงาน</button></div>
+      <div id="taskForm" class="hidden" style="padding:12px;background:var(--bg2);border-radius:var(--r);margin-bottom:10px">
+        <div class="f-row f-group">
+          <div><label class="f-lbl">มอบหมายให้</label><select id="tgt" class="f-inp" style="font-size:12px"><option value="all">ทุกคน</option></select></div>
+          <div><label class="f-lbl">กำหนดส่ง</label><input type="date" id="tdue" class="f-inp" style="font-size:12px"></div>
+        </div>
+        <div class="f-group"><label class="f-lbl">ชื่องาน</label><input id="tname" class="f-inp" placeholder="เช่น สกัด DNA ตัวอย่างชุดที่ 2"></div>
+        <div class="f-group"><label class="f-lbl">Protocol (ถ้ามี)</label><textarea id="tproto" class="f-inp" style="min-height:52px" placeholder="ขั้นตอนที่ต้องทำ..."></textarea></div>
+        <div style="display:flex;justify-content:flex-end;gap:6px"><button class="btn btn-sm" onclick="toggleTF()">ยกเลิก</button><button class="btn btn-sm btn-pri" onclick="saveTask()"><i class="ti ti-check"></i> บันทึก</button></div>
+      </div>
+      <div id="taskList"></div>
+    </div>
+  </div>
+
+  <div id="v-finance" class="view">
+    <div class="metrics">
+      <div class="metric"><div class="m-lbl">งบประมาณรวม</div><div class="m-val">฿2,400,000</div></div>
+      <div class="metric"><div class="m-lbl">ใช้ไปแล้ว</div><div class="m-val" style="color:#a32d2d">฿876,000</div></div>
+      <div class="metric"><div class="m-lbl">คงเหลือ</div><div class="m-val" style="color:#27500a">฿1,524,000</div></div>
+      <div class="metric"><div class="m-lbl">ค้างชำระ</div><div class="m-val" style="color:#a32d2d">฿73,200</div></div>
+    </div>
+    <div class="card">
+      <div class="sec-hdr"><span class="ct">รายการการเงิน</span><button class="btn btn-sm btn-pri" onclick="toggleFF()"><i class="ti ti-plus"></i> เพิ่ม</button></div>
+      <div id="finForm" class="hidden" style="padding:12px;background:var(--bg2);border-radius:var(--r);margin-bottom:10px">
+        <div class="f-row f-group">
+          <div><label class="f-lbl">ประเภท</label><select id="ftype" class="f-inp" style="font-size:12px"><option value="expense">รายจ่าย</option><option value="income">รายรับ</option></select></div>
+          <div><label class="f-lbl">โครงการ</label><select id="fproj" class="f-inp" style="font-size:12px"><option>RD-2024-01</option><option>RD-2024-02</option><option>RD-2023-05</option></select></div>
+        </div>
+        <div class="f-row f-group">
+          <div><label class="f-lbl">ชื่อรายการ</label><input id="fname2" class="f-inp" style="font-size:12px"></div>
+          <div><label class="f-lbl">จำนวน (บาท)</label><input id="famt" type="number" class="f-inp" style="font-size:12px"></div>
+        </div>
+        <div class="f-row f-group">
+          <div><label class="f-lbl">วันที่</label><input id="fdate" type="date" class="f-inp" style="font-size:12px"></div>
+          <div><label class="f-lbl">สถานะ</label><select id="fstat" class="f-inp" style="font-size:12px"><option value="pending">รอดำเนินการ</option><option value="approved">อนุมัติแล้ว</option><option value="paid">ชำระแล้ว</option><option value="overdue">ค้างชำระ</option></select></div>
+        </div>
+        <div style="display:flex;justify-content:flex-end;gap:6px"><button class="btn btn-sm" onclick="toggleFF()">ยกเลิก</button><button class="btn btn-sm btn-pri" onclick="saveFin()"><i class="ti ti-check"></i> บันทึก</button></div>
+      </div>
+      <div style="overflow:auto"><table><thead><tr><th style="width:32%">รายการ</th><th style="width:18%">โครงการ</th><th style="width:16%">จำนวน</th><th style="width:14%">สถานะ</th><th style="width:12%">วันที่</th><th style="width:8%"></th></tr></thead><tbody id="finTable"></tbody></table></div>
+    </div>
+  </div>
+
+  <div id="v-chem" class="view">
+    <div class="card">
+      <div class="sec-hdr"><span class="ct">คลังสารเคมี</span><button class="btn btn-sm btn-pri" onclick="toggleCF()"><i class="ti ti-plus"></i> เพิ่มสาร</button></div>
+      <div id="chemForm" class="hidden" style="padding:12px;background:var(--bg2);border-radius:var(--r);margin-bottom:10px">
+        <div class="f-row f-group">
+          <div><label class="f-lbl">ชื่อสารเคมี</label><input id="cname" class="f-inp" style="font-size:12px" placeholder="เช่น Ethanol 95%"></div>
+          <div><label class="f-lbl">ตำแหน่ง</label><input id="cloc" class="f-inp" style="font-size:12px" placeholder="เช่น ตู้ A1"></div>
+        </div>
+        <div class="f-row f-group">
+          <div><label class="f-lbl">ปริมาณ</label><input id="cqty" class="f-inp" style="font-size:12px" placeholder="เช่น 2.5 L"></div>
+          <div><label class="f-lbl">วันหมดอายุ</label><input id="cexp" type="date" class="f-inp" style="font-size:12px"></div>
+        </div>
+        <div style="display:flex;justify-content:flex-end;gap:6px"><button class="btn btn-sm" onclick="toggleCF()">ยกเลิก</button><button class="btn btn-sm btn-pri" onclick="saveChem()"><i class="ti ti-check"></i> บันทึก</button></div>
+      </div>
+      <table><thead><tr><th style="width:32%">สาร</th><th style="width:18%">ปริมาณ</th><th style="width:20%">ตำแหน่ง</th><th style="width:22%">หมดอายุ</th><th style="width:8%"></th></tr></thead><tbody id="chemTable"></tbody></table>
+    </div>
+  </div>
+
+  <div id="v-monitor" class="view">
+    <div style="margin-bottom:1rem">
+      <label class="f-lbl">เลือกนิสิต</label>
+      <div id="monitorFilter" style="display:flex;gap:5px;flex-wrap:wrap"></div>
+    </div>
+    <div class="card"><div class="sec-hdr"><span class="ct">สมุดแล็บ</span><span style="font-size:11px;color:var(--text3)">อ่านอย่างเดียว</span></div><div id="monNb"></div></div>
+    <div class="card"><div class="sec-hdr"><span class="ct">ความคืบหน้างาน</span></div><div id="monTask"></div></div>
+  </div>
+</div>
+
+<script src="shared.js"></script>
+<script>
+const uid = requireLogin(true);
+if(!uid) throw '';
+
+const DEFAULT_MEMBERS=[
+  {uid:'ra1',name:'มินตรา ช่วยดี',email:'mintra.c@ku.th',level:'ra',av:'มช',avbg:'#e1f5ee',avc:'#0f6e56'},
+  {uid:'ra2',name:'ธนกฤต ขยันมาก',email:'thanakrit.k@ku.th',level:'master',av:'ธข',avbg:'#eeedfe',avc:'#534ab7'},
+  {uid:'ra3',name:'ปาริชาติ ใฝ่รู้',email:'parichat.f@ku.th',level:'phd',av:'ปร',avbg:'#faeeda',avc:'#854f0b'},
+];
+const DEFAULT_FIN=[
+  {name:'รับเงินงวดที่ 2 — สวก.',proj:'RD-2024-01',type:'income',amt:400000,status:'paid',date:'01 พ.ค.'},
+  {name:'PCR reagents — Sigma',proj:'RD-2024-02',type:'expense',amt:45200,status:'overdue',date:'12 เม.ย.'},
+  {name:'Plant growth chamber',proj:'RD-2024-01',type:'expense',amt:28000,status:'overdue',date:'18 เม.ย.'},
+  {name:'ค่าส่งตัวอย่าง NGS',proj:'RD-2024-02',type:'expense',amt:11300,status:'pending',date:'24 เม.ย.'},
+];
+const DEFAULT_CHEM=[
+  {name:'Ethanol 95%',qty:'2.5 L',loc:'ตู้ A1',exp:'2026-12-31'},
+  {name:'CTAB Buffer',qty:'500 ml',loc:'ตู้ A2',exp:'2025-10-01'},
+  {name:'Chloroform',qty:'120 ml',loc:'ตู้ B1',exp:'2025-08-15'},
+  {name:'Tris-HCl pH 8.0',qty:'1 L',loc:'ตู้ A3',exp:'2026-06-01'},
+];
+const lvLabel={bachelor:'ป.ตรี',master:'ป.โท',phd:'ป.เอก',ra:'ผู้ช่วยวิจัย'};
+const lvBg={bachelor:'#e6f1fb',master:'#eeedfe',phd:'#faeeda',ra:'#e1f5ee'};
+const lvC={bachelor:'#0c447c',master:'#3c3489',phd:'#633806',ra:'#085041'};
+const statStyle={paid:{bg:'#f1efe8',c:'#5f5e5a',t:'ชำระแล้ว'},pending:{bg:'#faeeda',c:'#633806',t:'รอดำเนินการ'},approved:{bg:'#e1f5ee',c:'#085041',t:'อนุมัติแล้ว'},overdue:{bg:'#fcebeb',c:'#a32d2d',t:'ค้างชำระ'}};
+const projBadge={'RD-2024-01':'background:#e1f5ee;color:#085041','RD-2024-02':'background:#eeedfe;color:#3c3489','RD-2023-05':'background:#faeeda;color:#633806'};
+
+let ntype='deadline', ntargets=new Set(['all']), monStu='ra2';
+
+function sw(n,btn){ document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on')); btn.classList.add('on'); document.querySelectorAll('.view').forEach(v=>v.classList.remove('on')); document.getElementById('v-'+n).classList.add('on'); if(n==='approve')renderApprove(); if(n==='overview')renderOverview(); if(n==='notify')renderNotifHistory(); if(n==='tasks')renderTasks(); if(n==='finance')renderFinance(); if(n==='chem')renderChem(); if(n==='monitor')renderMonitor(); }
+
+function renderOverview(){
+  const members=load(KEYS.members,DEFAULT_MEMBERS);
+  const pending=load(KEYS.pending,[]);
+  document.getElementById('ov-members').textContent=members.length;
+  document.getElementById('ov-pending').textContent=pending.length;
+  if(pending.length>0){const pb=document.getElementById('pendBadge');pb.textContent=pending.length;pb.style.display='inline';}
+  document.getElementById('ov-list').innerHTML=members.map(m=>`<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:0.5px solid var(--border)"><div class="av" style="background:${m.avbg};color:${m.avc};width:30px;height:30px;font-size:11px">${m.av}</div><div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--text)">${m.name}</div><div style="font-size:11px;color:var(--text2)">${m.email||''}</div></div><span class="badge" style="background:${lvBg[m.level]||'#f1efe8'};color:${lvC[m.level]||'#5f5e5a'}">${lvLabel[m.level]||m.level}</span></div>`).join('');
+}
+
+function renderApprove(){
+  const pending=load(KEYS.pending,[]);
+  const members=load(KEYS.members,DEFAULT_MEMBERS);
+  document.getElementById('pCount').textContent=pending.length+' คำขอ';
+  document.getElementById('pendList').innerHTML=pending.length?pending.map(m=>`<div style="border:0.5px solid #fac775;border-radius:var(--rl);padding:1rem;margin-bottom:8px;background:#faeeda18"><div style="display:flex;align-items:flex-start;gap:10px"><div class="av" style="background:${m.avbg||'#f1efe8'};color:${m.avc||'#5f5e5a'};width:36px;height:36px;font-size:12px">${m.av||'?'}</div><div style="flex:1"><div style="font-size:14px;font-weight:500;color:var(--text)">${m.fname} ${m.lname} <span class="badge" style="background:${lvBg[m.level]||'#f1efe8'};color:${lvC[m.level]||'#5f5e5a'}">${lvLabel[m.level]||m.level}</span></div><div style="font-size:12px;color:var(--text2);margin-top:2px">${m.email} · รหัส: ${m.sid}</div>${m.topic?`<div style="font-size:12px;color:var(--text2)">หัวข้อ: ${m.topic}</div>`:''} ${m.note?`<div style="font-size:12px;font-style:italic;color:var(--text3)">"${m.note}"</div>`:''}<div style="font-size:11px;font-family:'DM Mono',monospace;color:var(--text3);margin-top:2px">${m.time}</div></div></div><div style="display:flex;gap:6px;justify-content:flex-end;margin-top:10px"><button class="btn btn-sm btn-danger" onclick="reject('${m.id}')"><i class="ti ti-x"></i> ปฏิเสธ</button><button class="btn btn-sm btn-green" onclick="approve('${m.id}')"><i class="ti ti-check"></i> อนุมัติ</button></div></div>`).join(''):'<div style="font-size:13px;color:var(--text3);padding:8px;text-align:center">ไม่มีคำขอที่รอ ✓</div>';
+  document.getElementById('memList').innerHTML=members.map(m=>`<div class="member-row" style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:0.5px solid var(--border)"><div class="av" style="background:${m.avbg};color:${m.avc};width:28px;height:28px;font-size:10px">${m.av}</div><div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--text)">${m.name}</div><div style="font-size:11px;color:var(--text2)">${m.email||''}</div></div><span class="badge" style="background:${lvBg[m.level]};color:${lvC[m.level]}">${lvLabel[m.level]||m.level}</span><span class="badge" style="background:#e1f5ee;color:#085041">ใช้งาน</span></div>`).join('');
+}
+
+function approve(id){
+  let pending=load(KEYS.pending,[]); const m=pending.find(p=>p.id===id); if(!m) return;
+  pending=pending.filter(p=>p.id!==id); save(KEYS.pending,pending);
+  const members=load(KEYS.members,DEFAULT_MEMBERS);
+  members.push({uid:'u_'+id,name:m.fname+' '+m.lname,email:m.email,level:m.level,av:m.av||m.fname[0],avbg:m.avbg||'#f1efe8',avc:m.avc||'#5f5e5a'});
+  save(KEYS.members,members); renderApprove(); renderOverview(); showToast('อนุมัติ '+m.fname+' แล้ว');
+}
+function reject(id){
+  let pending=load(KEYS.pending,[]); const m=pending.find(p=>p.id===id);
+  save(KEYS.pending,pending.filter(p=>p.id!==id)); renderApprove(); showToast('ปฏิเสธคำขอแล้ว');
+}
+
+// NOTIFY
+function initTargetBtns(){
+  const members=load(KEYS.members,DEFAULT_MEMBERS);
+  document.getElementById('targetBtns').innerHTML=`<button class="tgt on" onclick="toggleTgt(this,'all')" style="padding:5px 10px;font-size:12px;border:0.5px solid var(--border2);border-radius:20px;cursor:pointer;background:var(--bg2);color:var(--text);display:inline-flex;align-items:center;gap:5px"><i class="ti ti-users"></i> ทุกคน</button>`+
+    members.map(m=>`<button class="tgt" onclick="toggleTgt(this,'${m.uid}')" data-uid="${m.uid}" style="padding:5px 10px;font-size:12px;border:0.5px solid var(--border2);border-radius:20px;cursor:pointer;background:var(--bg);color:var(--text2);display:inline-flex;align-items:center;gap:5px"><div class="av" style="background:${m.avbg};color:${m.avc};width:18px;height:18px;font-size:9px">${m.av}</div>${m.name.split(' ')[0]}</button>`).join('');
+}
+function setNT(btn){ document.querySelectorAll('.ntype').forEach(b=>{b.style.background='var(--bg)';b.style.color='var(--text2)';}); btn.style.background=btn.dataset.type==='deadline'?'#fcebeb':btn.dataset.type==='task'?'#e6f1fb':btn.dataset.type==='warn'?'#faeeda':'#e1f5ee'; btn.style.color=btn.dataset.type==='deadline'?'#a32d2d':btn.dataset.type==='task'?'#0c447c':btn.dataset.type==='warn'?'#633806':'#085041'; ntype=btn.dataset.type; }
+function toggleTgt(btn,uid){ if(uid==='all'){ntargets=new Set(['all']);document.querySelectorAll('.tgt').forEach(b=>{b.style.background=b.dataset?.uid?'var(--bg)':'var(--bg2)';});btn.style.background='var(--bg2)';}else{ntargets.delete('all');document.querySelector('.tgt[onclick*="all"]').style.background='var(--bg)';btn.style.background=ntargets.has(uid)?(ntargets.delete(uid),'var(--bg)'):(ntargets.add(uid),'var(--bg2)');if(!ntargets.size){ntargets.add('all');document.querySelector('.tgt[onclick*="all"]').style.background='var(--bg2)';}}}
+function sendNotif(){
+  const msg=document.getElementById('nMsg').value.trim(); if(!msg){showToast('กรุณาใส่ข้อความ');return;}
+  const notifs=load(KEYS.notifs,[]); notifs.unshift({type:ntype,targets:Array.from(ntargets),msg,time:nowTH()}); save(KEYS.notifs,notifs);
+  document.getElementById('nMsg').value=''; renderNotifHistory(); showToast('ส่งแล้ว');
+}
+function renderNotifHistory(){
+  initTargetBtns();
+  const notifs=load(KEYS.notifs,[]); const icons={deadline:'⚠️',task:'📋',warn:'📢',general:'💬'};
+  document.getElementById('nHistory').innerHTML=notifs.length?notifs.map((n,i)=>`<div style="padding:9px 0;border-bottom:0.5px solid var(--border);display:flex;align-items:flex-start;gap:8px"><span style="flex-shrink:0">${icons[n.type]||'💬'}</span><div style="flex:1"><div style="font-size:13px;color:var(--text)">${n.msg}</div><div style="font-size:11px;color:var(--text2);margin-top:2px">ถึง: ${n.targets.join(', ')} · ${n.time}</div></div><button class="btn btn-sm btn-danger" onclick="delNotif(${i})" style="padding:2px 6px"><i class="ti ti-trash"></i></button></div>`).join(''):'<div style="font-size:13px;color:var(--text3);padding:8px">ยังไม่มีประวัติ</div>';
+}
+function delNotif(i){ const n=load(KEYS.notifs,[]); n.splice(i,1); save(KEYS.notifs,n); renderNotifHistory(); }
+
+// TASKS
+function toggleTF(){ document.getElementById('taskForm').classList.toggle('hidden'); initTaskSelect(); }
+function initTaskSelect(){ const m=load(KEYS.members,DEFAULT_MEMBERS); document.getElementById('tgt').innerHTML='<option value="all">ทุกคน</option>'+m.map(u=>`<option value="${u.uid}">${u.name}</option>`).join(''); }
+function saveTask(){ const name=document.getElementById('tname').value.trim(); if(!name){showToast('กรุณาใส่ชื่องาน');return;} const tasks=load(KEYS.tasks,[]); tasks.unshift({id:'t'+Date.now(),target:document.getElementById('tgt').value,name,due:document.getElementById('tdue').value,proto:document.getElementById('tproto').value,done:false,created:nowTH()}); save(KEYS.tasks,tasks); document.getElementById('tname').value=''; document.getElementById('tproto').value=''; document.getElementById('taskForm').classList.add('hidden'); renderTasks(); showToast('บันทึกงานแล้ว'); }
+function renderTasks(){
+  const tasks=load(KEYS.tasks,[]); const members=load(KEYS.members,DEFAULT_MEMBERS);
+  document.getElementById('taskList').innerHTML=tasks.length?tasks.map((t,i)=>{
+    const m=members.find(u=>u.uid===t.target); const tgtLbl=t.target==='all'?'ทุกคน':(m?.name||t.target);
+    return`<div style="padding:9px 0;border-bottom:0.5px solid var(--border)"><div style="display:flex;align-items:flex-start;gap:8px"><input type="checkbox" ${t.done?'checked':''} onchange="toggleTask(${i},this)" style="width:14px;height:14px;margin-top:2px"><div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--text);${t.done?'text-decoration:line-through;color:var(--text3)':''}">${t.name}</div><div style="display:flex;align-items:center;gap:6px;margin-top:3px"><span class="badge" style="background:var(--bg2);color:var(--text2)">${tgtLbl}</span>${t.due?`<span style="font-size:11px;color:var(--text2);font-family:'DM Mono',monospace">${t.due}</span>`:''}</div>${t.proto?`<div style="margin-top:5px;padding:6px 8px;background:var(--bg2);border-radius:var(--r);font-size:12px;white-space:pre-line;border-left:2px solid var(--teal)">${t.proto}</div>`:''}</div><button class="btn btn-sm btn-danger" onclick="delTask(${i})" style="padding:2px 6px"><i class="ti ti-trash"></i></button></div></div>`;
+  }).join(''):'<div style="font-size:13px;color:var(--text3);padding:8px">ยังไม่มีงาน</div>';
+}
+function toggleTask(i,cb){ const t=load(KEYS.tasks,[]); t[i].done=cb.checked; save(KEYS.tasks,t); renderTasks(); }
+function delTask(i){ const t=load(KEYS.tasks,[]); t.splice(i,1); save(KEYS.tasks,t); renderTasks(); }
+
+// FINANCE
+function toggleFF(){ document.getElementById('finForm').classList.toggle('hidden'); document.getElementById('fdate').value=todayISO(); }
+function saveFin(){ const name=document.getElementById('fname2').value.trim(); const amt=parseFloat(document.getElementById('famt').value)||0; if(!name||!amt){showToast('กรุณากรอกข้อมูลให้ครบ');return;} const fin=load(KEYS.finance,DEFAULT_FIN); fin.unshift({name,proj:document.getElementById('fproj').value,type:document.getElementById('ftype').value,amt,status:document.getElementById('fstat').value,date:document.getElementById('fdate').value}); save(KEYS.finance,fin); document.getElementById('fname2').value=''; document.getElementById('famt').value=''; document.getElementById('finForm').classList.add('hidden'); renderFinance(); showToast('บันทึกรายการแล้ว'); }
+function renderFinance(){
+  const fin=load(KEYS.finance,DEFAULT_FIN);
+  document.getElementById('finTable').innerHTML=fin.map((f,i)=>{const s=statStyle[f.status]||statStyle.pending; return`<tr><td title="${f.name}">${f.name}</td><td><span class="badge" style="${projBadge[f.proj]||''}">${f.proj}</span></td><td style="font-family:'DM Mono',monospace;font-weight:500;color:${f.type==='income'?'#27500a':'#a32d2d'}">${f.type==='income'?'+':'−'}฿${fmt(f.amt)}</td><td><span class="badge" style="background:${s.bg};color:${s.c}">${s.t}</span></td><td style="color:var(--text2);font-size:12px">${f.date}</td><td><button class="btn btn-sm btn-danger" onclick="delFin(${i})" style="padding:2px 6px"><i class="ti ti-trash"></i></button></td></tr>`;}).join('');
+}
+function delFin(i){ const f=load(KEYS.finance,DEFAULT_FIN); f.splice(i,1); save(KEYS.finance,f); renderFinance(); }
+
+// CHEM
+function toggleCF(){ document.getElementById('chemForm').classList.toggle('hidden'); }
+function saveChem(){ const name=document.getElementById('cname').value.trim(); if(!name){showToast('กรุณาใส่ชื่อสาร');return;} const c=load(KEYS.chem,DEFAULT_CHEM); c.unshift({name,qty:document.getElementById('cqty').value,loc:document.getElementById('cloc').value,exp:document.getElementById('cexp').value}); save(KEYS.chem,c); document.getElementById('cname').value=''; document.getElementById('chemForm').classList.add('hidden'); renderChem(); showToast('เพิ่มสารแล้ว'); }
+function renderChem(){
+  const today=new Date(); const c=load(KEYS.chem,DEFAULT_CHEM);
+  document.getElementById('chemTable').innerHTML=c.map((ch,i)=>{const exp=ch.exp?new Date(ch.exp):null; const days=exp?Math.ceil((exp-today)/86400000):null; const warn=days!==null&&days<90; return`<tr><td style="font-weight:500">${ch.name}</td><td style="font-family:'DM Mono',monospace;font-size:12px;color:var(--text2)">${ch.qty||'—'}</td><td><span class="badge" style="background:var(--bg2);color:var(--text2)">${ch.loc||'—'}</span></td><td style="font-size:12px;font-family:'DM Mono',monospace;${warn?'color:#a32d2d;font-weight:500':''}">${ch.exp||(warn?' ⚠':'')}</td><td><button class="btn btn-sm btn-danger" onclick="delChem(${i})" style="padding:2px 6px"><i class="ti ti-trash"></i></button></td></tr>`;}).join('');
+}
+function delChem(i){ const c=load(KEYS.chem,DEFAULT_CHEM); c.splice(i,1); save(KEYS.chem,c); renderChem(); }
+
+// MONITOR
+function renderMonitor(){
+  const members=load(KEYS.members,DEFAULT_MEMBERS);
+  document.getElementById('monitorFilter').innerHTML=members.map(m=>`<button onclick="setMonStu('${m.uid}',this)" class="mf-btn${monStu===m.uid?' on':''}" style="padding:4px 10px;font-size:12px;border:0.5px solid var(--${monStu===m.uid?'border2':'border'});border-radius:20px;cursor:pointer;background:${monStu===m.uid?'var(--bg2)':'var(--bg)'};color:var(--text${monStu===m.uid?'':'2'});display:inline-flex;align-items:center;gap:5px"><div class="av" style="background:${m.avbg};color:${m.avc};width:18px;height:18px;font-size:9px">${m.av}</div>${m.name.split(' ')[0]}</button>`).join('');
+  const nb=load(KEYS.notebook(monStu),[]);
+  document.getElementById('monNb').innerHTML=nb.length?nb.slice(0,5).map(e=>`<div style="padding:9px 0;border-bottom:0.5px solid var(--border)"><div style="font-size:13px;font-weight:500;color:var(--text)">${e.title}</div>${e.note?`<div style="font-size:12px;color:var(--text2);margin-top:2px">${e.note}</div>`:''} ${e.result?`<div style="font-size:12px;color:var(--text2);margin-top:2px"><strong>ผล:</strong> ${e.result}</div>`:''}<div style="font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;margin-top:2px">${e.date||''}</div></div>`).join(''):'<div style="font-size:13px;color:var(--text3);padding:8px">ยังไม่มีบันทึก</div>';
+  const tasks=load(KEYS.tasks,[]).filter(t=>t.target==='all'||t.target===monStu);
+  const done=tasks.filter(t=>t.done).length; const pct=tasks.length?Math.round(done/tasks.length*100):0;
+  document.getElementById('monTask').innerHTML=`<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><span style="font-size:13px;color:var(--text)">${done}/${tasks.length} งาน</span><span style="font-size:13px;font-weight:500;color:${pct===100?'#1D9E75':pct>=50?'#378ADD':'#EF9F27'}">${pct}%</span></div><div class="pbar"><div class="pfill" style="width:${pct}%;background:${pct===100?'#1D9E75':pct>=50?'#378ADD':'#EF9F27'}"></div></div>`+(tasks.length?tasks.map(t=>`<div style="padding:7px 0;border-bottom:0.5px solid var(--border);display:flex;align-items:center;gap:8px"><div style="width:6px;height:6px;border-radius:50%;background:${t.done?'#1D9E75':'#B4B2A9'}"></div><span style="font-size:12px;color:var(--text);flex:1;${t.done?'text-decoration:line-through;color:var(--text3)':''}">${t.name}</span><span class="badge" style="background:${t.done?'#e1f5ee':'#faeeda'};color:${t.done?'#085041':'#633806'}">${t.done?'เสร็จ':'กำลังทำ'}</span></div>`).join(''):'');
+}
+function setMonStu(uid,btn){ monStu=uid; renderMonitor(); }
+
+function logout(){ clearSession(); location.href='index.html'; }
+
+// Init
+renderOverview();
+</script>
+</body>
+</html>
