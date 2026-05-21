@@ -1,280 +1,466 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Admin — Aj. Kring Labroom</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin — Kring Labroom</title>
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+.stu-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:0.5px solid var(--color-border-tertiary);}
+.stu-row:last-child{border-bottom:none;}
+.pending-card{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem 1.25rem;margin-bottom:8px;border-left:3px solid #FAC775;}
+.nb-section-box{margin-top:4px;padding:5px 8px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);font-size:12px;line-height:1.5;border-left:2px solid var(--color-border-secondary);}
+/* Calendar (admin view) */
+.cal-detail-admin{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem 1.25rem;margin-bottom:1rem;background:var(--color-background-secondary);}
+</style>
 </head>
 <body>
+<script src="shared.js"></script>
 <nav class="nav">
-  <a href="admin.html" class="nav-logo">
-    <svg width="28" height="28" viewBox="0 0 48 48"><rect width="48" height="48" rx="10" fill="#F1EFE8"/><rect x="19" y="14" width="10" height="10" rx="3" fill="#F5C4B3"/><rect x="19" y="13" width="10" height="4" rx="2" fill="#444441"/><rect x="18" y="14" width="3" height="5" rx="1" fill="#444441"/><rect x="21" y="18" width="2" height="2" rx="1" fill="#2C2C2A"/><rect x="25" y="18" width="2" height="2" rx="1" fill="#2C2C2A"/><rect x="22" y="21" width="4" height="1" rx="0.5" fill="#993C1D"/><rect x="16" y="24" width="16" height="12" rx="2" fill="#1D9E75"/><rect x="15" y="24" width="4" height="10" rx="1" fill="#fff"/><rect x="29" y="24" width="4" height="10" rx="1" fill="#fff"/><rect x="18" y="35" width="4" height="5" rx="1" fill="#185FA5"/><rect x="26" y="35" width="4" height="5" rx="1" fill="#185FA5"/><rect x="17" y="38" width="5" height="3" rx="1" fill="#2C2C2A"/><rect x="25" y="38" width="5" height="3" rx="1" fill="#2C2C2A"/></svg>
-    <div><div class="nav-ln">Aj. Kring Labroom</div><div class="nav-ls">Admin Panel</div></div>
+  <a class="nav-logo" href="index.html">
+    <svg width="28" height="28" viewBox="0 0 48 48"><rect width="48" height="48" rx="10" fill="#F1EFE8"/><rect x="19" y="14" width="10" height="10" rx="3" fill="#F5C4B3"/><rect x="19" y="13" width="10" height="4" rx="2" fill="#444441"/><rect x="18" y="14" width="3" height="5" rx="1" fill="#444441"/><rect x="21" y="18" width="2" height="2" rx="1" fill="#2C2C2A"/><rect x="25" y="18" width="2" height="2" rx="1" fill="#2C2C2A"/><rect x="22" y="21" width="4" height="1" rx=".5" fill="#993C1D"/><rect x="16" y="24" width="16" height="12" rx="2" fill="#1D9E75"/><rect x="15" y="24" width="4" height="10" rx="1" fill="#fff"/><rect x="29" y="24" width="4" height="10" rx="1" fill="#fff"/><rect x="18" y="35" width="4" height="5" rx="1" fill="#185FA5"/><rect x="26" y="35" width="4" height="5" rx="1" fill="#185FA5"/><rect x="17" y="38" width="5" height="3" rx="1" fill="#2C2C2A"/><rect x="25" y="38" width="5" height="3" rx="1" fill="#2C2C2A"/></svg>
+    <div><div class="nav-logo-name">Aj. Kring Labroom</div><div class="nav-logo-sub">KU_KPS · Admin Panel</div></div>
   </a>
-  <div style="display:flex;align-items:center;gap:8px">
-    <span style="font-size:11px;padding:3px 10px;border-radius:20px;background:#fcebeb;color:#a32d2d;font-family:'DM Mono',monospace">Admin · อ.ดร. สมศรี</span>
-    <button class="btn btn-sm" onclick="logout()"><i class="ti ti-logout"></i> ออก</button>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <span class="badge" style="background:#fcebeb;color:#a32d2d">Admin</span>
+    <span style="font-size:12px;color:var(--color-text-secondary)" id="navName"></span>
+    <button class="btn btn-sm" onclick="KU.logout()"><i class="ti ti-logout"></i> ออก</button>
   </div>
 </nav>
 
-<div style="border-bottom:0.5px solid var(--border);background:var(--bg)">
-  <div class="tabs" style="max-width:900px;margin:0 auto;padding:0 1.5rem;">
-    <button class="tab on" onclick="sw('overview',this)"><i class="ti ti-layout-dashboard"></i> ภาพรวม</button>
-    <button class="tab" onclick="sw('approve',this)"><i class="ti ti-user-check"></i> อนุมัติสมาชิก <span id="pendBadge" style="font-size:10px;padding:1px 6px;border-radius:20px;background:#faeeda;color:#633806;font-family:'DM Mono',monospace;display:none;margin-left:4px"></span></button>
-    <button class="tab" onclick="sw('notify',this)"><i class="ti ti-bell"></i> แจ้งเตือน</button>
-    <button class="tab" onclick="sw('tasks',this)"><i class="ti ti-checkbox"></i> มอบหมายงาน</button>
-    <button class="tab" onclick="sw('finance',this)"><i class="ti ti-receipt"></i> การเงิน</button>
-    <button class="tab" onclick="sw('chem',this)"><i class="ti ti-flask-2"></i> สารเคมี</button>
-    <button class="tab" onclick="sw('monitor',this)"><i class="ti ti-eye"></i> ติดตามนิสิต</button>
-  </div>
-</div>
+<div class="tabs" id="tabBar"></div>
+<div class="page-content" id="mainContent"></div>
+<div class="toast" id="toast"></div>
 
-<div class="shell">
-  <div id="v-overview" class="view on">
-    <div class="metrics">
-      <div class="metric"><div class="m-lbl">สมาชิก</div><div class="m-val" id="ov-members">—</div></div>
-      <div class="metric"><div class="m-lbl">รอ approve</div><div class="m-val" id="ov-pending" style="color:#854f0b">—</div></div>
-      <div class="metric"><div class="m-lbl">งบคงเหลือ</div><div class="m-val" style="color:#27500a">฿1.52M</div></div>
-      <div class="metric"><div class="m-lbl">ค้างชำระ</div><div class="m-val" style="color:#a32d2d">฿73,200</div></div>
-    </div>
-    <div class="card">
-      <div class="sec-hdr"><span class="ct">สมาชิกทั้งหมด</span></div>
-      <div id="ov-list"></div>
-    </div>
-  </div>
-
-  <div id="v-approve" class="view">
-    <div class="card">
-      <div class="sec-hdr"><span class="ct">รอการอนุมัติ</span><span id="pCount" style="font-size:11px;font-family:'DM Mono',monospace;color:var(--text2)"></span></div>
-      <div id="pendList"></div>
-    </div>
-    <div class="card">
-      <div class="sec-hdr"><span class="ct">สมาชิกที่อนุมัติแล้ว</span></div>
-      <div id="memList"></div>
-    </div>
-  </div>
-
-  <div id="v-notify" class="view">
-    <div class="card" style="margin-bottom:1rem">
-      <div class="sec-hdr"><span class="ct">ส่งการแจ้งเตือน</span></div>
-      <div class="f-group"><label class="f-lbl">ประเภท</label>
-        <div style="display:flex;gap:5px;flex-wrap:wrap">
-          <button class="ntype on" data-type="deadline" onclick="setNT(this)" style="padding:5px 12px;font-size:12px;font-family:'DM Mono',monospace;border:0.5px solid var(--border2);border-radius:20px;cursor:pointer;background:#fcebeb;color:#a32d2d">⚠️ Deadline</button>
-          <button class="ntype" data-type="task" onclick="setNT(this)" style="padding:5px 12px;font-size:12px;font-family:'DM Mono',monospace;border:0.5px solid var(--border2);border-radius:20px;cursor:pointer;background:var(--bg);color:var(--text2)">📋 มอบหมาย</button>
-          <button class="ntype" data-type="warn" onclick="setNT(this)" style="padding:5px 12px;font-size:12px;font-family:'DM Mono',monospace;border:0.5px solid var(--border2);border-radius:20px;cursor:pointer;background:var(--bg);color:var(--text2)">📢 ประกาศ</button>
-          <button class="ntype" data-type="general" onclick="setNT(this)" style="padding:5px 12px;font-size:12px;font-family:'DM Mono',monospace;border:0.5px solid var(--border2);border-radius:20px;cursor:pointer;background:var(--bg);color:var(--text2)">💬 ทั่วไป</button>
-        </div>
-      </div>
-      <div class="f-group"><label class="f-lbl">ส่งถึง</label>
-        <div id="targetBtns" style="display:flex;gap:5px;flex-wrap:wrap"></div>
-      </div>
-      <div class="f-group"><label class="f-lbl">ข้อความ</label><textarea id="nMsg" class="f-inp"></textarea></div>
-      <div style="display:flex;justify-content:flex-end"><button class="btn btn-pri" onclick="sendNotif()"><i class="ti ti-send"></i> ส่ง</button></div>
-    </div>
-    <div class="card"><div class="sec-hdr"><span class="ct">ประวัติ</span></div><div id="nHistory"></div></div>
-  </div>
-
-  <div id="v-tasks" class="view">
-    <div class="card">
-      <div class="sec-hdr"><span class="ct">มอบหมายงาน</span><button class="btn btn-sm btn-pri" onclick="toggleTF()"><i class="ti ti-plus"></i> เพิ่มงาน</button></div>
-      <div id="taskForm" class="hidden" style="padding:12px;background:var(--bg2);border-radius:var(--r);margin-bottom:10px">
-        <div class="f-row f-group">
-          <div><label class="f-lbl">มอบหมายให้</label><select id="tgt" class="f-inp" style="font-size:12px"><option value="all">ทุกคน</option></select></div>
-          <div><label class="f-lbl">กำหนดส่ง</label><input type="date" id="tdue" class="f-inp" style="font-size:12px"></div>
-        </div>
-        <div class="f-group"><label class="f-lbl">ชื่องาน</label><input id="tname" class="f-inp" placeholder="เช่น สกัด DNA ตัวอย่างชุดที่ 2"></div>
-        <div class="f-group"><label class="f-lbl">Protocol (ถ้ามี)</label><textarea id="tproto" class="f-inp" style="min-height:52px" placeholder="ขั้นตอนที่ต้องทำ..."></textarea></div>
-        <div style="display:flex;justify-content:flex-end;gap:6px"><button class="btn btn-sm" onclick="toggleTF()">ยกเลิก</button><button class="btn btn-sm btn-pri" onclick="saveTask()"><i class="ti ti-check"></i> บันทึก</button></div>
-      </div>
-      <div id="taskList"></div>
-    </div>
-  </div>
-
-  <div id="v-finance" class="view">
-    <div class="metrics">
-      <div class="metric"><div class="m-lbl">งบประมาณรวม</div><div class="m-val">฿2,400,000</div></div>
-      <div class="metric"><div class="m-lbl">ใช้ไปแล้ว</div><div class="m-val" style="color:#a32d2d">฿876,000</div></div>
-      <div class="metric"><div class="m-lbl">คงเหลือ</div><div class="m-val" style="color:#27500a">฿1,524,000</div></div>
-      <div class="metric"><div class="m-lbl">ค้างชำระ</div><div class="m-val" style="color:#a32d2d">฿73,200</div></div>
-    </div>
-    <div class="card">
-      <div class="sec-hdr"><span class="ct">รายการการเงิน</span><button class="btn btn-sm btn-pri" onclick="toggleFF()"><i class="ti ti-plus"></i> เพิ่ม</button></div>
-      <div id="finForm" class="hidden" style="padding:12px;background:var(--bg2);border-radius:var(--r);margin-bottom:10px">
-        <div class="f-row f-group">
-          <div><label class="f-lbl">ประเภท</label><select id="ftype" class="f-inp" style="font-size:12px"><option value="expense">รายจ่าย</option><option value="income">รายรับ</option></select></div>
-          <div><label class="f-lbl">โครงการ</label><select id="fproj" class="f-inp" style="font-size:12px"><option>RD-2024-01</option><option>RD-2024-02</option><option>RD-2023-05</option></select></div>
-        </div>
-        <div class="f-row f-group">
-          <div><label class="f-lbl">ชื่อรายการ</label><input id="fname2" class="f-inp" style="font-size:12px"></div>
-          <div><label class="f-lbl">จำนวน (บาท)</label><input id="famt" type="number" class="f-inp" style="font-size:12px"></div>
-        </div>
-        <div class="f-row f-group">
-          <div><label class="f-lbl">วันที่</label><input id="fdate" type="date" class="f-inp" style="font-size:12px"></div>
-          <div><label class="f-lbl">สถานะ</label><select id="fstat" class="f-inp" style="font-size:12px"><option value="pending">รอดำเนินการ</option><option value="approved">อนุมัติแล้ว</option><option value="paid">ชำระแล้ว</option><option value="overdue">ค้างชำระ</option></select></div>
-        </div>
-        <div style="display:flex;justify-content:flex-end;gap:6px"><button class="btn btn-sm" onclick="toggleFF()">ยกเลิก</button><button class="btn btn-sm btn-pri" onclick="saveFin()"><i class="ti ti-check"></i> บันทึก</button></div>
-      </div>
-      <div style="overflow:auto"><table><thead><tr><th style="width:32%">รายการ</th><th style="width:18%">โครงการ</th><th style="width:16%">จำนวน</th><th style="width:14%">สถานะ</th><th style="width:12%">วันที่</th><th style="width:8%"></th></tr></thead><tbody id="finTable"></tbody></table></div>
-    </div>
-  </div>
-
-  <div id="v-chem" class="view">
-    <div class="card">
-      <div class="sec-hdr"><span class="ct">คลังสารเคมี</span><button class="btn btn-sm btn-pri" onclick="toggleCF()"><i class="ti ti-plus"></i> เพิ่มสาร</button></div>
-      <div id="chemForm" class="hidden" style="padding:12px;background:var(--bg2);border-radius:var(--r);margin-bottom:10px">
-        <div class="f-row f-group">
-          <div><label class="f-lbl">ชื่อสารเคมี</label><input id="cname" class="f-inp" style="font-size:12px" placeholder="เช่น Ethanol 95%"></div>
-          <div><label class="f-lbl">ตำแหน่ง</label><input id="cloc" class="f-inp" style="font-size:12px" placeholder="เช่น ตู้ A1"></div>
-        </div>
-        <div class="f-row f-group">
-          <div><label class="f-lbl">ปริมาณ</label><input id="cqty" class="f-inp" style="font-size:12px" placeholder="เช่น 2.5 L"></div>
-          <div><label class="f-lbl">วันหมดอายุ</label><input id="cexp" type="date" class="f-inp" style="font-size:12px"></div>
-        </div>
-        <div style="display:flex;justify-content:flex-end;gap:6px"><button class="btn btn-sm" onclick="toggleCF()">ยกเลิก</button><button class="btn btn-sm btn-pri" onclick="saveChem()"><i class="ti ti-check"></i> บันทึก</button></div>
-      </div>
-      <table><thead><tr><th style="width:32%">สาร</th><th style="width:18%">ปริมาณ</th><th style="width:20%">ตำแหน่ง</th><th style="width:22%">หมดอายุ</th><th style="width:8%"></th></tr></thead><tbody id="chemTable"></tbody></table>
-    </div>
-  </div>
-
-  <div id="v-monitor" class="view">
-    <div style="margin-bottom:1rem">
-      <label class="f-lbl">เลือกนิสิต</label>
-      <div id="monitorFilter" style="display:flex;gap:5px;flex-wrap:wrap"></div>
-    </div>
-    <div class="card"><div class="sec-hdr"><span class="ct">สมุดแล็บ</span><span style="font-size:11px;color:var(--text3)">อ่านอย่างเดียว</span></div><div id="monNb"></div></div>
-    <div class="card"><div class="sec-hdr"><span class="ct">ความคืบหน้างาน</span></div><div id="monTask"></div></div>
-  </div>
-</div>
-
-<script src="shared.js"></script>
 <script>
-const uid = requireLogin(true);
-if(!uid) throw '';
+const sess = KU.requireAuth('admin');
+if (!sess) throw new Error('not admin');
+document.getElementById('navName').textContent = sess.name;
 
-const DEFAULT_MEMBERS=[
-  {uid:'ra1',name:'มินตรา ช่วยดี',email:'mintra.c@ku.th',level:'ra',av:'มช',avbg:'#e1f5ee',avc:'#0f6e56'},
-  {uid:'ra2',name:'ธนกฤต ขยันมาก',email:'thanakrit.k@ku.th',level:'master',av:'ธข',avbg:'#eeedfe',avc:'#534ab7'},
-  {uid:'ra3',name:'ปาริชาติ ใฝ่รู้',email:'parichat.f@ku.th',level:'phd',av:'ปร',avbg:'#faeeda',avc:'#854f0b'},
+const CATS = {ทดลอง:{bg:'#e1f5ee',c:'#085041',dot:'#1D9E75'},วิเคราะห์:{bg:'#faeeda',c:'#633806',dot:'#EF9F27'},เขียนเล่ม:{bg:'#eeedfe',c:'#3c3489',dot:'#7F77DD'},ประชุม:{bg:'#e6f1fb',c:'#0c447c',dot:'#378ADD'},อ่านเอกสาร:{bg:'#f1efe8',c:'#444441',dot:'#888780'},อื่นๆ:{bg:'#f1efe8',c:'#5f5e5a',dot:'#B4B2A9'}};
+const LEVEL_LABEL = {bachelor:'ป.ตรี',master:'ป.โท',phd:'ป.เอก',ra:'ผู้ช่วยวิจัย',admin:'Admin'};
+const LEVEL_BG = {bachelor:'#e6f1fb',master:'#eeedfe',phd:'#faeeda',ra:'#e1f5ee'};
+const LEVEL_C = {bachelor:'#0c447c',master:'#3c3489',phd:'#633806',ra:'#085041'};
+const TH_MONTHS=['','ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+
+const TABS=[
+  {id:'overview',icon:'ti-layout-dashboard',label:'ภาพรวม'},
+  {id:'members',icon:'ti-users',label:'สมาชิก'},
+  {id:'monitor',icon:'ti-eye',label:'ติดตามนิสิต'},
+  {id:'planview',icon:'ti-calendar-month',label:'ดูแผนงาน'},
+  {id:'notify',icon:'ti-bell',label:'แจ้งเตือน'},
+  {id:'tasks',icon:'ti-checkbox',label:'มอบหมายงาน'},
+  {id:'finance',icon:'ti-receipt',label:'การเงิน'},
+  {id:'chem',icon:'ti-flask-2',label:'สารเคมี'},
 ];
-const DEFAULT_FIN=[
-  {name:'รับเงินงวดที่ 2 — สวก.',proj:'RD-2024-01',type:'income',amt:400000,status:'paid',date:'01 พ.ค.'},
-  {name:'PCR reagents — Sigma',proj:'RD-2024-02',type:'expense',amt:45200,status:'overdue',date:'12 เม.ย.'},
-  {name:'Plant growth chamber',proj:'RD-2024-01',type:'expense',amt:28000,status:'overdue',date:'18 เม.ย.'},
-  {name:'ค่าส่งตัวอย่าง NGS',proj:'RD-2024-02',type:'expense',amt:11300,status:'pending',date:'24 เม.ย.'},
-];
-const DEFAULT_CHEM=[
-  {name:'Ethanol 95%',qty:'2.5 L',loc:'ตู้ A1',exp:'2026-12-31'},
-  {name:'CTAB Buffer',qty:'500 ml',loc:'ตู้ A2',exp:'2025-10-01'},
-  {name:'Chloroform',qty:'120 ml',loc:'ตู้ B1',exp:'2025-08-15'},
-  {name:'Tris-HCl pH 8.0',qty:'1 L',loc:'ตู้ A3',exp:'2026-06-01'},
-];
-const lvLabel={bachelor:'ป.ตรี',master:'ป.โท',phd:'ป.เอก',ra:'ผู้ช่วยวิจัย'};
-const lvBg={bachelor:'#e6f1fb',master:'#eeedfe',phd:'#faeeda',ra:'#e1f5ee'};
-const lvC={bachelor:'#0c447c',master:'#3c3489',phd:'#633806',ra:'#085041'};
-const statStyle={paid:{bg:'#f1efe8',c:'#5f5e5a',t:'ชำระแล้ว'},pending:{bg:'#faeeda',c:'#633806',t:'รอดำเนินการ'},approved:{bg:'#e1f5ee',c:'#085041',t:'อนุมัติแล้ว'},overdue:{bg:'#fcebeb',c:'#a32d2d',t:'ค้างชำระ'}};
-const projBadge={'RD-2024-01':'background:#e1f5ee;color:#085041','RD-2024-02':'background:#eeedfe;color:#3c3489','RD-2023-05':'background:#faeeda;color:#633806'};
+let activeTab='overview';
 
-let ntype='deadline', ntargets=new Set(['all']), monStu='ra2';
+function renderTabs(){
+  document.getElementById('tabBar').innerHTML=TABS.map(t=>
+    `<button class="tab${t.id===activeTab?' active':''}" onclick="switchTab('${t.id}')"><i class="ti ${t.icon}"></i>${t.label}</button>`
+  ).join('');
+}
+function switchTab(id){activeTab=id;renderTabs();renderContent();}
 
-function sw(n,btn){ document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on')); btn.classList.add('on'); document.querySelectorAll('.view').forEach(v=>v.classList.remove('on')); document.getElementById('v-'+n).classList.add('on'); if(n==='approve')renderApprove(); if(n==='overview')renderOverview(); if(n==='notify')renderNotifHistory(); if(n==='tasks')renderTasks(); if(n==='finance')renderFinance(); if(n==='chem')renderChem(); if(n==='monitor')renderMonitor(); }
+function renderContent(){
+  const c=document.getElementById('mainContent');
+  const map={overview:renderOverview,members:renderMembers,monitor:renderMonitor,planview:renderPlanView,notify:renderNotify,tasks:renderTasks,finance:renderFinance,chem:renderChem};
+  c.innerHTML=(map[activeTab]||renderOverview)();
+  if(activeTab==='planview') initPlanView();
+}
 
+// ===== OVERVIEW =====
 function renderOverview(){
-  const members=load(KEYS.members,DEFAULT_MEMBERS);
-  const pending=load(KEYS.pending,[]);
-  document.getElementById('ov-members').textContent=members.length;
-  document.getElementById('ov-pending').textContent=pending.length;
-  if(pending.length>0){const pb=document.getElementById('pendBadge');pb.textContent=pending.length;pb.style.display='inline';}
-  document.getElementById('ov-list').innerHTML=members.map(m=>`<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:0.5px solid var(--border)"><div class="av" style="background:${m.avbg};color:${m.avc};width:30px;height:30px;font-size:11px">${m.av}</div><div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--text)">${m.name}</div><div style="font-size:11px;color:var(--text2)">${m.email||''}</div></div><span class="badge" style="background:${lvBg[m.level]||'#f1efe8'};color:${lvC[m.level]||'#5f5e5a'}">${lvLabel[m.level]||m.level}</span></div>`).join('');
+  const approved=KU.getApproved().filter(u=>u.level!=='admin');
+  const pending=KU.getPending();
+  const tasks=KU.getTasks();
+  const finance=KU.getFinance();
+  const spent=finance.entries.filter(e=>e.type==='expense').reduce((a,e)=>a+e.amt,0);
+  const overdue=finance.entries.filter(e=>e.status==='overdue').length;
+  const notifs=KU.getAdminNotifs();
+  return`
+  <div class="metric-grid">
+    <div class="metric"><div class="metric-label">นิสิตทั้งหมด</div><div class="metric-value">${approved.length}</div></div>
+    <div class="metric"><div class="metric-label">รอ Approve</div><div class="metric-value" style="${pending.length>0?'color:#a32d2d':''}">${pending.length}</div></div>
+    <div class="metric"><div class="metric-label">งบคงเหลือ</div><div class="metric-value" style="color:#27500a">฿${((finance.budget-spent)/1000).toFixed(0)}K</div></div>
+    <div class="metric"><div class="metric-label">ค้างชำระ</div><div class="metric-value" style="${overdue>0?'color:#a32d2d':''}">${overdue}</div></div>
+  </div>
+  ${pending.length>0?`<div class="card" style="border-left:3px solid #FAC775">
+    <div class="card-header"><span class="card-title">⚠ คำขอสมัครที่รอ Approve (${pending.length})</span><button class="btn btn-sm btn-primary" onclick="switchTab('members')">จัดการ →</button></div>
+    ${pending.slice(0,2).map(m=>`<div style="font-size:13px;padding:5px 0;border-bottom:0.5px solid var(--color-border-tertiary);display:flex;align-items:center;gap:8px"><div class="av av-sm" style="background:${m.avbg};color:${m.avc}">${m.av}</div>${m.name} <span class="badge" style="background:${LEVEL_BG[m.level]||'#f1efe8'};color:${LEVEL_C[m.level]||'#5f5e5a'}">${LEVEL_LABEL[m.level]||m.level}</span></div>`).join('')}
+  </div>`:''}
+  <div class="card">
+    <div class="card-header"><span class="card-title">สถานะนิสิต</span></div>
+    ${approved.map(u=>{
+      const myTasks=KU.getTasks().filter(t=>t.target===u.uid||t.target==='all');
+      const done=myTasks.filter(t=>t.done).length;
+      const pct=myTasks.length?Math.round(done/myTasks.length*100):0;
+      return`<div class="stu-row">
+        <div class="av av-md" style="background:${u.avbg};color:${u.avc}">${u.av}</div>
+        <div style="flex:1">
+          <div style="display:flex;align-items:center;gap:6px"><span style="font-size:13px;font-weight:500">${u.name}</span><span class="badge" style="background:${LEVEL_BG[u.level]||'#f1efe8'};color:${LEVEL_C[u.level]||'#5f5e5a'}">${LEVEL_LABEL[u.level]||u.level}</span></div>
+          <div style="font-size:11px;color:var(--color-text-secondary);margin-top:1px">งาน ${done}/${myTasks.length} · ${pct}%</div>
+          <div class="pbar" style="width:160px;margin-top:3px"><div class="pfill" style="width:${pct}%;background:${pct===100?'#1D9E75':pct>=50?'#378ADD':'#EF9F27'}"></div></div>
+        </div>
+        <button class="btn btn-sm" onclick="quickNotify('${u.uid}')"><i class="ti ti-bell"></i></button>
+      </div>`;
+    }).join('')}
+  </div>`;
 }
 
-function renderApprove(){
-  const pending=load(KEYS.pending,[]);
-  const members=load(KEYS.members,DEFAULT_MEMBERS);
-  document.getElementById('pCount').textContent=pending.length+' คำขอ';
-  document.getElementById('pendList').innerHTML=pending.length?pending.map(m=>`<div style="border:0.5px solid #fac775;border-radius:var(--rl);padding:1rem;margin-bottom:8px;background:#faeeda18"><div style="display:flex;align-items:flex-start;gap:10px"><div class="av" style="background:${m.avbg||'#f1efe8'};color:${m.avc||'#5f5e5a'};width:36px;height:36px;font-size:12px">${m.av||'?'}</div><div style="flex:1"><div style="font-size:14px;font-weight:500;color:var(--text)">${m.fname} ${m.lname} <span class="badge" style="background:${lvBg[m.level]||'#f1efe8'};color:${lvC[m.level]||'#5f5e5a'}">${lvLabel[m.level]||m.level}</span></div><div style="font-size:12px;color:var(--text2);margin-top:2px">${m.email} · รหัส: ${m.sid}</div>${m.topic?`<div style="font-size:12px;color:var(--text2)">หัวข้อ: ${m.topic}</div>`:''} ${m.note?`<div style="font-size:12px;font-style:italic;color:var(--text3)">"${m.note}"</div>`:''}<div style="font-size:11px;font-family:'DM Mono',monospace;color:var(--text3);margin-top:2px">${m.time}</div></div></div><div style="display:flex;gap:6px;justify-content:flex-end;margin-top:10px"><button class="btn btn-sm btn-danger" onclick="reject('${m.id}')"><i class="ti ti-x"></i> ปฏิเสธ</button><button class="btn btn-sm btn-green" onclick="approve('${m.id}')"><i class="ti ti-check"></i> อนุมัติ</button></div></div>`).join(''):'<div style="font-size:13px;color:var(--text3);padding:8px;text-align:center">ไม่มีคำขอที่รอ ✓</div>';
-  document.getElementById('memList').innerHTML=members.map(m=>`<div class="member-row" style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:0.5px solid var(--border)"><div class="av" style="background:${m.avbg};color:${m.avc};width:28px;height:28px;font-size:10px">${m.av}</div><div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--text)">${m.name}</div><div style="font-size:11px;color:var(--text2)">${m.email||''}</div></div><span class="badge" style="background:${lvBg[m.level]};color:${lvC[m.level]}">${lvLabel[m.level]||m.level}</span><span class="badge" style="background:#e1f5ee;color:#085041">ใช้งาน</span></div>`).join('');
+// ===== MEMBERS =====
+function renderMembers(){
+  const pending=KU.getPending();
+  const approved=KU.getApproved().filter(u=>u.level!=='admin');
+  return`<div class="card" style="margin-bottom:10px">
+    <div class="card-header"><span class="card-title">รอการอนุมัติ (${pending.length})</span></div>
+    ${pending.length?pending.map(m=>`<div class="pending-card">
+      <div style="display:flex;align-items:flex-start;gap:10px">
+        <div class="av av-md" style="background:${m.avbg};color:${m.avc};width:36px;height:36px">${m.av}</div>
+        <div style="flex:1">
+          <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap"><span style="font-size:14px;font-weight:500">${m.name}</span><span class="badge" style="background:${LEVEL_BG[m.level]||'#f1efe8'};color:${LEVEL_C[m.level]||'#5f5e5a'}">${LEVEL_LABEL[m.level]||m.level}</span></div>
+          <div style="font-size:12px;color:var(--color-text-secondary);margin-top:2px">${m.email} · รหัส: ${m.sid} · ปี ${m.year}</div>
+          ${m.topic?`<div style="font-size:12px;color:var(--color-text-secondary)">หัวข้อ: ${m.topic}</div>`:''}
+          ${m.note?`<div style="font-size:12px;font-style:italic;color:var(--color-text-tertiary)">"${m.note}"</div>`:''}
+          <div style="font-size:11px;font-family:'DM Mono',monospace;color:var(--color-text-tertiary);margin-top:3px">${m.time}</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:6px;justify-content:flex-end;margin-top:10px">
+        <button class="btn btn-sm btn-red" onclick="rejectMember('${m.id}')"><i class="ti ti-x"></i> ปฏิเสธ</button>
+        <button class="btn btn-sm btn-green" onclick="approveMember('${m.id}')"><i class="ti ti-check"></i> อนุมัติ</button>
+      </div>
+    </div>`).join(''):'<div style="text-align:center;padding:1rem;font-size:13px;color:var(--color-text-tertiary)">ไม่มีคำขอที่รอ ✓</div>'}
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="card-title">สมาชิกทั้งหมด (${approved.length})</span></div>
+    ${approved.map(u=>`<div class="stu-row">
+      <div class="av av-md" style="background:${u.avbg};color:${u.avc}">${u.av}</div>
+      <div style="flex:1"><div style="font-size:13px;font-weight:500">${u.name}</div><div style="font-size:11px;color:var(--color-text-secondary)">${u.email} · ${u.topic}</div></div>
+      <span class="badge" style="background:${LEVEL_BG[u.level]||'#f1efe8'};color:${LEVEL_C[u.level]||'#5f5e5a'}">${LEVEL_LABEL[u.level]||u.level}</span>
+      <span class="badge" style="background:#e1f5ee;color:#085041">ใช้งาน</span>
+    </div>`).join('')}
+  </div>`;
 }
 
-function approve(id){
-  let pending=load(KEYS.pending,[]); const m=pending.find(p=>p.id===id); if(!m) return;
-  pending=pending.filter(p=>p.id!==id); save(KEYS.pending,pending);
-  const members=load(KEYS.members,DEFAULT_MEMBERS);
-  members.push({uid:'u_'+id,name:m.fname+' '+m.lname,email:m.email,level:m.level,av:m.av||m.fname[0],avbg:m.avbg||'#f1efe8',avc:m.avc||'#5f5e5a'});
-  save(KEYS.members,members); renderApprove(); renderOverview(); showToast('อนุมัติ '+m.fname+' แล้ว');
+function approveMember(id){
+  const pending=KU.getPending();
+  const idx=pending.findIndex(m=>m.id===id);
+  if(idx<0) return;
+  const m=pending[idx];
+  const approved=KU.getApproved();
+  approved.push({uid:'u'+Date.now(),name:m.name,email:m.email,level:m.level,sid:m.sid,year:m.year,topic:m.topic,avbg:m.avbg,avc:m.avc,av:m.av,pass:m.pass||'1234'});
+  KU.setApproved(approved);
+  pending.splice(idx,1);
+  KU.setPending(pending);
+  showToast('อนุมัติ '+m.name+' แล้ว');
+  switchTab('members');
 }
-function reject(id){
-  let pending=load(KEYS.pending,[]); const m=pending.find(p=>p.id===id);
-  save(KEYS.pending,pending.filter(p=>p.id!==id)); renderApprove(); showToast('ปฏิเสธคำขอแล้ว');
+function rejectMember(id){
+  const pending=KU.getPending();
+  const idx=pending.findIndex(m=>m.id===id);
+  if(idx<0) return;
+  const name=pending[idx].name;
+  pending.splice(idx,1);
+  KU.setPending(pending);
+  showToast('ปฏิเสธคำขอของ '+name);
+  switchTab('members');
 }
 
-// NOTIFY
-function initTargetBtns(){
-  const members=load(KEYS.members,DEFAULT_MEMBERS);
-  document.getElementById('targetBtns').innerHTML=`<button class="tgt on" onclick="toggleTgt(this,'all')" style="padding:5px 10px;font-size:12px;border:0.5px solid var(--border2);border-radius:20px;cursor:pointer;background:var(--bg2);color:var(--text);display:inline-flex;align-items:center;gap:5px"><i class="ti ti-users"></i> ทุกคน</button>`+
-    members.map(m=>`<button class="tgt" onclick="toggleTgt(this,'${m.uid}')" data-uid="${m.uid}" style="padding:5px 10px;font-size:12px;border:0.5px solid var(--border2);border-radius:20px;cursor:pointer;background:var(--bg);color:var(--text2);display:inline-flex;align-items:center;gap:5px"><div class="av" style="background:${m.avbg};color:${m.avc};width:18px;height:18px;font-size:9px">${m.av}</div>${m.name.split(' ')[0]}</button>`).join('');
-}
-function setNT(btn){ document.querySelectorAll('.ntype').forEach(b=>{b.style.background='var(--bg)';b.style.color='var(--text2)';}); btn.style.background=btn.dataset.type==='deadline'?'#fcebeb':btn.dataset.type==='task'?'#e6f1fb':btn.dataset.type==='warn'?'#faeeda':'#e1f5ee'; btn.style.color=btn.dataset.type==='deadline'?'#a32d2d':btn.dataset.type==='task'?'#0c447c':btn.dataset.type==='warn'?'#633806':'#085041'; ntype=btn.dataset.type; }
-function toggleTgt(btn,uid){ if(uid==='all'){ntargets=new Set(['all']);document.querySelectorAll('.tgt').forEach(b=>{b.style.background=b.dataset?.uid?'var(--bg)':'var(--bg2)';});btn.style.background='var(--bg2)';}else{ntargets.delete('all');document.querySelector('.tgt[onclick*="all"]').style.background='var(--bg)';btn.style.background=ntargets.has(uid)?(ntargets.delete(uid),'var(--bg)'):(ntargets.add(uid),'var(--bg2)');if(!ntargets.size){ntargets.add('all');document.querySelector('.tgt[onclick*="all"]').style.background='var(--bg2)';}}}
-function sendNotif(){
-  const msg=document.getElementById('nMsg').value.trim(); if(!msg){showToast('กรุณาใส่ข้อความ');return;}
-  const notifs=load(KEYS.notifs,[]); notifs.unshift({type:ntype,targets:Array.from(ntargets),msg,time:nowTH()}); save(KEYS.notifs,notifs);
-  document.getElementById('nMsg').value=''; renderNotifHistory(); showToast('ส่งแล้ว');
-}
-function renderNotifHistory(){
-  initTargetBtns();
-  const notifs=load(KEYS.notifs,[]); const icons={deadline:'⚠️',task:'📋',warn:'📢',general:'💬'};
-  document.getElementById('nHistory').innerHTML=notifs.length?notifs.map((n,i)=>`<div style="padding:9px 0;border-bottom:0.5px solid var(--border);display:flex;align-items:flex-start;gap:8px"><span style="flex-shrink:0">${icons[n.type]||'💬'}</span><div style="flex:1"><div style="font-size:13px;color:var(--text)">${n.msg}</div><div style="font-size:11px;color:var(--text2);margin-top:2px">ถึง: ${n.targets.join(', ')} · ${n.time}</div></div><button class="btn btn-sm btn-danger" onclick="delNotif(${i})" style="padding:2px 6px"><i class="ti ti-trash"></i></button></div>`).join(''):'<div style="font-size:13px;color:var(--text3);padding:8px">ยังไม่มีประวัติ</div>';
-}
-function delNotif(i){ const n=load(KEYS.notifs,[]); n.splice(i,1); save(KEYS.notifs,n); renderNotifHistory(); }
-
-// TASKS
-function toggleTF(){ document.getElementById('taskForm').classList.toggle('hidden'); initTaskSelect(); }
-function initTaskSelect(){ const m=load(KEYS.members,DEFAULT_MEMBERS); document.getElementById('tgt').innerHTML='<option value="all">ทุกคน</option>'+m.map(u=>`<option value="${u.uid}">${u.name}</option>`).join(''); }
-function saveTask(){ const name=document.getElementById('tname').value.trim(); if(!name){showToast('กรุณาใส่ชื่องาน');return;} const tasks=load(KEYS.tasks,[]); tasks.unshift({id:'t'+Date.now(),target:document.getElementById('tgt').value,name,due:document.getElementById('tdue').value,proto:document.getElementById('tproto').value,done:false,created:nowTH()}); save(KEYS.tasks,tasks); document.getElementById('tname').value=''; document.getElementById('tproto').value=''; document.getElementById('taskForm').classList.add('hidden'); renderTasks(); showToast('บันทึกงานแล้ว'); }
-function renderTasks(){
-  const tasks=load(KEYS.tasks,[]); const members=load(KEYS.members,DEFAULT_MEMBERS);
-  document.getElementById('taskList').innerHTML=tasks.length?tasks.map((t,i)=>{
-    const m=members.find(u=>u.uid===t.target); const tgtLbl=t.target==='all'?'ทุกคน':(m?.name||t.target);
-    return`<div style="padding:9px 0;border-bottom:0.5px solid var(--border)"><div style="display:flex;align-items:flex-start;gap:8px"><input type="checkbox" ${t.done?'checked':''} onchange="toggleTask(${i},this)" style="width:14px;height:14px;margin-top:2px"><div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--text);${t.done?'text-decoration:line-through;color:var(--text3)':''}">${t.name}</div><div style="display:flex;align-items:center;gap:6px;margin-top:3px"><span class="badge" style="background:var(--bg2);color:var(--text2)">${tgtLbl}</span>${t.due?`<span style="font-size:11px;color:var(--text2);font-family:'DM Mono',monospace">${t.due}</span>`:''}</div>${t.proto?`<div style="margin-top:5px;padding:6px 8px;background:var(--bg2);border-radius:var(--r);font-size:12px;white-space:pre-line;border-left:2px solid var(--teal)">${t.proto}</div>`:''}</div><button class="btn btn-sm btn-danger" onclick="delTask(${i})" style="padding:2px 6px"><i class="ti ti-trash"></i></button></div></div>`;
-  }).join(''):'<div style="font-size:13px;color:var(--text3);padding:8px">ยังไม่มีงาน</div>';
-}
-function toggleTask(i,cb){ const t=load(KEYS.tasks,[]); t[i].done=cb.checked; save(KEYS.tasks,t); renderTasks(); }
-function delTask(i){ const t=load(KEYS.tasks,[]); t.splice(i,1); save(KEYS.tasks,t); renderTasks(); }
-
-// FINANCE
-function toggleFF(){ document.getElementById('finForm').classList.toggle('hidden'); document.getElementById('fdate').value=todayISO(); }
-function saveFin(){ const name=document.getElementById('fname2').value.trim(); const amt=parseFloat(document.getElementById('famt').value)||0; if(!name||!amt){showToast('กรุณากรอกข้อมูลให้ครบ');return;} const fin=load(KEYS.finance,DEFAULT_FIN); fin.unshift({name,proj:document.getElementById('fproj').value,type:document.getElementById('ftype').value,amt,status:document.getElementById('fstat').value,date:document.getElementById('fdate').value}); save(KEYS.finance,fin); document.getElementById('fname2').value=''; document.getElementById('famt').value=''; document.getElementById('finForm').classList.add('hidden'); renderFinance(); showToast('บันทึกรายการแล้ว'); }
-function renderFinance(){
-  const fin=load(KEYS.finance,DEFAULT_FIN);
-  document.getElementById('finTable').innerHTML=fin.map((f,i)=>{const s=statStyle[f.status]||statStyle.pending; return`<tr><td title="${f.name}">${f.name}</td><td><span class="badge" style="${projBadge[f.proj]||''}">${f.proj}</span></td><td style="font-family:'DM Mono',monospace;font-weight:500;color:${f.type==='income'?'#27500a':'#a32d2d'}">${f.type==='income'?'+':'−'}฿${fmt(f.amt)}</td><td><span class="badge" style="background:${s.bg};color:${s.c}">${s.t}</span></td><td style="color:var(--text2);font-size:12px">${f.date}</td><td><button class="btn btn-sm btn-danger" onclick="delFin(${i})" style="padding:2px 6px"><i class="ti ti-trash"></i></button></td></tr>`;}).join('');
-}
-function delFin(i){ const f=load(KEYS.finance,DEFAULT_FIN); f.splice(i,1); save(KEYS.finance,f); renderFinance(); }
-
-// CHEM
-function toggleCF(){ document.getElementById('chemForm').classList.toggle('hidden'); }
-function saveChem(){ const name=document.getElementById('cname').value.trim(); if(!name){showToast('กรุณาใส่ชื่อสาร');return;} const c=load(KEYS.chem,DEFAULT_CHEM); c.unshift({name,qty:document.getElementById('cqty').value,loc:document.getElementById('cloc').value,exp:document.getElementById('cexp').value}); save(KEYS.chem,c); document.getElementById('cname').value=''; document.getElementById('chemForm').classList.add('hidden'); renderChem(); showToast('เพิ่มสารแล้ว'); }
-function renderChem(){
-  const today=new Date(); const c=load(KEYS.chem,DEFAULT_CHEM);
-  document.getElementById('chemTable').innerHTML=c.map((ch,i)=>{const exp=ch.exp?new Date(ch.exp):null; const days=exp?Math.ceil((exp-today)/86400000):null; const warn=days!==null&&days<90; return`<tr><td style="font-weight:500">${ch.name}</td><td style="font-family:'DM Mono',monospace;font-size:12px;color:var(--text2)">${ch.qty||'—'}</td><td><span class="badge" style="background:var(--bg2);color:var(--text2)">${ch.loc||'—'}</span></td><td style="font-size:12px;font-family:'DM Mono',monospace;${warn?'color:#a32d2d;font-weight:500':''}">${ch.exp||(warn?' ⚠':'')}</td><td><button class="btn btn-sm btn-danger" onclick="delChem(${i})" style="padding:2px 6px"><i class="ti ti-trash"></i></button></td></tr>`;}).join('');
-}
-function delChem(i){ const c=load(KEYS.chem,DEFAULT_CHEM); c.splice(i,1); save(KEYS.chem,c); renderChem(); }
-
-// MONITOR
+// ===== MONITOR =====
+let monitorStu='';
 function renderMonitor(){
-  const members=load(KEYS.members,DEFAULT_MEMBERS);
-  document.getElementById('monitorFilter').innerHTML=members.map(m=>`<button onclick="setMonStu('${m.uid}',this)" class="mf-btn${monStu===m.uid?' on':''}" style="padding:4px 10px;font-size:12px;border:0.5px solid var(--${monStu===m.uid?'border2':'border'});border-radius:20px;cursor:pointer;background:${monStu===m.uid?'var(--bg2)':'var(--bg)'};color:var(--text${monStu===m.uid?'':'2'});display:inline-flex;align-items:center;gap:5px"><div class="av" style="background:${m.avbg};color:${m.avc};width:18px;height:18px;font-size:9px">${m.av}</div>${m.name.split(' ')[0]}</button>`).join('');
-  const nb=load(KEYS.notebook(monStu),[]);
-  document.getElementById('monNb').innerHTML=nb.length?nb.slice(0,5).map(e=>`<div style="padding:9px 0;border-bottom:0.5px solid var(--border)"><div style="font-size:13px;font-weight:500;color:var(--text)">${e.title}</div>${e.note?`<div style="font-size:12px;color:var(--text2);margin-top:2px">${e.note}</div>`:''} ${e.result?`<div style="font-size:12px;color:var(--text2);margin-top:2px"><strong>ผล:</strong> ${e.result}</div>`:''}<div style="font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;margin-top:2px">${e.date||''}</div></div>`).join(''):'<div style="font-size:13px;color:var(--text3);padding:8px">ยังไม่มีบันทึก</div>';
-  const tasks=load(KEYS.tasks,[]).filter(t=>t.target==='all'||t.target===monStu);
-  const done=tasks.filter(t=>t.done).length; const pct=tasks.length?Math.round(done/tasks.length*100):0;
-  document.getElementById('monTask').innerHTML=`<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><span style="font-size:13px;color:var(--text)">${done}/${tasks.length} งาน</span><span style="font-size:13px;font-weight:500;color:${pct===100?'#1D9E75':pct>=50?'#378ADD':'#EF9F27'}">${pct}%</span></div><div class="pbar"><div class="pfill" style="width:${pct}%;background:${pct===100?'#1D9E75':pct>=50?'#378ADD':'#EF9F27'}"></div></div>`+(tasks.length?tasks.map(t=>`<div style="padding:7px 0;border-bottom:0.5px solid var(--border);display:flex;align-items:center;gap:8px"><div style="width:6px;height:6px;border-radius:50%;background:${t.done?'#1D9E75':'#B4B2A9'}"></div><span style="font-size:12px;color:var(--text);flex:1;${t.done?'text-decoration:line-through;color:var(--text3)':''}">${t.name}</span><span class="badge" style="background:${t.done?'#e1f5ee':'#faeeda'};color:${t.done?'#085041':'#633806'}">${t.done?'เสร็จ':'กำลังทำ'}</span></div>`).join(''):'');
+  const students=KU.getApproved().filter(u=>u.level!=='admin');
+  if(!monitorStu && students.length) monitorStu=students[0].uid;
+  const stu=students.find(u=>u.uid===monitorStu)||students[0];
+  if(!stu) return '<div class="card"><div style="padding:1rem;color:var(--color-text-tertiary)">ไม่มีนิสิต</div></div>';
+  const notes=KU.getNotes(monitorStu);
+  const allTasks=KU.getTasks().filter(t=>t.target===monitorStu||t.target==='all');
+  const done=allTasks.filter(t=>t.done).length;
+  const pct=allTasks.length?Math.round(done/allTasks.length*100):0;
+  return`
+  <div style="display:flex;gap:5px;margin-bottom:1rem;flex-wrap:wrap">
+    ${students.map(u=>`<button class="btn btn-sm${u.uid===monitorStu?' btn-primary':''}" onclick="monitorStu='${u.uid}';renderContent()"><div class="av av-sm" style="background:${u.avbg};color:${u.avc};display:inline-flex">${u.av}</div> ${u.name.split(' ')[0]}</button>`).join('')}
+  </div>
+  <div class="card" style="margin-bottom:10px">
+    <div class="card-header"><span class="card-title">สมุดแล็บ — ${stu.name}</span><span style="font-size:11px;font-family:'DM Mono',monospace;color:var(--color-text-tertiary)">อ่านอย่างเดียว</span></div>
+    ${notes.length?notes.slice().reverse().map(n=>{
+      const tc=CATS[n.tag]?`background:${CATS[n.tag].bg};color:${CATS[n.tag].c}`:'background:#f1efe8;color:#5f5e5a';
+      const dt=new Date(n.date).toLocaleDateString('th-TH',{day:'numeric',month:'short',year:'2-digit'});
+      return`<div style="padding:10px 0;border-bottom:0.5px solid var(--color-border-tertiary)">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><span style="font-size:13px;font-weight:500;flex:1">${n.title||''}</span><span class="badge" style="${tc}">${n.tag}</span><span style="font-size:11px;font-family:'DM Mono',monospace;color:var(--color-text-tertiary)">${dt}</span></div>
+        ${n.type==='quick'?`<div style="font-size:13px;color:var(--color-text-secondary)">${n.note||''}</div>`:
+        `${n.objective?`<div class="nb-section-box"><div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--color-text-secondary)">วัตถุประสงค์</div>${n.objective}</div>`:''}
+         ${n.result?`<div class="nb-section-box" style="border-left-color:#1D9E75;margin-top:3px"><div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--color-text-secondary)">ผล</div>${n.result}</div>`:''}
+         ${n.problem?`<div class="nb-section-box" style="border-left-color:#E24B4A;margin-top:3px"><div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--color-text-secondary)">ปัญหา</div>${n.problem}</div>`:''}`}
+      </div>`;
+    }).join(''):'<div style="font-size:13px;color:var(--color-text-tertiary);padding:8px 0">ยังไม่มีบันทึก</div>'}
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="card-title">ความคืบหน้างาน</span><span style="font-size:12px;font-family:'DM Mono',monospace;font-weight:500;color:${pct===100?'#1D9E75':'#EF9F27'}">${done}/${allTasks.length} · ${pct}%</span></div>
+    <div class="pbar" style="margin-bottom:10px"><div class="pfill" style="width:${pct}%;background:${pct===100?'#1D9E75':pct>=50?'#378ADD':'#EF9F27'}"></div></div>
+    ${allTasks.map(t=>`<div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:0.5px solid var(--color-border-tertiary)">
+      <div style="width:6px;height:6px;border-radius:50%;background:${t.done?'#1D9E75':'#B4B2A9'};flex-shrink:0"></div>
+      <span style="font-size:13px;flex:1;${t.done?'text-decoration:line-through;color:var(--color-text-tertiary)':''}">${t.name}</span>
+      <span class="badge" style="${t.done?'background:#e1f5ee;color:#085041':'background:#faeeda;color:#633806'}">${t.done?'เสร็จแล้ว':'กำลังทำ'}</span>
+    </div>`).join('')||'<div style="font-size:13px;color:var(--color-text-tertiary)">ยังไม่มีงาน</div>'}
+  </div>`;
 }
-function setMonStu(uid,btn){ monStu=uid; renderMonitor(); }
 
-function logout(){ clearSession(); location.href='index.html'; }
+// ===== PLAN VIEW (admin reads student plans) =====
+let pvStu='';
+let pvYear=new Date().getFullYear();
+let pvMonth=new Date().getMonth()+1;
+let pvDay=null;
 
-// Init
-renderOverview();
+function renderPlanView(){
+  const students=KU.getApproved().filter(u=>u.level!=='admin');
+  if(!pvStu && students.length) pvStu=students[0].uid;
+  return`
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:8px">
+    <div style="display:flex;gap:5px;flex-wrap:wrap">
+      ${students.map(u=>`<button class="btn btn-sm${u.uid===pvStu?' btn-primary':''}" onclick="pvStu='${u.uid}';pvDay=null;document.getElementById('pvDetail').style.display='none';initPlanView()"><div class="av av-sm" style="background:${u.avbg};color:${u.avc};display:inline-flex">${u.av}</div> ${u.name.split(' ')[0]}</button>`).join('')}
+    </div>
+    <div style="display:flex;align-items:center;gap:6px">
+      <button class="btn btn-sm" onclick="pvPrev()"><i class="ti ti-chevron-left"></i></button>
+      <span id="pvMonthLbl" style="font-size:13px;font-weight:500;font-family:'DM Mono',monospace;min-width:90px;text-align:center"></span>
+      <button class="btn btn-sm" onclick="pvNext()"><i class="ti ti-chevron-right"></i></button>
+    </div>
+  </div>
+  <div style="font-size:11px;font-family:'DM Mono',monospace;color:var(--color-text-tertiary);margin-bottom:8px;padding:5px 10px;background:var(--color-background-secondary);border-radius:var(--border-radius-md)"><i class="ti ti-eye" style="font-size:11px;vertical-align:-1px"></i> อ่านอย่างเดียว — นิสิตเป็นคนกรอกแผนงาน</div>
+  <div class="card">
+    <div class="cal-dow">${['อา','จ','อ','พ','พฤ','ศ','ส'].map(d=>`<span>${d}</span>`).join('')}</div>
+    <div class="cal-grid" id="pvGrid"></div>
+  </div>
+  <div id="pvDetail" style="display:none" class="cal-detail-admin">
+    <div style="font-size:14px;font-weight:500;font-family:'DM Mono',monospace;margin-bottom:8px" id="pvDetailDate"></div>
+    <div id="pvDayList"></div>
+  </div>`;
+}
+
+function initPlanView(){
+  if(!document.getElementById('pvGrid')) return;
+  document.getElementById('pvMonthLbl').textContent=TH_MONTHS[pvMonth]+' '+(pvYear+543);
+  const firstDay=new Date(pvYear,pvMonth-1,1).getDay();
+  const daysInMonth=new Date(pvYear,pvMonth,0).getDate();
+  const today=new Date();
+  const todayStr=today.getFullYear()+'-'+String(today.getMonth()+1).padStart(2,'0')+'-'+String(today.getDate()).padStart(2,'0');
+  const plans=KU.getPlans(pvStu);
+  let html='';
+  for(let i=0;i<firstDay;i++) html+='<div class="cal-day empty"></div>';
+  for(let d=1;d<=daysInMonth;d++){
+    const ds=pvYear+'-'+String(pvMonth).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+    const items=plans[ds]||[];
+    const isSel=ds===pvDay;
+    const chips=items.slice(0,2).map(p=>{const c=CATS[p.cat]||CATS['อื่นๆ'];return`<div class="plan-chip" style="background:${c.bg};color:${c.c}">${p.txt}</div>`;}).join('');
+    const more=items.length>2?`<div style="font-size:10px;color:var(--color-text-tertiary)">+${items.length-2}</div>`:'';
+    html+=`<div class="cal-day${ds===todayStr?' today':''}${isSel?' selected':''}" onclick="pvSelectDay('${ds}')">
+      <div class="cal-day-num">${d}</div>${chips}${more}
+    </div>`;
+  }
+  document.getElementById('pvGrid').innerHTML=html;
+  if(pvDay) renderPvDetail();
+}
+function pvSelectDay(ds){pvDay=ds;initPlanView();document.getElementById('pvDetail').style.display='block';}
+function renderPvDetail(){
+  const[y,m,d]=pvDay.split('-');
+  document.getElementById('pvDetailDate').textContent=parseInt(d)+' '+TH_MONTHS[parseInt(m)]+' '+(parseInt(y)+543);
+  const items=KU.getPlans(pvStu)[pvDay]||[];
+  document.getElementById('pvDayList').innerHTML=items.length?items.map(p=>{const c=CATS[p.cat]||CATS['อื่นๆ'];return`<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:0.5px solid var(--color-border-tertiary)"><div style="width:8px;height:8px;border-radius:50%;background:${c.dot};flex-shrink:0"></div><span style="flex:1;font-size:13px">${p.txt}</span><span class="badge" style="background:${c.bg};color:${c.c}">${p.cat}</span></div>`;}).join(''):'<div style="font-size:13px;color:var(--color-text-tertiary)">ไม่มีแผนงาน</div>';
+}
+function pvPrev(){pvMonth--;if(pvMonth<1){pvMonth=12;pvYear--;}pvDay=null;document.getElementById('pvDetail').style.display='none';initPlanView();}
+function pvNext(){pvMonth++;if(pvMonth>12){pvMonth=1;pvYear++;}pvDay=null;document.getElementById('pvDetail').style.display='none';initPlanView();}
+
+// ===== NOTIFY =====
+let notifType='deadline';
+let notifTargets=new Set(['all']);
+const TYPE_STYLE={deadline:{bg:'#fcebeb',c:'#a32d2d',icon:'⚠️'},task:{bg:'#e6f1fb',c:'#0c447c',icon:'📋'},warn:{bg:'#faeeda',c:'#633806',icon:'📢'},general:{bg:'#e1f5ee',c:'#085041',icon:'💬'}};
+
+function renderNotify(){
+  const history=KU.getAdminNotifs();
+  const students=KU.getApproved().filter(u=>u.level!=='admin');
+  return`<div class="card" style="margin-bottom:10px">
+    <div class="card-header"><span class="card-title">ส่งการแจ้งเตือน</span></div>
+    <div class="f-group"><label class="f-label">ประเภท</label>
+      <div style="display:flex;gap:5px;flex-wrap:wrap">
+        ${Object.entries(TYPE_STYLE).map(([t,s])=>`<button class="btn btn-sm${t===notifType?' btn-primary':''}" onclick="notifType='${t}';renderContent()">${s.icon} ${t}</button>`).join('')}
+      </div>
+    </div>
+    <div class="f-group"><label class="f-label">ส่งถึง</label>
+      <div style="display:flex;gap:5px;flex-wrap:wrap" id="ntgtBtns">
+        <button class="btn btn-sm${notifTargets.has('all')?' btn-primary':''}" onclick="toggleNTarget('all',this)"><i class="ti ti-users"></i> ทุกคน</button>
+        ${students.map(u=>`<button class="btn btn-sm${notifTargets.has(u.uid)?' btn-primary':''}" onclick="toggleNTarget('${u.uid}',this)"><div class="av av-sm" style="background:${u.avbg};color:${u.avc};display:inline-flex">${u.av}</div>${u.name.split(' ')[0]}</button>`).join('')}
+      </div>
+    </div>
+    <div class="f-group"><label class="f-label">ข้อความ</label><textarea id="notifMsg" class="f-input" placeholder="ข้อความแจ้งเตือน..."></textarea></div>
+    <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="sendNotif()"><i class="ti ti-send"></i> ส่ง</button></div>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="card-title">ประวัติ (${history.length})</span></div>
+    ${history.length?history.slice().reverse().map(n=>{const s=TYPE_STYLE[n.type]||TYPE_STYLE.general;const tgt=n.targets.includes('all')?'ทุกคน':n.targets.join(', ');return`<div style="padding:9px 0;border-bottom:0.5px solid var(--color-border-tertiary);display:flex;align-items:flex-start;gap:8px"><span style="font-size:14px">${s.icon}</span><div style="flex:1"><div style="font-size:13px">${n.msg}</div><div style="font-size:11px;font-family:'DM Mono',monospace;color:var(--color-text-secondary);margin-top:3px">ถึง: ${tgt} · ${n.time}</div></div></div>`;}).join(''):'<div style="font-size:13px;color:var(--color-text-tertiary);padding:8px 0;text-align:center">ยังไม่มีการแจ้งเตือน</div>'}
+  </div>`;
+}
+
+function toggleNTarget(uid,btn){
+  if(uid==='all'){notifTargets=new Set(['all']);}
+  else{notifTargets.delete('all');notifTargets.has(uid)?notifTargets.delete(uid):notifTargets.add(uid);if(notifTargets.size===0)notifTargets.add('all');}
+  renderContent();
+}
+function quickNotify(uid){notifTargets=new Set([uid]);switchTab('notify');}
+function sendNotif(){
+  const msg=document.getElementById('notifMsg')?.value.trim();
+  if(!msg){showToast('กรุณาใส่ข้อความ');return;}
+  const now=new Date().toLocaleDateString('th-TH',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
+  const targets=Array.from(notifTargets);
+  const h=KU.getAdminNotifs();
+  h.push({type:notifType,targets,msg,time:now});
+  KU.setAdminNotifs(h);
+  // push to each user
+  const approved=KU.getApproved().filter(u=>u.level!=='admin');
+  const targetUsers=targets.includes('all')?approved:approved.filter(u=>targets.includes(u.uid));
+  targetUsers.forEach(u=>{const notifs=KU.getNotifs(u.uid);notifs.push({id:'n'+Date.now(),type:notifType,msg,time:now,read:false});KU.setNotifs(u.uid,notifs);});
+  showToast('ส่งแล้ว');renderContent();
+}
+
+// ===== TASKS =====
+function renderTasks(){
+  const tasks=KU.getTasks();
+  const students=KU.getApproved().filter(u=>u.level!=='admin');
+  const LEVEL_BG2={bachelor:'#e6f1fb',master:'#eeedfe',phd:'#faeeda',ra:'#e1f5ee',all:'#f1efe8'};
+  const LEVEL_C2={bachelor:'#0c447c',master:'#3c3489',phd:'#633806',ra:'#085041',all:'#5f5e5a'};
+  return`<div class="card">
+    <div class="card-header"><span class="card-title">มอบหมายงาน</span><button class="btn btn-sm btn-primary" onclick="toggleTaskForm()"><i class="ti ti-plus"></i> เพิ่มงาน</button></div>
+    <div id="taskForm" style="display:none;padding:12px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);margin-bottom:10px">
+      <div class="f-row">
+        <div class="f-group" style="margin-bottom:0"><label class="f-label">มอบหมายให้</label>
+          <select id="tTarget" class="f-input" style="font-size:12px;padding:6px 8px">
+            <option value="all">ทุกคน</option>
+            ${students.map(u=>`<option value="${u.uid}">${u.name}</option>`).join('')}
+          </select>
+        </div>
+        <div class="f-group" style="margin-bottom:0"><label class="f-label">กำหนดส่ง</label><input type="date" id="tDue" class="f-input" style="font-size:12px;padding:6px 8px"></div>
+      </div>
+      <div class="f-group" style="margin-top:8px"><label class="f-label">ชื่องาน</label><input type="text" id="tName" class="f-input"></div>
+      <div style="margin-bottom:8px"><label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--color-text-secondary);cursor:pointer"><input type="checkbox" id="hasProto" onchange="document.getElementById('protoArea').style.display=this.checked?'block':'none'" style="width:13px;height:13px"> เพิ่ม Protocol</label></div>
+      <div id="protoArea" style="display:none" class="f-group"><label class="f-label">Protocol</label><textarea id="tProto" class="f-input"></textarea></div>
+      <div style="display:flex;justify-content:flex-end;gap:5px">
+        <button class="btn btn-sm" onclick="toggleTaskForm()">ยกเลิก</button>
+        <button class="btn btn-sm btn-primary" onclick="saveTask()"><i class="ti ti-check"></i> บันทึก</button>
+      </div>
+    </div>
+    ${tasks.map((t,i)=>{
+      const stu=t.target==='all'?null:students.find(u=>u.uid===t.target);
+      const lbl=t.target==='all'?'ทุกคน':(stu?stu.name:t.target);
+      const lbg=stu?stu.avbg:LEVEL_BG2.all;const lc=stu?stu.avc:LEVEL_C2.all;
+      return`<div style="padding:9px 0;border-bottom:0.5px solid var(--color-border-tertiary)">
+        <div style="display:flex;align-items:flex-start;gap:8px">
+          <input type="checkbox" ${t.done?'checked':''} style="width:14px;height:14px;margin-top:2px;flex-shrink:0;accent-color:var(--color-accent)" disabled>
+          <div style="flex:1">
+            <div style="font-size:13px;font-weight:500;${t.done?'text-decoration:line-through;color:var(--color-text-tertiary)':''}">${t.name}</div>
+            <div style="display:flex;gap:5px;align-items:center;margin-top:3px"><span class="badge" style="background:${lbg};color:${lc}">${lbl}</span>${t.due?`<span style="font-size:11px;font-family:'DM Mono',monospace;color:var(--color-text-secondary)">${t.due}</span>`:''}</div>
+            ${t.proto?`<div style="margin-top:5px;padding:6px 8px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);font-size:12px;color:var(--color-text-secondary);white-space:pre-line;border-left:2px solid var(--color-accent)">${t.proto}</div>`:''}
+          </div>
+          <button class="btn btn-sm btn-danger" onclick="delTask(${i})" style="padding:2px 6px;flex-shrink:0"><i class="ti ti-trash" style="font-size:10px"></i></button>
+        </div>
+      </div>`;
+    }).join('')||'<div style="text-align:center;padding:1.5rem;font-size:13px;color:var(--color-text-tertiary)">ยังไม่มีงาน</div>'}
+  </div>`;
+}
+function toggleTaskForm(){const f=document.getElementById('taskForm');if(f) f.style.display=f.style.display==='none'?'block':'none';}
+function saveTask(){
+  const name=document.getElementById('tName')?.value.trim();
+  if(!name){showToast('กรุณาใส่ชื่องาน');return;}
+  const tasks=KU.getTasks();
+  tasks.push({id:'t'+Date.now(),target:document.getElementById('tTarget').value,name,due:document.getElementById('tDue').value,proto:document.getElementById('tProto').value,done:false,assignedBy:sess.uid,ts:Date.now()});
+  KU.setTasks(tasks);showToast('บันทึกงานแล้ว');switchTab('tasks');
+}
+function delTask(i){const tasks=KU.getTasks();tasks.splice(i,1);KU.setTasks(tasks);switchTab('tasks');}
+
+// ===== FINANCE =====
+const STATUS_STYLE={paid:{bg:'#f1efe8',c:'#5f5e5a',txt:'ชำระแล้ว'},pending:{bg:'#faeeda',c:'#633806',txt:'รอดำเนินการ'},approved:{bg:'#e1f5ee',c:'#085041',txt:'อนุมัติแล้ว'},overdue:{bg:'#fcebeb',c:'#a32d2d',txt:'ค้างชำระ'}};
+function renderFinance(){
+  const fin=KU.getFinance();
+  const spent=fin.entries.filter(e=>e.type==='expense').reduce((a,e)=>a+e.amt,0);
+  const income=fin.entries.filter(e=>e.type==='income').reduce((a,e)=>a+e.amt,0);
+  const overdue=fin.entries.filter(e=>e.status==='overdue').reduce((a,e)=>a+e.amt,0);
+  return`<div class="metric-grid">
+    <div class="metric"><div class="metric-label">งบประมาณ</div><div class="metric-value">฿${(fin.budget/1000).toFixed(0)}K</div></div>
+    <div class="metric"><div class="metric-label">รายรับ</div><div class="metric-value" style="color:#27500a">฿${(income/1000).toFixed(0)}K</div></div>
+    <div class="metric"><div class="metric-label">รายจ่าย</div><div class="metric-value" style="color:#a32d2d">฿${(spent/1000).toFixed(0)}K</div></div>
+    <div class="metric"><div class="metric-label">ค้างชำระ</div><div class="metric-value" style="color:#a32d2d">฿${(overdue/1000).toFixed(0)}K</div></div>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="card-title">รายการ</span><button class="btn btn-sm btn-primary" onclick="toggleFinForm()"><i class="ti ti-plus"></i> เพิ่ม</button></div>
+    <div id="finForm" style="display:none;padding:12px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);margin-bottom:10px">
+      <div class="f-row">
+        <div class="f-group" style="margin-bottom:0"><label class="f-label">ประเภท</label><select id="fType" class="f-input" style="font-size:12px;padding:6px 8px"><option value="expense">รายจ่าย</option><option value="income">รายรับ</option></select></div>
+        <div class="f-group" style="margin-bottom:0"><label class="f-label">สถานะ</label><select id="fStatus" class="f-input" style="font-size:12px;padding:6px 8px"><option value="pending">รอดำเนินการ</option><option value="approved">อนุมัติแล้ว</option><option value="paid">ชำระแล้ว</option><option value="overdue">ค้างชำระ</option></select></div>
+      </div>
+      <div class="f-row" style="margin-top:8px">
+        <div class="f-group" style="margin-bottom:0"><label class="f-label">ชื่อรายการ</label><input type="text" id="fName" class="f-input" style="font-size:12px;padding:6px 8px"></div>
+        <div class="f-group" style="margin-bottom:0"><label class="f-label">จำนวน (บาท)</label><input type="number" id="fAmt" class="f-input" style="font-size:12px;padding:6px 8px" placeholder="0"></div>
+      </div>
+      <div style="display:flex;justify-content:flex-end;gap:5px;margin-top:8px">
+        <button class="btn btn-sm" onclick="toggleFinForm()">ยกเลิก</button>
+        <button class="btn btn-sm btn-primary" onclick="saveFin()"><i class="ti ti-check"></i> บันทึก</button>
+      </div>
+    </div>
+    <div class="table-wrap"><table>
+      <thead><tr><th>รายการ</th><th>จำนวน</th><th>สถานะ</th><th>วันที่</th><th></th></tr></thead>
+      <tbody>${fin.entries.map((e,i)=>{const s=STATUS_STYLE[e.status]||STATUS_STYLE.pending;const col=e.type==='income'?'#27500a':'#a32d2d';const sign=e.type==='income'?'+':'−';return`<tr><td>${e.name}</td><td style="font-family:'DM Mono',monospace;font-weight:500;color:${col}">${sign}฿${e.amt.toLocaleString()}</td><td><span class="badge" style="background:${s.bg};color:${s.c}">${s.txt}</span></td><td style="font-size:12px;color:var(--color-text-secondary)">${e.date}</td><td><button class="btn btn-sm btn-danger" onclick="delFin(${i})" style="padding:2px 6px"><i class="ti ti-trash" style="font-size:10px"></i></button></td></tr>`;}).join('')}
+      </tbody>
+    </table></div>
+  </div>`;
+}
+function toggleFinForm(){const f=document.getElementById('finForm');if(f) f.style.display=f.style.display==='none'?'block':'none';}
+function saveFin(){
+  const name=document.getElementById('fName')?.value.trim();
+  const amt=parseFloat(document.getElementById('fAmt')?.value||0);
+  if(!name||!amt){showToast('กรุณากรอกข้อมูลให้ครบ');return;}
+  const fin=KU.getFinance();
+  fin.entries.push({id:'f'+Date.now(),name,type:document.getElementById('fType').value,status:document.getElementById('fStatus').value,amt,project:'—',date:new Date().toLocaleDateString('th-TH',{day:'numeric',month:'short'})});
+  KU.setFinance(fin);showToast('บันทึกแล้ว');switchTab('finance');
+}
+function delFin(i){const fin=KU.getFinance();fin.entries.splice(i,1);KU.setFinance(fin);switchTab('finance');}
+
+// ===== CHEM =====
+function renderChem(){
+  const chems=KU.getChem();
+  const today=new Date();
+  return`<div class="card">
+    <div class="card-header"><span class="card-title">คลังสารเคมี</span><button class="btn btn-sm btn-primary" onclick="toggleChemForm()"><i class="ti ti-plus"></i> เพิ่ม</button></div>
+    <div id="chemForm" style="display:none;padding:12px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);margin-bottom:10px">
+      <div class="f-row">
+        <div class="f-group" style="margin-bottom:0"><label class="f-label">ชื่อสาร</label><input type="text" id="cName" class="f-input" style="font-size:12px;padding:6px 8px"></div>
+        <div class="f-group" style="margin-bottom:0"><label class="f-label">ตำแหน่ง</label><input type="text" id="cLoc" class="f-input" style="font-size:12px;padding:6px 8px" placeholder="เช่น ตู้ A1"></div>
+      </div>
+      <div class="f-row" style="margin-top:8px">
+        <div class="f-group" style="margin-bottom:0"><label class="f-label">ปริมาณ</label><input type="text" id="cQty" class="f-input" style="font-size:12px;padding:6px 8px" placeholder="เช่น 500 ml"></div>
+        <div class="f-group" style="margin-bottom:0"><label class="f-label">วันหมดอายุ</label><input type="date" id="cExp" class="f-input" style="font-size:12px;padding:6px 8px"></div>
+      </div>
+      <div style="display:flex;justify-content:flex-end;gap:5px;margin-top:8px">
+        <button class="btn btn-sm" onclick="toggleChemForm()">ยกเลิก</button>
+        <button class="btn btn-sm btn-primary" onclick="saveChem()"><i class="ti ti-check"></i> บันทึก</button>
+      </div>
+    </div>
+    <table><thead><tr><th>สารเคมี</th><th>ปริมาณ</th><th>ตำแหน่ง</th><th>หมดอายุ</th><th></th></tr></thead>
+    <tbody>${chems.map((c,i)=>{const exp=c.exp?new Date(c.exp):null;const days=exp?Math.ceil((exp-today)/86400000):null;const warn=days!==null&&days<90;return`<tr><td style="font-weight:500">${c.name}</td><td style="font-size:12px;font-family:'DM Mono',monospace;color:var(--color-text-secondary)">${c.qty||'—'}</td><td><span class="badge" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">${c.loc||'—'}</span></td><td style="font-size:12px;font-family:'DM Mono',monospace;${warn?'color:#a32d2d;font-weight:500':''}">${c.exp||'—'}${warn?' ⚠':''}</td><td><button class="btn btn-sm btn-danger" onclick="delChem(${i})" style="padding:2px 6px"><i class="ti ti-trash" style="font-size:10px"></i></button></td></tr>`;}).join('')}
+    </tbody></table>
+  </div>`;
+}
+function toggleChemForm(){const f=document.getElementById('chemForm');if(f) f.style.display=f.style.display==='none'?'block':'none';}
+function saveChem(){
+  const name=document.getElementById('cName')?.value.trim();
+  if(!name){showToast('กรุณาใส่ชื่อสาร');return;}
+  const chems=KU.getChem();
+  chems.push({id:'c'+Date.now(),name,qty:document.getElementById('cQty').value,loc:document.getElementById('cLoc').value,exp:document.getElementById('cExp').value});
+  KU.setChem(chems);showToast('บันทึกแล้ว');switchTab('chem');
+}
+function delChem(i){const chems=KU.getChem();chems.splice(i,1);KU.setChem(chems);switchTab('chem');}
+
+function showToast(msg){const t=document.getElementById('toast');t.innerHTML='<i class="ti ti-check"></i> '+msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
+
+renderTabs();
+renderContent();
 </script>
 </body>
 </html>
