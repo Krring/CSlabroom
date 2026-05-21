@@ -87,7 +87,7 @@
     </div>
 
     <!-- Quick login (after recent card selected) -->
-    <div id="quickLogin" class="hidden">
+    <div id="quickLogin" style="display:none">
       <div class="f-group">
         <label class="f-lbl">รหัสผ่าน</label>
         <div style="position:relative">
@@ -106,9 +106,7 @@
       </button>
     </div>
 
-    <div style="font-size:11px;font-family:'DM Mono',monospace;color:var(--text3);text-align:center;margin-top:8px">
-      demo · รหัสผ่านนิสิตคือ 1234
-    </div>
+
   </div>
 </div>
 
@@ -175,8 +173,8 @@ function selectRecent(el, uid) {
   document.querySelectorAll('.recent-card').forEach(c => c.classList.remove('sel'));
   el.classList.add('sel');
   // Show quick password panel
-  document.getElementById('manualForm').classList.add('hidden');
-  document.getElementById('quickLogin').classList.remove('hidden');
+  document.getElementById('manualForm').style.display = 'none';
+  document.getElementById('quickLogin').style.display = 'block';
   document.getElementById('loginErr').classList.remove('on');
   setTimeout(() => document.getElementById('quickPass').focus(), 50);
 }
@@ -184,8 +182,8 @@ function selectRecent(el, uid) {
 function cancelQuick() {
   selectedRecentUID = null;
   document.querySelectorAll('.recent-card').forEach(c => c.classList.remove('sel'));
-  document.getElementById('quickLogin').classList.add('hidden');
-  document.getElementById('manualForm').classList.remove('hidden');
+  document.getElementById('quickLogin').style.display = 'none';
+  document.getElementById('manualForm').style.display = 'block';
   document.getElementById('loginErr').classList.remove('on');
 }
 
