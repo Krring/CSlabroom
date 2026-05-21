@@ -7,19 +7,19 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 <style>
 /* Plan calendar */
-.cal-detail{border:0.5px solid var(--color-border-primary);border-radius:var(--border-radius-lg);padding:1rem 1.25rem;margin-bottom:1rem;background:var(--color-background-secondary);}
-.plan-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:0.5px solid var(--color-border-tertiary);}
+.cal-detail{border:0.5px solid var(--border2);border-radius:var(--rl);padding:1rem 1.25rem;margin-bottom:1rem;background:var(--bg2);}
+.plan-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:0.5px solid var(--border);}
 .plan-row:last-child{border-bottom:none;}
-.cat-btn{padding:3px 9px;font-size:11px;font-family:'DM Mono',monospace;border:0.5px solid var(--color-border-secondary);border-radius:20px;cursor:pointer;background:var(--color-background-primary);color:var(--color-text-secondary);}
+.cat-btn{padding:3px 9px;font-size:11px;font-family:'DM Mono',monospace;border:0.5px solid var(--border2);border-radius:20px;cursor:pointer;background:var(--bg);color:var(--text2);}
 .cat-btn.on{border-color:transparent;}
 /* Thesis slider */
-.thesis-section{padding:8px 0;border-bottom:0.5px solid var(--color-border-tertiary);}
+.thesis-section{padding:8px 0;border-bottom:0.5px solid var(--border);}
 .thesis-section:last-child{border-bottom:none;}
 input[type=range]{width:100%;accent-color:var(--color-accent);}
 /* Notebook */
-.nb-section-box{margin-top:5px;padding:6px 8px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);font-size:12px;line-height:1.5;border-left:2px solid var(--color-border-secondary);}
+.nb-section-box{margin-top:5px;padding:6px 8px;background:var(--bg2);border-radius:var(--r);font-size:12px;line-height:1.5;border-left:2px solid var(--border2);}
 /* Task */
-.task-item{display:flex;align-items:flex-start;gap:8px;padding:8px 0;border-bottom:0.5px solid var(--color-border-tertiary);}
+.task-item{display:flex;align-items:flex-start;gap:8px;padding:8px 0;border-bottom:0.5px solid var(--border);}
 .task-item:last-child{border-bottom:none;}
 </style>
 </head>
@@ -32,7 +32,7 @@ input[type=range]{width:100%;accent-color:var(--color-accent);}
   </a>
   <div style="display:flex;align-items:center;gap:8px;">
     <div class="av av-md" id="navAv" style="background:#f1efe8;color:#5f5e5a">?</div>
-    <span style="font-size:12px;color:var(--color-text-secondary)" id="navName"></span>
+    <span style="font-size:12px;color:var(--text2)" id="navName"></span>
     <button class="btn btn-sm" onclick="KU.logout()"><i class="ti ti-logout"></i> ออก</button>
   </div>
 </nav>
@@ -87,9 +87,9 @@ function renderNotebook() {
   return `<div class="card">
     <div class="card-header">
       <span class="card-title">สมุดแล็บ</span>
-      <button class="btn btn-primary btn-sm" onclick="toggleNbForm()"><i class="ti ti-plus"></i> เพิ่ม</button>
+      <button class="btn btn-pri btn-sm" onclick="toggleNbForm()"><i class="ti ti-plus"></i> เพิ่ม</button>
     </div>
-    <div id="nbForm" style="display:none;padding:12px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);margin-bottom:10px">
+    <div id="nbForm" style="display:none;padding:12px;background:var(--bg2);border-radius:var(--r);margin-bottom:10px">
       <div style="display:flex;gap:5px;margin-bottom:8px">
         <button class="cat-btn on" id="nbt-quick" onclick="setNbType('quick',this)">Quick Note</button>
         <button class="cat-btn" id="nbt-lab" onclick="setNbType('lab',this)">Lab Record</button>
@@ -115,28 +115,28 @@ function renderNotebook() {
       </div>
       <div style="display:flex;justify-content:flex-end;gap:5px">
         <button class="btn btn-sm" onclick="toggleNbForm()">ยกเลิก</button>
-        <button class="btn btn-sm btn-primary" onclick="saveNote()"><i class="ti ti-check"></i> บันทึก</button>
+        <button class="btn btn-sm btn-pri" onclick="saveNote()"><i class="ti ti-check"></i> บันทึก</button>
       </div>
     </div>
-    <div id="nbList">${notes.length ? notes.slice().reverse().map((n,i) => renderNoteItem(n, notes.length-1-i)).join('') : '<div style="text-align:center;padding:1.5rem;font-size:13px;color:var(--color-text-tertiary)">ยังไม่มีบันทึก — กด + เพื่อเพิ่ม</div>'}</div>
+    <div id="nbList">${notes.length ? notes.slice().reverse().map((n,i) => renderNoteItem(n, notes.length-1-i)).join('') : '<div style="text-align:center;padding:1.5rem;font-size:13px;color:var(--text3)">ยังไม่มีบันทึก — กด + เพื่อเพิ่ม</div>'}</div>
   </div>`;
 }
 
 function renderNoteItem(n, idx) {
   const tc = CATS[n.tag] ? `background:${CATS[n.tag].bg};color:${CATS[n.tag].c}` : 'background:#f1efe8;color:#5f5e5a';
   const dt = new Date(n.date).toLocaleDateString('th-TH',{day:'numeric',month:'short',year:'2-digit'});
-  return `<div style="padding:10px 0;border-bottom:0.5px solid var(--color-border-tertiary)">
+  return `<div style="padding:10px 0;border-bottom:0.5px solid var(--border)">
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
       <span style="font-size:13px;font-weight:500;flex:1">${n.title||'ไม่มีหัวข้อ'}</span>
       <span class="badge" style="${tc}">${n.tag}</span>
-      <span style="font-size:11px;font-family:'DM Mono',monospace;color:var(--color-text-tertiary)">${dt}</span>
+      <span style="font-size:11px;font-family:'DM Mono',monospace;color:var(--text3)">${dt}</span>
       <button class="btn btn-sm btn-danger" onclick="delNote(${idx})" style="padding:2px 6px"><i class="ti ti-trash" style="font-size:10px"></i></button>
     </div>
-    ${n.type==='quick' ? `<div style="font-size:13px;color:var(--color-text-secondary);line-height:1.5">${n.note||''}</div>` :
-    `${n.objective?`<div class="nb-section-box"><div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--color-text-secondary);margin-bottom:2px">วัตถุประสงค์</div>${n.objective}</div>`:''}
-     ${n.result?`<div class="nb-section-box" style="margin-top:4px;border-left-color:#1D9E75"><div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--color-text-secondary);margin-bottom:2px">ผล</div>${n.result}</div>`:''}
-     ${n.problem?`<div class="nb-section-box" style="margin-top:4px;border-left-color:#E24B4A"><div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--color-text-secondary);margin-bottom:2px">ปัญหา</div>${n.problem}</div>`:''}
-     ${n.summary?`<div class="nb-section-box" style="margin-top:4px;border-left-color:#378ADD"><div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--color-text-secondary);margin-bottom:2px">สรุป</div>${n.summary}</div>`:''}`}
+    ${n.type==='quick' ? `<div style="font-size:13px;color:var(--text2);line-height:1.5">${n.note||''}</div>` :
+    `${n.objective?`<div class="nb-section-box"><div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--text2);margin-bottom:2px">วัตถุประสงค์</div>${n.objective}</div>`:''}
+     ${n.result?`<div class="nb-section-box" style="margin-top:4px;border-left-color:#1D9E75"><div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--text2);margin-bottom:2px">ผล</div>${n.result}</div>`:''}
+     ${n.problem?`<div class="nb-section-box" style="margin-top:4px;border-left-color:#E24B4A"><div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--text2);margin-bottom:2px">ปัญหา</div>${n.problem}</div>`:''}
+     ${n.summary?`<div class="nb-section-box" style="margin-top:4px;border-left-color:#378ADD"><div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--text2);margin-bottom:2px">สรุป</div>${n.summary}</div>`:''}`}
   </div>`;
 }
 
@@ -193,15 +193,15 @@ function renderPlan() {
   <div id="planDetail" style="display:none" class="cal-detail">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
       <span id="planDetailDate" style="font-size:14px;font-weight:500;font-family:'DM Mono',monospace"></span>
-      <button class="btn btn-sm btn-primary" onclick="togglePlanForm()"><i class="ti ti-plus"></i> เพิ่มแผน</button>
+      <button class="btn btn-sm btn-pri" onclick="togglePlanForm()"><i class="ti ti-plus"></i> เพิ่มแผน</button>
     </div>
     <div id="planDayList"></div>
-    <div id="planAddForm" style="display:none;margin-top:8px;padding:10px;background:var(--color-background-primary);border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-tertiary)">
+    <div id="planAddForm" style="display:none;margin-top:8px;padding:10px;background:var(--bg);border-radius:var(--r);border:0.5px solid var(--border)">
       <div class="f-group"><label class="f-label">แผนงาน</label><input type="text" id="planInp" class="f-input" placeholder="เช่น สกัด DNA ตัวอย่างชุดที่ 2" onkeydown="if(event.key==='Enter')savePlanItem()"></div>
       <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px" id="planCatBtns"></div>
       <div style="display:flex;gap:5px;justify-content:flex-end">
         <button class="btn btn-sm" onclick="togglePlanForm()">ยกเลิก</button>
-        <button class="btn btn-sm btn-primary" onclick="savePlanItem()"><i class="ti ti-check"></i> บันทึก</button>
+        <button class="btn btn-sm btn-pri" onclick="savePlanItem()"><i class="ti ti-check"></i> บันทึก</button>
       </div>
     </div>
   </div>`;
@@ -224,7 +224,7 @@ function renderPlanCal() {
     const items=plans[ds]||[];
     const isSel=ds===planDay;
     const chips=items.slice(0,2).map(p=>{const c=CATS[p.cat]||CATS['อื่นๆ'];return`<div class="plan-chip" style="background:${c.bg};color:${c.c}">${p.txt}</div>`;}).join('');
-    const more=items.length>2?`<div style="font-size:10px;color:var(--color-text-tertiary)">+${items.length-2}</div>`:'';
+    const more=items.length>2?`<div style="font-size:10px;color:var(--text3)">+${items.length-2}</div>`:'';
     html+=`<div class="cal-day${ds===todayStr?' today':''}${isSel?' selected':''}" onclick="selectPlanDay('${ds}',${d})">
       <div class="cal-day-num">${d}</div>${chips}${more}
     </div>`;
@@ -243,7 +243,7 @@ function renderPlanDetail(){
   document.getElementById('planDetailDate').textContent=parseInt(d)+' '+TH_MONTHS[parseInt(m)]+' '+(parseInt(y)+543);
   const plans=KU.getPlans(sess.uid);
   const items=plans[planDay]||[];
-  document.getElementById('planDayList').innerHTML=items.length?items.map((p,i)=>{const c=CATS[p.cat]||CATS['อื่นๆ'];return`<div class="plan-row"><div style="width:8px;height:8px;border-radius:50%;background:${c.dot};flex-shrink:0"></div><span style="flex:1;font-size:13px">${p.txt}</span><span class="badge" style="background:${c.bg};color:${c.c}">${p.cat}</span><button onclick="delPlanItem(${i})" style="background:none;border:none;color:var(--color-text-tertiary);cursor:pointer;font-size:11px;padding:2px 4px"><i class="ti ti-trash"></i></button></div>`;}).join(''):'<div style="font-size:13px;color:var(--color-text-tertiary);padding:4px 0">ไม่มีแผนงานวันนี้</div>';
+  document.getElementById('planDayList').innerHTML=items.length?items.map((p,i)=>{const c=CATS[p.cat]||CATS['อื่นๆ'];return`<div class="plan-row"><div style="width:8px;height:8px;border-radius:50%;background:${c.dot};flex-shrink:0"></div><span style="flex:1;font-size:13px">${p.txt}</span><span class="badge" style="background:${c.bg};color:${c.c}">${p.cat}</span><button onclick="delPlanItem(${i})" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:11px;padding:2px 4px"><i class="ti ti-trash"></i></button></div>`;}).join(''):'<div style="font-size:13px;color:var(--text3);padding:4px 0">ไม่มีแผนงานวันนี้</div>';
 }
 function togglePlanForm(){
   const f=document.getElementById('planAddForm');
@@ -278,12 +278,12 @@ function renderTasks(){
     ${tasks.length?tasks.map((t,i)=>`<div class="task-item">
       <input type="checkbox" ${t.done?'checked':''} onchange="toggleTask('${t.id}',this)" style="width:14px;height:14px;margin-top:2px;flex-shrink:0;accent-color:var(--color-accent)">
       <div style="flex:1">
-        <div style="font-size:13px;font-weight:500;${t.done?'text-decoration:line-through;color:var(--color-text-tertiary)':''}">${t.name}</div>
-        ${t.due?`<div style="font-size:11px;font-family:'DM Mono',monospace;color:var(--color-text-secondary);margin-top:2px">กำหนดส่ง: ${t.due}</div>`:''}
-        ${t.proto?`<div style="margin-top:5px;padding:6px 8px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);font-size:12px;color:var(--color-text-secondary);white-space:pre-line;border-left:2px solid var(--color-accent)">${t.proto}</div>`:''}
+        <div style="font-size:13px;font-weight:500;${t.done?'text-decoration:line-through;color:var(--text3)':''}">${t.name}</div>
+        ${t.due?`<div style="font-size:11px;font-family:'DM Mono',monospace;color:var(--text2);margin-top:2px">กำหนดส่ง: ${t.due}</div>`:''}
+        ${t.proto?`<div style="margin-top:5px;padding:6px 8px;background:var(--bg2);border-radius:var(--r);font-size:12px;color:var(--text2);white-space:pre-line;border-left:2px solid var(--color-accent)">${t.proto}</div>`:''}
       </div>
       <span class="badge" style="${t.done?'background:#e1f5ee;color:#085041':'background:#faeeda;color:#633806'}">${t.done?'เสร็จแล้ว':'กำลังทำ'}</span>
-    </div>`).join(''):'<div style="text-align:center;padding:1.5rem;font-size:13px;color:var(--color-text-tertiary)">ไม่มีงานที่ได้รับมอบหมาย</div>'}
+    </div>`).join(''):'<div style="text-align:center;padding:1.5rem;font-size:13px;color:var(--text3)">ไม่มีงานที่ได้รับมอบหมาย</div>'}
   </div>`;
 }
 function toggleTask(id,cb){
@@ -344,10 +344,10 @@ function renderNotif(){
   const typeStyle={deadline:{bg:'#fcebeb',c:'#a32d2d',icon:'⚠️'},task:{bg:'#e6f1fb',c:'#0c447c',icon:'📋'},warn:{bg:'#faeeda',c:'#633806',icon:'📢'},general:{bg:'#e1f5ee',c:'#085041',icon:'💬'}};
   return`<div class="card">
     <div class="card-header"><span class="card-title">การแจ้งเตือน</span></div>
-    ${notifs.length?notifs.slice().reverse().map(n=>{const s=typeStyle[n.type]||typeStyle.general;return`<div style="padding:10px 0;border-bottom:0.5px solid var(--color-border-tertiary);display:flex;align-items:flex-start;gap:8px">
+    ${notifs.length?notifs.slice().reverse().map(n=>{const s=typeStyle[n.type]||typeStyle.general;return`<div style="padding:10px 0;border-bottom:0.5px solid var(--border);display:flex;align-items:flex-start;gap:8px">
       <span style="font-size:14px;flex-shrink:0">${s.icon}</span>
-      <div style="flex:1"><div style="font-size:13px;line-height:1.5">${n.msg}</div><div style="font-size:11px;font-family:'DM Mono',monospace;color:var(--color-text-tertiary);margin-top:3px">${n.time}</div></div>
-    </div>`;}).join(''):'<div style="text-align:center;padding:1.5rem;font-size:13px;color:var(--color-text-tertiary)">ไม่มีการแจ้งเตือน</div>'}
+      <div style="flex:1"><div style="font-size:13px;line-height:1.5">${n.msg}</div><div style="font-size:11px;font-family:'DM Mono',monospace;color:var(--text3);margin-top:3px">${n.time}</div></div>
+    </div>`;}).join(''):'<div style="text-align:center;padding:1.5rem;font-size:13px;color:var(--text3)">ไม่มีการแจ้งเตือน</div>'}
   </div>`;
 }
 
