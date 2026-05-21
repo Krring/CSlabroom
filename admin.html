@@ -6,12 +6,12 @@
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 <style>
-.stu-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:0.5px solid var(--color-border-tertiary);}
+.stu-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:0.5px solid var(--border);}
 .stu-row:last-child{border-bottom:none;}
-.pending-card{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem 1.25rem;margin-bottom:8px;border-left:3px solid #FAC775;}
-.nb-section-box{margin-top:4px;padding:5px 8px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);font-size:12px;line-height:1.5;border-left:2px solid var(--color-border-secondary);}
+.pending-card{border:0.5px solid var(--border);border-radius:var(--rl);padding:1rem 1.25rem;margin-bottom:8px;border-left:3px solid #FAC775;}
+.nb-section-box{margin-top:4px;padding:5px 8px;background:var(--bg2);border-radius:var(--r);font-size:12px;line-height:1.5;border-left:2px solid var(--border2);}
 /* Calendar (admin view) */
-.cal-detail-admin{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem 1.25rem;margin-bottom:1rem;background:var(--color-background-secondary);}
+.cal-detail-admin{border:0.5px solid var(--border);border-radius:var(--rl);padding:1rem 1.25rem;margin-bottom:1rem;background:var(--bg2);}
 </style>
 </head>
 <body>
@@ -23,7 +23,7 @@
   </a>
   <div style="display:flex;align-items:center;gap:8px;">
     <span class="badge" style="background:#fcebeb;color:#a32d2d">Admin</span>
-    <span style="font-size:12px;color:var(--color-text-secondary)" id="navName"></span>
+    <span style="font-size:12px;color:var(--text2)" id="navName"></span>
     <button class="btn btn-sm" onclick="KU.logout()"><i class="ti ti-logout"></i> ออก</button>
   </div>
 </nav>
@@ -86,8 +86,8 @@ function renderOverview(){
     <div class="metric"><div class="metric-label">ค้างชำระ</div><div class="metric-value" style="${overdue>0?'color:#a32d2d':''}">${overdue}</div></div>
   </div>
   ${pending.length>0?`<div class="card" style="border-left:3px solid #FAC775">
-    <div class="card-header"><span class="card-title">⚠ คำขอสมัครที่รอ Approve (${pending.length})</span><button class="btn btn-sm btn-primary" onclick="switchTab('members')">จัดการ →</button></div>
-    ${pending.slice(0,2).map(m=>`<div style="font-size:13px;padding:5px 0;border-bottom:0.5px solid var(--color-border-tertiary);display:flex;align-items:center;gap:8px"><div class="av av-sm" style="background:${m.avbg};color:${m.avc}">${m.av}</div>${m.name} <span class="badge" style="background:${LEVEL_BG[m.level]||'#f1efe8'};color:${LEVEL_C[m.level]||'#5f5e5a'}">${LEVEL_LABEL[m.level]||m.level}</span></div>`).join('')}
+    <div class="card-header"><span class="card-title">⚠ คำขอสมัครที่รอ Approve (${pending.length})</span><button class="btn btn-sm btn-pri" onclick="switchTab('members')">จัดการ →</button></div>
+    ${pending.slice(0,2).map(m=>`<div style="font-size:13px;padding:5px 0;border-bottom:0.5px solid var(--border);display:flex;align-items:center;gap:8px"><div class="av av-sm" style="background:${m.avbg};color:${m.avc}">${m.av}</div>${m.name} <span class="badge" style="background:${LEVEL_BG[m.level]||'#f1efe8'};color:${LEVEL_C[m.level]||'#5f5e5a'}">${LEVEL_LABEL[m.level]||m.level}</span></div>`).join('')}
   </div>`:''}
   <div class="card">
     <div class="card-header"><span class="card-title">สถานะนิสิต</span></div>
@@ -99,7 +99,7 @@ function renderOverview(){
         <div class="av av-md" style="background:${u.avbg};color:${u.avc}">${u.av}</div>
         <div style="flex:1">
           <div style="display:flex;align-items:center;gap:6px"><span style="font-size:13px;font-weight:500">${u.name}</span><span class="badge" style="background:${LEVEL_BG[u.level]||'#f1efe8'};color:${LEVEL_C[u.level]||'#5f5e5a'}">${LEVEL_LABEL[u.level]||u.level}</span></div>
-          <div style="font-size:11px;color:var(--color-text-secondary);margin-top:1px">งาน ${done}/${myTasks.length} · ${pct}%</div>
+          <div style="font-size:11px;color:var(--text2);margin-top:1px">งาน ${done}/${myTasks.length} · ${pct}%</div>
           <div class="pbar" style="width:160px;margin-top:3px"><div class="pfill" style="width:${pct}%;background:${pct===100?'#1D9E75':pct>=50?'#378ADD':'#EF9F27'}"></div></div>
         </div>
         <button class="btn btn-sm" onclick="quickNotify('${u.uid}')"><i class="ti ti-bell"></i></button>
@@ -119,23 +119,23 @@ function renderMembers(){
         <div class="av av-md" style="background:${m.avbg};color:${m.avc};width:36px;height:36px">${m.av}</div>
         <div style="flex:1">
           <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap"><span style="font-size:14px;font-weight:500">${m.name}</span><span class="badge" style="background:${LEVEL_BG[m.level]||'#f1efe8'};color:${LEVEL_C[m.level]||'#5f5e5a'}">${LEVEL_LABEL[m.level]||m.level}</span></div>
-          <div style="font-size:12px;color:var(--color-text-secondary);margin-top:2px">${m.email} · รหัส: ${m.sid} · ปี ${m.year}</div>
-          ${m.topic?`<div style="font-size:12px;color:var(--color-text-secondary)">หัวข้อ: ${m.topic}</div>`:''}
-          ${m.note?`<div style="font-size:12px;font-style:italic;color:var(--color-text-tertiary)">"${m.note}"</div>`:''}
-          <div style="font-size:11px;font-family:'DM Mono',monospace;color:var(--color-text-tertiary);margin-top:3px">${m.time}</div>
+          <div style="font-size:12px;color:var(--text2);margin-top:2px">${m.email} · รหัส: ${m.sid} · ปี ${m.year}</div>
+          ${m.topic?`<div style="font-size:12px;color:var(--text2)">หัวข้อ: ${m.topic}</div>`:''}
+          ${m.note?`<div style="font-size:12px;font-style:italic;color:var(--text3)">"${m.note}"</div>`:''}
+          <div style="font-size:11px;font-family:'DM Mono',monospace;color:var(--text3);margin-top:3px">${m.time}</div>
         </div>
       </div>
       <div style="display:flex;gap:6px;justify-content:flex-end;margin-top:10px">
         <button class="btn btn-sm btn-red" onclick="rejectMember('${m.id}')"><i class="ti ti-x"></i> ปฏิเสธ</button>
         <button class="btn btn-sm btn-green" onclick="approveMember('${m.id}')"><i class="ti ti-check"></i> อนุมัติ</button>
       </div>
-    </div>`).join(''):'<div style="text-align:center;padding:1rem;font-size:13px;color:var(--color-text-tertiary)">ไม่มีคำขอที่รอ ✓</div>'}
+    </div>`).join(''):'<div style="text-align:center;padding:1rem;font-size:13px;color:var(--text3)">ไม่มีคำขอที่รอ ✓</div>'}
   </div>
   <div class="card">
     <div class="card-header"><span class="card-title">สมาชิกทั้งหมด (${approved.length})</span></div>
     ${approved.map(u=>`<div class="stu-row">
       <div class="av av-md" style="background:${u.avbg};color:${u.avc}">${u.av}</div>
-      <div style="flex:1"><div style="font-size:13px;font-weight:500">${u.name}</div><div style="font-size:11px;color:var(--color-text-secondary)">${u.email} · ${u.topic}</div></div>
+      <div style="flex:1"><div style="font-size:13px;font-weight:500">${u.name}</div><div style="font-size:11px;color:var(--text2)">${u.email} · ${u.topic}</div></div>
       <span class="badge" style="background:${LEVEL_BG[u.level]||'#f1efe8'};color:${LEVEL_C[u.level]||'#5f5e5a'}">${LEVEL_LABEL[u.level]||u.level}</span>
       <span class="badge" style="background:#e1f5ee;color:#085041">ใช้งาน</span>
     </div>`).join('')}
@@ -172,37 +172,37 @@ function renderMonitor(){
   const students=KU.getApproved().filter(u=>u.level!=='admin');
   if(!monitorStu && students.length) monitorStu=students[0].uid;
   const stu=students.find(u=>u.uid===monitorStu)||students[0];
-  if(!stu) return '<div class="card"><div style="padding:1rem;color:var(--color-text-tertiary)">ไม่มีนิสิต</div></div>';
+  if(!stu) return '<div class="card"><div style="padding:1rem;color:var(--text3)">ไม่มีนิสิต</div></div>';
   const notes=KU.getNotes(monitorStu);
   const allTasks=KU.getTasks().filter(t=>t.target===monitorStu||t.target==='all');
   const done=allTasks.filter(t=>t.done).length;
   const pct=allTasks.length?Math.round(done/allTasks.length*100):0;
   return`
   <div style="display:flex;gap:5px;margin-bottom:1rem;flex-wrap:wrap">
-    ${students.map(u=>`<button class="btn btn-sm${u.uid===monitorStu?' btn-primary':''}" onclick="monitorStu='${u.uid}';renderContent()"><div class="av av-sm" style="background:${u.avbg};color:${u.avc};display:inline-flex">${u.av}</div> ${u.name.split(' ')[0]}</button>`).join('')}
+    ${students.map(u=>`<button class="btn btn-sm${u.uid===monitorStu?' btn-pri':''}" onclick="monitorStu='${u.uid}';renderContent()"><div class="av av-sm" style="background:${u.avbg};color:${u.avc};display:inline-flex">${u.av}</div> ${u.name.split(' ')[0]}</button>`).join('')}
   </div>
   <div class="card" style="margin-bottom:10px">
-    <div class="card-header"><span class="card-title">สมุดแล็บ — ${stu.name}</span><span style="font-size:11px;font-family:'DM Mono',monospace;color:var(--color-text-tertiary)">อ่านอย่างเดียว</span></div>
+    <div class="card-header"><span class="card-title">สมุดแล็บ — ${stu.name}</span><span style="font-size:11px;font-family:'DM Mono',monospace;color:var(--text3)">อ่านอย่างเดียว</span></div>
     ${notes.length?notes.slice().reverse().map(n=>{
       const tc=CATS[n.tag]?`background:${CATS[n.tag].bg};color:${CATS[n.tag].c}`:'background:#f1efe8;color:#5f5e5a';
       const dt=new Date(n.date).toLocaleDateString('th-TH',{day:'numeric',month:'short',year:'2-digit'});
-      return`<div style="padding:10px 0;border-bottom:0.5px solid var(--color-border-tertiary)">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><span style="font-size:13px;font-weight:500;flex:1">${n.title||''}</span><span class="badge" style="${tc}">${n.tag}</span><span style="font-size:11px;font-family:'DM Mono',monospace;color:var(--color-text-tertiary)">${dt}</span></div>
-        ${n.type==='quick'?`<div style="font-size:13px;color:var(--color-text-secondary)">${n.note||''}</div>`:
-        `${n.objective?`<div class="nb-section-box"><div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--color-text-secondary)">วัตถุประสงค์</div>${n.objective}</div>`:''}
-         ${n.result?`<div class="nb-section-box" style="border-left-color:#1D9E75;margin-top:3px"><div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--color-text-secondary)">ผล</div>${n.result}</div>`:''}
-         ${n.problem?`<div class="nb-section-box" style="border-left-color:#E24B4A;margin-top:3px"><div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--color-text-secondary)">ปัญหา</div>${n.problem}</div>`:''}`}
+      return`<div style="padding:10px 0;border-bottom:0.5px solid var(--border)">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><span style="font-size:13px;font-weight:500;flex:1">${n.title||''}</span><span class="badge" style="${tc}">${n.tag}</span><span style="font-size:11px;font-family:'DM Mono',monospace;color:var(--text3)">${dt}</span></div>
+        ${n.type==='quick'?`<div style="font-size:13px;color:var(--text2)">${n.note||''}</div>`:
+        `${n.objective?`<div class="nb-section-box"><div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--text2)">วัตถุประสงค์</div>${n.objective}</div>`:''}
+         ${n.result?`<div class="nb-section-box" style="border-left-color:#1D9E75;margin-top:3px"><div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--text2)">ผล</div>${n.result}</div>`:''}
+         ${n.problem?`<div class="nb-section-box" style="border-left-color:#E24B4A;margin-top:3px"><div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--text2)">ปัญหา</div>${n.problem}</div>`:''}`}
       </div>`;
-    }).join(''):'<div style="font-size:13px;color:var(--color-text-tertiary);padding:8px 0">ยังไม่มีบันทึก</div>'}
+    }).join(''):'<div style="font-size:13px;color:var(--text3);padding:8px 0">ยังไม่มีบันทึก</div>'}
   </div>
   <div class="card">
     <div class="card-header"><span class="card-title">ความคืบหน้างาน</span><span style="font-size:12px;font-family:'DM Mono',monospace;font-weight:500;color:${pct===100?'#1D9E75':'#EF9F27'}">${done}/${allTasks.length} · ${pct}%</span></div>
     <div class="pbar" style="margin-bottom:10px"><div class="pfill" style="width:${pct}%;background:${pct===100?'#1D9E75':pct>=50?'#378ADD':'#EF9F27'}"></div></div>
-    ${allTasks.map(t=>`<div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:0.5px solid var(--color-border-tertiary)">
+    ${allTasks.map(t=>`<div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:0.5px solid var(--border)">
       <div style="width:6px;height:6px;border-radius:50%;background:${t.done?'#1D9E75':'#B4B2A9'};flex-shrink:0"></div>
-      <span style="font-size:13px;flex:1;${t.done?'text-decoration:line-through;color:var(--color-text-tertiary)':''}">${t.name}</span>
+      <span style="font-size:13px;flex:1;${t.done?'text-decoration:line-through;color:var(--text3)':''}">${t.name}</span>
       <span class="badge" style="${t.done?'background:#e1f5ee;color:#085041':'background:#faeeda;color:#633806'}">${t.done?'เสร็จแล้ว':'กำลังทำ'}</span>
-    </div>`).join('')||'<div style="font-size:13px;color:var(--color-text-tertiary)">ยังไม่มีงาน</div>'}
+    </div>`).join('')||'<div style="font-size:13px;color:var(--text3)">ยังไม่มีงาน</div>'}
   </div>`;
 }
 
@@ -218,7 +218,7 @@ function renderPlanView(){
   return`
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:8px">
     <div style="display:flex;gap:5px;flex-wrap:wrap">
-      ${students.map(u=>`<button class="btn btn-sm${u.uid===pvStu?' btn-primary':''}" onclick="pvStu='${u.uid}';pvDay=null;document.getElementById('pvDetail').style.display='none';initPlanView()"><div class="av av-sm" style="background:${u.avbg};color:${u.avc};display:inline-flex">${u.av}</div> ${u.name.split(' ')[0]}</button>`).join('')}
+      ${students.map(u=>`<button class="btn btn-sm${u.uid===pvStu?' btn-pri':''}" onclick="pvStu='${u.uid}';pvDay=null;document.getElementById('pvDetail').style.display='none';initPlanView()"><div class="av av-sm" style="background:${u.avbg};color:${u.avc};display:inline-flex">${u.av}</div> ${u.name.split(' ')[0]}</button>`).join('')}
     </div>
     <div style="display:flex;align-items:center;gap:6px">
       <button class="btn btn-sm" onclick="pvPrev()"><i class="ti ti-chevron-left"></i></button>
@@ -226,7 +226,7 @@ function renderPlanView(){
       <button class="btn btn-sm" onclick="pvNext()"><i class="ti ti-chevron-right"></i></button>
     </div>
   </div>
-  <div style="font-size:11px;font-family:'DM Mono',monospace;color:var(--color-text-tertiary);margin-bottom:8px;padding:5px 10px;background:var(--color-background-secondary);border-radius:var(--border-radius-md)"><i class="ti ti-eye" style="font-size:11px;vertical-align:-1px"></i> อ่านอย่างเดียว — นิสิตเป็นคนกรอกแผนงาน</div>
+  <div style="font-size:11px;font-family:'DM Mono',monospace;color:var(--text3);margin-bottom:8px;padding:5px 10px;background:var(--bg2);border-radius:var(--r)"><i class="ti ti-eye" style="font-size:11px;vertical-align:-1px"></i> อ่านอย่างเดียว — นิสิตเป็นคนกรอกแผนงาน</div>
   <div class="card">
     <div class="cal-dow">${['อา','จ','อ','พ','พฤ','ศ','ส'].map(d=>`<span>${d}</span>`).join('')}</div>
     <div class="cal-grid" id="pvGrid"></div>
@@ -252,7 +252,7 @@ function initPlanView(){
     const items=plans[ds]||[];
     const isSel=ds===pvDay;
     const chips=items.slice(0,2).map(p=>{const c=CATS[p.cat]||CATS['อื่นๆ'];return`<div class="plan-chip" style="background:${c.bg};color:${c.c}">${p.txt}</div>`;}).join('');
-    const more=items.length>2?`<div style="font-size:10px;color:var(--color-text-tertiary)">+${items.length-2}</div>`:'';
+    const more=items.length>2?`<div style="font-size:10px;color:var(--text3)">+${items.length-2}</div>`:'';
     html+=`<div class="cal-day${ds===todayStr?' today':''}${isSel?' selected':''}" onclick="pvSelectDay('${ds}')">
       <div class="cal-day-num">${d}</div>${chips}${more}
     </div>`;
@@ -265,7 +265,7 @@ function renderPvDetail(){
   const[y,m,d]=pvDay.split('-');
   document.getElementById('pvDetailDate').textContent=parseInt(d)+' '+TH_MONTHS[parseInt(m)]+' '+(parseInt(y)+543);
   const items=KU.getPlans(pvStu)[pvDay]||[];
-  document.getElementById('pvDayList').innerHTML=items.length?items.map(p=>{const c=CATS[p.cat]||CATS['อื่นๆ'];return`<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:0.5px solid var(--color-border-tertiary)"><div style="width:8px;height:8px;border-radius:50%;background:${c.dot};flex-shrink:0"></div><span style="flex:1;font-size:13px">${p.txt}</span><span class="badge" style="background:${c.bg};color:${c.c}">${p.cat}</span></div>`;}).join(''):'<div style="font-size:13px;color:var(--color-text-tertiary)">ไม่มีแผนงาน</div>';
+  document.getElementById('pvDayList').innerHTML=items.length?items.map(p=>{const c=CATS[p.cat]||CATS['อื่นๆ'];return`<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:0.5px solid var(--border)"><div style="width:8px;height:8px;border-radius:50%;background:${c.dot};flex-shrink:0"></div><span style="flex:1;font-size:13px">${p.txt}</span><span class="badge" style="background:${c.bg};color:${c.c}">${p.cat}</span></div>`;}).join(''):'<div style="font-size:13px;color:var(--text3)">ไม่มีแผนงาน</div>';
 }
 function pvPrev(){pvMonth--;if(pvMonth<1){pvMonth=12;pvYear--;}pvDay=null;document.getElementById('pvDetail').style.display='none';initPlanView();}
 function pvNext(){pvMonth++;if(pvMonth>12){pvMonth=1;pvYear++;}pvDay=null;document.getElementById('pvDetail').style.display='none';initPlanView();}
@@ -282,21 +282,21 @@ function renderNotify(){
     <div class="card-header"><span class="card-title">ส่งการแจ้งเตือน</span></div>
     <div class="f-group"><label class="f-lbl">ประเภท</label>
       <div style="display:flex;gap:5px;flex-wrap:wrap">
-        ${Object.entries(TYPE_STYLE).map(([t,s])=>`<button class="btn btn-sm${t===notifType?' btn-primary':''}" onclick="notifType='${t}';renderContent()">${s.icon} ${t}</button>`).join('')}
+        ${Object.entries(TYPE_STYLE).map(([t,s])=>`<button class="btn btn-sm${t===notifType?' btn-pri':''}" onclick="notifType='${t}';renderContent()">${s.icon} ${t}</button>`).join('')}
       </div>
     </div>
     <div class="f-group"><label class="f-lbl">ส่งถึง</label>
       <div style="display:flex;gap:5px;flex-wrap:wrap" id="ntgtBtns">
-        <button class="btn btn-sm${notifTargets.has('all')?' btn-primary':''}" onclick="toggleNTarget('all',this)"><i class="ti ti-users"></i> ทุกคน</button>
-        ${students.map(u=>`<button class="btn btn-sm${notifTargets.has(u.uid)?' btn-primary':''}" onclick="toggleNTarget('${u.uid}',this)"><div class="av av-sm" style="background:${u.avbg};color:${u.avc};display:inline-flex">${u.av}</div>${u.name.split(' ')[0]}</button>`).join('')}
+        <button class="btn btn-sm${notifTargets.has('all')?' btn-pri':''}" onclick="toggleNTarget('all',this)"><i class="ti ti-users"></i> ทุกคน</button>
+        ${students.map(u=>`<button class="btn btn-sm${notifTargets.has(u.uid)?' btn-pri':''}" onclick="toggleNTarget('${u.uid}',this)"><div class="av av-sm" style="background:${u.avbg};color:${u.avc};display:inline-flex">${u.av}</div>${u.name.split(' ')[0]}</button>`).join('')}
       </div>
     </div>
     <div class="f-group"><label class="f-lbl">ข้อความ</label><textarea id="notifMsg" class="f-inp" placeholder="ข้อความแจ้งเตือน..."></textarea></div>
-    <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="sendNotif()"><i class="ti ti-send"></i> ส่ง</button></div>
+    <div style="display:flex;justify-content:flex-end"><button class="btn btn-pri" onclick="sendNotif()"><i class="ti ti-send"></i> ส่ง</button></div>
   </div>
   <div class="card">
     <div class="card-header"><span class="card-title">ประวัติ (${history.length})</span></div>
-    ${history.length?history.slice().reverse().map(n=>{const s=TYPE_STYLE[n.type]||TYPE_STYLE.general;const tgt=n.targets.includes('all')?'ทุกคน':n.targets.join(', ');return`<div style="padding:9px 0;border-bottom:0.5px solid var(--color-border-tertiary);display:flex;align-items:flex-start;gap:8px"><span style="font-size:14px">${s.icon}</span><div style="flex:1"><div style="font-size:13px">${n.msg}</div><div style="font-size:11px;font-family:'DM Mono',monospace;color:var(--color-text-secondary);margin-top:3px">ถึง: ${tgt} · ${n.time}</div></div></div>`;}).join(''):'<div style="font-size:13px;color:var(--color-text-tertiary);padding:8px 0;text-align:center">ยังไม่มีการแจ้งเตือน</div>'}
+    ${history.length?history.slice().reverse().map(n=>{const s=TYPE_STYLE[n.type]||TYPE_STYLE.general;const tgt=n.targets.includes('all')?'ทุกคน':n.targets.join(', ');return`<div style="padding:9px 0;border-bottom:0.5px solid var(--border);display:flex;align-items:flex-start;gap:8px"><span style="font-size:14px">${s.icon}</span><div style="flex:1"><div style="font-size:13px">${n.msg}</div><div style="font-size:11px;font-family:'DM Mono',monospace;color:var(--text2);margin-top:3px">ถึง: ${tgt} · ${n.time}</div></div></div>`;}).join(''):'<div style="font-size:13px;color:var(--text3);padding:8px 0;text-align:center">ยังไม่มีการแจ้งเตือน</div>'}
   </div>`;
 }
 
@@ -328,8 +328,8 @@ function renderTasks(){
   const LEVEL_BG2={bachelor:'#e6f1fb',master:'#eeedfe',phd:'#faeeda',ra:'#e1f5ee',all:'#f1efe8'};
   const LEVEL_C2={bachelor:'#0c447c',master:'#3c3489',phd:'#633806',ra:'#085041',all:'#5f5e5a'};
   return`<div class="card">
-    <div class="card-header"><span class="card-title">มอบหมายงาน</span><button class="btn btn-sm btn-primary" onclick="toggleTaskForm()"><i class="ti ti-plus"></i> เพิ่มงาน</button></div>
-    <div id="taskForm" style="display:none;padding:12px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);margin-bottom:10px">
+    <div class="card-header"><span class="card-title">มอบหมายงาน</span><button class="btn btn-sm btn-pri" onclick="toggleTaskForm()"><i class="ti ti-plus"></i> เพิ่มงาน</button></div>
+    <div id="taskForm" style="display:none;padding:12px;background:var(--bg2);border-radius:var(--r);margin-bottom:10px">
       <div class="f-row">
         <div class="f-group" style="margin-bottom:0"><label class="f-lbl">มอบหมายให้</label>
           <select id="tTarget" class="f-inp" style="font-size:12px;padding:6px 8px">
@@ -340,29 +340,29 @@ function renderTasks(){
         <div class="f-group" style="margin-bottom:0"><label class="f-lbl">กำหนดส่ง</label><input type="date" id="tDue" class="f-inp" style="font-size:12px;padding:6px 8px"></div>
       </div>
       <div class="f-group" style="margin-top:8px"><label class="f-lbl">ชื่องาน</label><input type="text" id="tName" class="f-inp"></div>
-      <div style="margin-bottom:8px"><label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--color-text-secondary);cursor:pointer"><input type="checkbox" id="hasProto" onchange="document.getElementById('protoArea').style.display=this.checked?'block':'none'" style="width:13px;height:13px"> เพิ่ม Protocol</label></div>
+      <div style="margin-bottom:8px"><label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text2);cursor:pointer"><input type="checkbox" id="hasProto" onchange="document.getElementById('protoArea').style.display=this.checked?'block':'none'" style="width:13px;height:13px"> เพิ่ม Protocol</label></div>
       <div id="protoArea" style="display:none" class="f-group"><label class="f-lbl">Protocol</label><textarea id="tProto" class="f-inp"></textarea></div>
       <div style="display:flex;justify-content:flex-end;gap:5px">
         <button class="btn btn-sm" onclick="toggleTaskForm()">ยกเลิก</button>
-        <button class="btn btn-sm btn-primary" onclick="saveTask()"><i class="ti ti-check"></i> บันทึก</button>
+        <button class="btn btn-sm btn-pri" onclick="saveTask()"><i class="ti ti-check"></i> บันทึก</button>
       </div>
     </div>
     ${tasks.map((t,i)=>{
       const stu=t.target==='all'?null:students.find(u=>u.uid===t.target);
       const lbl=t.target==='all'?'ทุกคน':(stu?stu.name:t.target);
       const lbg=stu?stu.avbg:LEVEL_BG2.all;const lc=stu?stu.avc:LEVEL_C2.all;
-      return`<div style="padding:9px 0;border-bottom:0.5px solid var(--color-border-tertiary)">
+      return`<div style="padding:9px 0;border-bottom:0.5px solid var(--border)">
         <div style="display:flex;align-items:flex-start;gap:8px">
           <input type="checkbox" ${t.done?'checked':''} style="width:14px;height:14px;margin-top:2px;flex-shrink:0;accent-color:var(--color-accent)" disabled>
           <div style="flex:1">
-            <div style="font-size:13px;font-weight:500;${t.done?'text-decoration:line-through;color:var(--color-text-tertiary)':''}">${t.name}</div>
-            <div style="display:flex;gap:5px;align-items:center;margin-top:3px"><span class="badge" style="background:${lbg};color:${lc}">${lbl}</span>${t.due?`<span style="font-size:11px;font-family:'DM Mono',monospace;color:var(--color-text-secondary)">${t.due}</span>`:''}</div>
-            ${t.proto?`<div style="margin-top:5px;padding:6px 8px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);font-size:12px;color:var(--color-text-secondary);white-space:pre-line;border-left:2px solid var(--color-accent)">${t.proto}</div>`:''}
+            <div style="font-size:13px;font-weight:500;${t.done?'text-decoration:line-through;color:var(--text3)':''}">${t.name}</div>
+            <div style="display:flex;gap:5px;align-items:center;margin-top:3px"><span class="badge" style="background:${lbg};color:${lc}">${lbl}</span>${t.due?`<span style="font-size:11px;font-family:'DM Mono',monospace;color:var(--text2)">${t.due}</span>`:''}</div>
+            ${t.proto?`<div style="margin-top:5px;padding:6px 8px;background:var(--bg2);border-radius:var(--r);font-size:12px;color:var(--text2);white-space:pre-line;border-left:2px solid var(--teal)">${t.proto}</div>`:''}
           </div>
           <button class="btn btn-sm btn-danger" onclick="delTask(${i})" style="padding:2px 6px;flex-shrink:0"><i class="ti ti-trash" style="font-size:10px"></i></button>
         </div>
       </div>`;
-    }).join('')||'<div style="text-align:center;padding:1.5rem;font-size:13px;color:var(--color-text-tertiary)">ยังไม่มีงาน</div>'}
+    }).join('')||'<div style="text-align:center;padding:1.5rem;font-size:13px;color:var(--text3)">ยังไม่มีงาน</div>'}
   </div>`;
 }
 function toggleTaskForm(){const f=document.getElementById('taskForm');if(f) f.style.display=f.style.display==='none'?'block':'none';}
@@ -389,8 +389,8 @@ function renderFinance(){
     <div class="metric"><div class="metric-label">ค้างชำระ</div><div class="metric-value" style="color:#a32d2d">฿${(overdue/1000).toFixed(0)}K</div></div>
   </div>
   <div class="card">
-    <div class="card-header"><span class="card-title">รายการ</span><button class="btn btn-sm btn-primary" onclick="toggleFinForm()"><i class="ti ti-plus"></i> เพิ่ม</button></div>
-    <div id="finForm" style="display:none;padding:12px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);margin-bottom:10px">
+    <div class="card-header"><span class="card-title">รายการ</span><button class="btn btn-sm btn-pri" onclick="toggleFinForm()"><i class="ti ti-plus"></i> เพิ่ม</button></div>
+    <div id="finForm" style="display:none;padding:12px;background:var(--bg2);border-radius:var(--r);margin-bottom:10px">
       <div class="f-row">
         <div class="f-group" style="margin-bottom:0"><label class="f-lbl">ประเภท</label><select id="fType" class="f-inp" style="font-size:12px;padding:6px 8px"><option value="expense">รายจ่าย</option><option value="income">รายรับ</option></select></div>
         <div class="f-group" style="margin-bottom:0"><label class="f-lbl">สถานะ</label><select id="fStatus" class="f-inp" style="font-size:12px;padding:6px 8px"><option value="pending">รอดำเนินการ</option><option value="approved">อนุมัติแล้ว</option><option value="paid">ชำระแล้ว</option><option value="overdue">ค้างชำระ</option></select></div>
@@ -401,12 +401,12 @@ function renderFinance(){
       </div>
       <div style="display:flex;justify-content:flex-end;gap:5px;margin-top:8px">
         <button class="btn btn-sm" onclick="toggleFinForm()">ยกเลิก</button>
-        <button class="btn btn-sm btn-primary" onclick="saveFin()"><i class="ti ti-check"></i> บันทึก</button>
+        <button class="btn btn-sm btn-pri" onclick="saveFin()"><i class="ti ti-check"></i> บันทึก</button>
       </div>
     </div>
     <div class="table-wrap"><table>
       <thead><tr><th>รายการ</th><th>จำนวน</th><th>สถานะ</th><th>วันที่</th><th></th></tr></thead>
-      <tbody>${fin.entries.map((e,i)=>{const s=STATUS_STYLE[e.status]||STATUS_STYLE.pending;const col=e.type==='income'?'#27500a':'#a32d2d';const sign=e.type==='income'?'+':'−';return`<tr><td>${e.name}</td><td style="font-family:'DM Mono',monospace;font-weight:500;color:${col}">${sign}฿${e.amt.toLocaleString()}</td><td><span class="badge" style="background:${s.bg};color:${s.c}">${s.txt}</span></td><td style="font-size:12px;color:var(--color-text-secondary)">${e.date}</td><td><button class="btn btn-sm btn-danger" onclick="delFin(${i})" style="padding:2px 6px"><i class="ti ti-trash" style="font-size:10px"></i></button></td></tr>`;}).join('')}
+      <tbody>${fin.entries.map((e,i)=>{const s=STATUS_STYLE[e.status]||STATUS_STYLE.pending;const col=e.type==='income'?'#27500a':'#a32d2d';const sign=e.type==='income'?'+':'−';return`<tr><td>${e.name}</td><td style="font-family:'DM Mono',monospace;font-weight:500;color:${col}">${sign}฿${e.amt.toLocaleString()}</td><td><span class="badge" style="background:${s.bg};color:${s.c}">${s.txt}</span></td><td style="font-size:12px;color:var(--text2)">${e.date}</td><td><button class="btn btn-sm btn-danger" onclick="delFin(${i})" style="padding:2px 6px"><i class="ti ti-trash" style="font-size:10px"></i></button></td></tr>`;}).join('')}
       </tbody>
     </table></div>
   </div>`;
@@ -427,8 +427,8 @@ function renderChem(){
   const chems=KU.getChem();
   const today=new Date();
   return`<div class="card">
-    <div class="card-header"><span class="card-title">คลังสารเคมี</span><button class="btn btn-sm btn-primary" onclick="toggleChemForm()"><i class="ti ti-plus"></i> เพิ่ม</button></div>
-    <div id="chemForm" style="display:none;padding:12px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);margin-bottom:10px">
+    <div class="card-header"><span class="card-title">คลังสารเคมี</span><button class="btn btn-sm btn-pri" onclick="toggleChemForm()"><i class="ti ti-plus"></i> เพิ่ม</button></div>
+    <div id="chemForm" style="display:none;padding:12px;background:var(--bg2);border-radius:var(--r);margin-bottom:10px">
       <div class="f-row">
         <div class="f-group" style="margin-bottom:0"><label class="f-lbl">ชื่อสาร</label><input type="text" id="cName" class="f-inp" style="font-size:12px;padding:6px 8px"></div>
         <div class="f-group" style="margin-bottom:0"><label class="f-lbl">ตำแหน่ง</label><input type="text" id="cLoc" class="f-inp" style="font-size:12px;padding:6px 8px" placeholder="เช่น ตู้ A1"></div>
@@ -439,11 +439,11 @@ function renderChem(){
       </div>
       <div style="display:flex;justify-content:flex-end;gap:5px;margin-top:8px">
         <button class="btn btn-sm" onclick="toggleChemForm()">ยกเลิก</button>
-        <button class="btn btn-sm btn-primary" onclick="saveChem()"><i class="ti ti-check"></i> บันทึก</button>
+        <button class="btn btn-sm btn-pri" onclick="saveChem()"><i class="ti ti-check"></i> บันทึก</button>
       </div>
     </div>
     <table><thead><tr><th>สารเคมี</th><th>ปริมาณ</th><th>ตำแหน่ง</th><th>หมดอายุ</th><th></th></tr></thead>
-    <tbody>${chems.map((c,i)=>{const exp=c.exp?new Date(c.exp):null;const days=exp?Math.ceil((exp-today)/86400000):null;const warn=days!==null&&days<90;return`<tr><td style="font-weight:500">${c.name}</td><td style="font-size:12px;font-family:'DM Mono',monospace;color:var(--color-text-secondary)">${c.qty||'—'}</td><td><span class="badge" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">${c.loc||'—'}</span></td><td style="font-size:12px;font-family:'DM Mono',monospace;${warn?'color:#a32d2d;font-weight:500':''}">${c.exp||'—'}${warn?' ⚠':''}</td><td><button class="btn btn-sm btn-danger" onclick="delChem(${i})" style="padding:2px 6px"><i class="ti ti-trash" style="font-size:10px"></i></button></td></tr>`;}).join('')}
+    <tbody>${chems.map((c,i)=>{const exp=c.exp?new Date(c.exp):null;const days=exp?Math.ceil((exp-today)/86400000):null;const warn=days!==null&&days<90;return`<tr><td style="font-weight:500">${c.name}</td><td style="font-size:12px;font-family:'DM Mono',monospace;color:var(--text2)">${c.qty||'—'}</td><td><span class="badge" style="background:var(--bg2);color:var(--text2)">${c.loc||'—'}</span></td><td style="font-size:12px;font-family:'DM Mono',monospace;${warn?'color:#a32d2d;font-weight:500':''}">${c.exp||'—'}${warn?' ⚠':''}</td><td><button class="btn btn-sm btn-danger" onclick="delChem(${i})" style="padding:2px 6px"><i class="ti ti-trash" style="font-size:10px"></i></button></td></tr>`;}).join('')}
     </tbody></table>
   </div>`;
 }
