@@ -280,18 +280,18 @@ function renderNotify(){
   const students=KU.getApproved().filter(u=>u.level!=='admin');
   return`<div class="card" style="margin-bottom:10px">
     <div class="card-header"><span class="card-title">ส่งการแจ้งเตือน</span></div>
-    <div class="f-group"><label class="f-label">ประเภท</label>
+    <div class="f-group"><label class="f-lbl">ประเภท</label>
       <div style="display:flex;gap:5px;flex-wrap:wrap">
         ${Object.entries(TYPE_STYLE).map(([t,s])=>`<button class="btn btn-sm${t===notifType?' btn-primary':''}" onclick="notifType='${t}';renderContent()">${s.icon} ${t}</button>`).join('')}
       </div>
     </div>
-    <div class="f-group"><label class="f-label">ส่งถึง</label>
+    <div class="f-group"><label class="f-lbl">ส่งถึง</label>
       <div style="display:flex;gap:5px;flex-wrap:wrap" id="ntgtBtns">
         <button class="btn btn-sm${notifTargets.has('all')?' btn-primary':''}" onclick="toggleNTarget('all',this)"><i class="ti ti-users"></i> ทุกคน</button>
         ${students.map(u=>`<button class="btn btn-sm${notifTargets.has(u.uid)?' btn-primary':''}" onclick="toggleNTarget('${u.uid}',this)"><div class="av av-sm" style="background:${u.avbg};color:${u.avc};display:inline-flex">${u.av}</div>${u.name.split(' ')[0]}</button>`).join('')}
       </div>
     </div>
-    <div class="f-group"><label class="f-label">ข้อความ</label><textarea id="notifMsg" class="f-input" placeholder="ข้อความแจ้งเตือน..."></textarea></div>
+    <div class="f-group"><label class="f-lbl">ข้อความ</label><textarea id="notifMsg" class="f-inp" placeholder="ข้อความแจ้งเตือน..."></textarea></div>
     <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="sendNotif()"><i class="ti ti-send"></i> ส่ง</button></div>
   </div>
   <div class="card">
@@ -331,17 +331,17 @@ function renderTasks(){
     <div class="card-header"><span class="card-title">มอบหมายงาน</span><button class="btn btn-sm btn-primary" onclick="toggleTaskForm()"><i class="ti ti-plus"></i> เพิ่มงาน</button></div>
     <div id="taskForm" style="display:none;padding:12px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);margin-bottom:10px">
       <div class="f-row">
-        <div class="f-group" style="margin-bottom:0"><label class="f-label">มอบหมายให้</label>
-          <select id="tTarget" class="f-input" style="font-size:12px;padding:6px 8px">
+        <div class="f-group" style="margin-bottom:0"><label class="f-lbl">มอบหมายให้</label>
+          <select id="tTarget" class="f-inp" style="font-size:12px;padding:6px 8px">
             <option value="all">ทุกคน</option>
             ${students.map(u=>`<option value="${u.uid}">${u.name}</option>`).join('')}
           </select>
         </div>
-        <div class="f-group" style="margin-bottom:0"><label class="f-label">กำหนดส่ง</label><input type="date" id="tDue" class="f-input" style="font-size:12px;padding:6px 8px"></div>
+        <div class="f-group" style="margin-bottom:0"><label class="f-lbl">กำหนดส่ง</label><input type="date" id="tDue" class="f-inp" style="font-size:12px;padding:6px 8px"></div>
       </div>
-      <div class="f-group" style="margin-top:8px"><label class="f-label">ชื่องาน</label><input type="text" id="tName" class="f-input"></div>
+      <div class="f-group" style="margin-top:8px"><label class="f-lbl">ชื่องาน</label><input type="text" id="tName" class="f-inp"></div>
       <div style="margin-bottom:8px"><label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--color-text-secondary);cursor:pointer"><input type="checkbox" id="hasProto" onchange="document.getElementById('protoArea').style.display=this.checked?'block':'none'" style="width:13px;height:13px"> เพิ่ม Protocol</label></div>
-      <div id="protoArea" style="display:none" class="f-group"><label class="f-label">Protocol</label><textarea id="tProto" class="f-input"></textarea></div>
+      <div id="protoArea" style="display:none" class="f-group"><label class="f-lbl">Protocol</label><textarea id="tProto" class="f-inp"></textarea></div>
       <div style="display:flex;justify-content:flex-end;gap:5px">
         <button class="btn btn-sm" onclick="toggleTaskForm()">ยกเลิก</button>
         <button class="btn btn-sm btn-primary" onclick="saveTask()"><i class="ti ti-check"></i> บันทึก</button>
@@ -392,12 +392,12 @@ function renderFinance(){
     <div class="card-header"><span class="card-title">รายการ</span><button class="btn btn-sm btn-primary" onclick="toggleFinForm()"><i class="ti ti-plus"></i> เพิ่ม</button></div>
     <div id="finForm" style="display:none;padding:12px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);margin-bottom:10px">
       <div class="f-row">
-        <div class="f-group" style="margin-bottom:0"><label class="f-label">ประเภท</label><select id="fType" class="f-input" style="font-size:12px;padding:6px 8px"><option value="expense">รายจ่าย</option><option value="income">รายรับ</option></select></div>
-        <div class="f-group" style="margin-bottom:0"><label class="f-label">สถานะ</label><select id="fStatus" class="f-input" style="font-size:12px;padding:6px 8px"><option value="pending">รอดำเนินการ</option><option value="approved">อนุมัติแล้ว</option><option value="paid">ชำระแล้ว</option><option value="overdue">ค้างชำระ</option></select></div>
+        <div class="f-group" style="margin-bottom:0"><label class="f-lbl">ประเภท</label><select id="fType" class="f-inp" style="font-size:12px;padding:6px 8px"><option value="expense">รายจ่าย</option><option value="income">รายรับ</option></select></div>
+        <div class="f-group" style="margin-bottom:0"><label class="f-lbl">สถานะ</label><select id="fStatus" class="f-inp" style="font-size:12px;padding:6px 8px"><option value="pending">รอดำเนินการ</option><option value="approved">อนุมัติแล้ว</option><option value="paid">ชำระแล้ว</option><option value="overdue">ค้างชำระ</option></select></div>
       </div>
       <div class="f-row" style="margin-top:8px">
-        <div class="f-group" style="margin-bottom:0"><label class="f-label">ชื่อรายการ</label><input type="text" id="fName" class="f-input" style="font-size:12px;padding:6px 8px"></div>
-        <div class="f-group" style="margin-bottom:0"><label class="f-label">จำนวน (บาท)</label><input type="number" id="fAmt" class="f-input" style="font-size:12px;padding:6px 8px" placeholder="0"></div>
+        <div class="f-group" style="margin-bottom:0"><label class="f-lbl">ชื่อรายการ</label><input type="text" id="fName" class="f-inp" style="font-size:12px;padding:6px 8px"></div>
+        <div class="f-group" style="margin-bottom:0"><label class="f-lbl">จำนวน (บาท)</label><input type="number" id="fAmt" class="f-inp" style="font-size:12px;padding:6px 8px" placeholder="0"></div>
       </div>
       <div style="display:flex;justify-content:flex-end;gap:5px;margin-top:8px">
         <button class="btn btn-sm" onclick="toggleFinForm()">ยกเลิก</button>
@@ -430,12 +430,12 @@ function renderChem(){
     <div class="card-header"><span class="card-title">คลังสารเคมี</span><button class="btn btn-sm btn-primary" onclick="toggleChemForm()"><i class="ti ti-plus"></i> เพิ่ม</button></div>
     <div id="chemForm" style="display:none;padding:12px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);margin-bottom:10px">
       <div class="f-row">
-        <div class="f-group" style="margin-bottom:0"><label class="f-label">ชื่อสาร</label><input type="text" id="cName" class="f-input" style="font-size:12px;padding:6px 8px"></div>
-        <div class="f-group" style="margin-bottom:0"><label class="f-label">ตำแหน่ง</label><input type="text" id="cLoc" class="f-input" style="font-size:12px;padding:6px 8px" placeholder="เช่น ตู้ A1"></div>
+        <div class="f-group" style="margin-bottom:0"><label class="f-lbl">ชื่อสาร</label><input type="text" id="cName" class="f-inp" style="font-size:12px;padding:6px 8px"></div>
+        <div class="f-group" style="margin-bottom:0"><label class="f-lbl">ตำแหน่ง</label><input type="text" id="cLoc" class="f-inp" style="font-size:12px;padding:6px 8px" placeholder="เช่น ตู้ A1"></div>
       </div>
       <div class="f-row" style="margin-top:8px">
-        <div class="f-group" style="margin-bottom:0"><label class="f-label">ปริมาณ</label><input type="text" id="cQty" class="f-input" style="font-size:12px;padding:6px 8px" placeholder="เช่น 500 ml"></div>
-        <div class="f-group" style="margin-bottom:0"><label class="f-label">วันหมดอายุ</label><input type="date" id="cExp" class="f-input" style="font-size:12px;padding:6px 8px"></div>
+        <div class="f-group" style="margin-bottom:0"><label class="f-lbl">ปริมาณ</label><input type="text" id="cQty" class="f-inp" style="font-size:12px;padding:6px 8px" placeholder="เช่น 500 ml"></div>
+        <div class="f-group" style="margin-bottom:0"><label class="f-lbl">วันหมดอายุ</label><input type="date" id="cExp" class="f-inp" style="font-size:12px;padding:6px 8px"></div>
       </div>
       <div style="display:flex;justify-content:flex-end;gap:5px;margin-top:8px">
         <button class="btn btn-sm" onclick="toggleChemForm()">ยกเลิก</button>
